@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - ABJ Style</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .toggle-btn.active { background-color: #e94d76; color: white; border-color: #e94d76; }
+        .cadastro-wrap {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .toggle-buttons { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; }
+        .toggle-btn {
+            padding: 10px 25px;
+            border: 2px solid #ddd;
+            background: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Quicksand';
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #666; font-weight: 600; }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            background-color: #e94d76;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body style="background-color: #fcfcfc;">
+
+    <header>
+        <div class="nav-container">
+            <nav class="menu-links">
+                <a href="index.html">meninas</a>
+                <a href="index.html">meninos</a>
+                <a href="index.html">bebês</a>
+            </nav>
+            <a href="index.html" class="logo">
+                <img src="logoabj.webp" alt="Balão" style="max-height: 50px;">
+                <span>moda infantil</span>
+            </a>
+            <div class="user-actions">
+                <a href="login.html"><i class="fa-regular fa-user"></i></a>
+                <i class="fa-solid fa-basket-shopping"></i>
+                <i class="fa-regular fa-heart"></i>
+                <a href="index.html#contato"><i class="fa-regular fa-comment"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="cadastro-wrap">
+            <h2>Crie sua conta</h2>
+            
+            <div class="toggle-buttons">
+                <button type="button" class="toggle-btn active" id="btn-cliente" onclick="trocarTipo('cliente')">Sou Cliente</button>
+                <button type="button" class="toggle-btn" id="btn-vendedor" onclick="trocarTipo('vendedor')">Sou Vendedor</button>
+            </div>
+
+            <form action="cadastro.php" method="POST">
+                
+                <input type="hidden" name="tipo_form" id="tipo_form" value="cliente">
+
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" placeholder="Seu nome" required>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div id="campos-especificos">
+                    <div class="input-group">
+                        <label>CPF</label>
+                        <input type="text" name="cpf" placeholder="000.000.000-00">
+                    </div>
+                    <div class="input-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="data_nascimento">
+                    </div>
+                    <div class="input-group">
+                        <label>Telefone</label>
+                        <input type="text" name="telefone" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha</label>
+                    <input type="password" name="senha" placeholder="******" required>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submit-text">Cadastrar Cliente</button>
+            </form>
+            
+            <p style="margin-top: 20px; font-size: 0.9rem;">
+                <a href="index.html" style="color: #999; text-decoration: none;">Voltar para a loja</a>
+            </p>
+        </div>
+    </main>
+
+    <script>
+        function trocarTipo(tipo) {
+            // Ajusta o valor do campo escondido para o PHP ler
+            document.getElementById('tipo_form').value = tipo;
+
+            // Estilização dos botões
+            document.getElementById('btn-cliente').classList.toggle('active', tipo === 'cliente');
+            document.getElementById('btn-vendedor').classList.toggle('active', tipo === 'vendedor');
+
+            // Ajusta o texto do botão
+            const btnSubmit = document.getElementById('submit-text');
+            if (tipo === 'vendedor') {
+                btnSubmit.innerText = "Cadastrar Vendedor";
+                btnSubmit.style.backgroundColor = "#27ae60";
+            } else {
+                btnSubmit.innerText = "Cadastrar Cliente";
+                btnSubmit.style.backgroundColor = "#e94d76";
+            }
+        }
+    </script>
+</body>
+</html>

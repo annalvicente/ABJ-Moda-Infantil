@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABJ Style - ABJ Style</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html { scroll-behavior: smooth; }
+
+        /* Estilo da Notificação (Toast) */
+        .toast-notificacao {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            z-index: 9999;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .toast-notificacao.show { bottom: 30px; opacity: 1; }
+
+        .produtos-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .grid-produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover { transform: translateY(-5px); }
+
+        .btn-adicionar {
+            background-color: #e94d76;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            font-family: 'Quicksand', sans-serif;
+            transition: background 0.3s;
+        }
+
+        .btn-adicionar:hover { background-color: #d13a63; }
+
+        /* Estilos do Modal */
+        .modal-detalhes {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            z-index: 2000;
+            border-radius: 30px;
+            padding: 30px;
+            display: none;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            transition: 0.3s ease;
+        }
+
+        .modal-detalhes.active { display: block; transform: translate(-50%, -50%) scale(1); }
+
+        .modal-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+        .modal-galeria { flex: 1; min-width: 250px; }
+        .modal-galeria img { width: 100%; border-radius: 15px; }
+        .modal-info { flex: 1.2; min-width: 250px; text-align: left; font-family: 'Quicksand'; }
+        
+        .tabela-medidas-box {
+            margin: 15px 0;
+            background: #fdf2f5;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .tabela-medidas-box table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .tabela-medidas-box th { border-bottom: 1px solid #e94d76; padding: 5px; }
+        .estrelas { color: #ffcc00; margin-bottom: 10px; }
+        .fechar-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #888; }
+
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none; z-index: 1400;
+        }
+        
+        #overlay.active { display: block !important; }
+
+        /* Estilos do Painel Admin */
+        .admin-input { padding: 10px; border-radius: 10px; border: 1px solid #ddd; width: 100%; box-sizing: border-box; }
+
+        #status-usuario {
+            background: #fdf2f5;
+            padding: 5px 20px;
+            text-align: right;
+            font-family: 'Quicksand';
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .menu-links { gap: 10px !important; }
+            .modal-detalhes { height: 80vh; overflow-y: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div id="status-usuario"></div>
+
+    <header>
+        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 20px;">
+            <nav class="menu-links">
+                <a href="#">meninas</a>
+                <a href="#">meninos</a>
+                <a href="#">bebês</a>
+            </nav>
+            <a href="index.html" class="logo">
+                <img src="logoabj.webp" alt="Balão Logo" style="max-height: 60px;">
+            </a>
+            <div class="user-actions">
+                <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
+                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </div>
+                <i class="fa-regular fa-heart"></i>
+                <a href="#contato" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-comment"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <form class="search-box" id="searchForm">
+            <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()" style="cursor: pointer;"></i>
+            <input type="text" id="searchInput" placeholder="O que você procura?">
+            <i class="fa-solid fa-xmark" onclick="limparBusca()" style="cursor: pointer;"></i>
+        </form>
+    </div>
+
+    <main>
+        <section class="hero-banner">
+            <div class="hero-image"><img src="criançafeliz.jpg" alt="Crianças felizes"></div>
+            <div class="hero-text">
+                <h2>O conforto que seu filho merece!</h2>
+                <p>Com frete grátis.</p>
+            </div>
+        </section>
+
+        <section class="carousel-section">
+            <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+            <div class="carousel-track" id="track">
+                <div class="card"><img src="destaque.jpg" alt="Destaque"></div>
+                <div class="card"><img src="outras.webp.jpeg" alt="Pijamas"></div>
+                <div class="card"><img src="fantasia.webp.jpeg" alt="Fantasias"></div>
+                <div class="card"><img src="roupa1.webp.jpeg" alt="Acessórios"></div>
+                <div class="card"><img src="roupa2webp.jpeg" alt="Kids"></div>
+            </div>
+            <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
+        </section>
+
+        <section class="produtos-container">
+            <h2 style="text-align:center; font-family:'Quicksand'; margin-bottom: 30px;">Destaques da Semana</h2>
+            <div class="grid-produtos" id="vitrine-produtos"></div>
+        </section>
+
+        <section id="painel-admin" style="display: none; background: #fdf2f2; padding: 40px 20px; border-top: 5px solid #e94d76; margin-top: 50px;">
+            <div class="produtos-container">
+                <h2 style="font-family: 'Quicksand'; text-align: center;"><i class="fa-solid fa-gears"></i> Painel Administrativo</h2>
+                
+                <form id="form-cadastro" style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 600px; margin: 20px auto;">
+                    <div style="display: grid; gap: 15px;">
+                        <input type="text" id="adm-nome" placeholder="Nome do Produto" required class="admin-input">
+                        <input type="number" id="adm-preco" placeholder="Preço (Ex: 79.99)" step="0.01" required class="admin-input">
+                        <input type="text" id="adm-img" placeholder="Nome da Imagem (Ex: destaque.jpg)" required class="admin-input">
+                        <input type="number" id="adm-estoque" placeholder="Qtd em Estoque" required class="admin-input">
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="adm-p" placeholder="Medida P" class="admin-input">
+                            <input type="text" id="adm-m" placeholder="Medida M" class="admin-input">
+                            <input type="text" id="adm-g" placeholder="Medida G" class="admin-input">
+                        </div>
+                        <button type="submit" class="btn-adicionar" style="background: #27ae60;">Cadastrar e Atualizar Loja</button>
+                    </div>
+                </form>
+
+                <div style="margin-top: 30px; overflow-x: auto;">
+                    <table style="width: 100%; background: white; border-radius: 15px; border-collapse: collapse; font-family: 'Quicksand';">
+                        <thead style="background: #e94d76; color: white;">
+                            <tr>
+                                <th style="padding: 12px;">Produto</th>
+                                <th>Estoque</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-estoque-adm" style="text-align: center;"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-produto" class="modal-detalhes">
+        <span class="fechar-modal" onclick="fecharTudo()">&times;</span>
+        <div class="modal-grid">
+            <div class="modal-galeria"><img id="modal-img" src="" alt="Produto"></div>
+            <div class="modal-info">
+                <h2 id="modal-nome"></h2>
+                <p id="modal-preco" style="color: #ff69b4; font-size: 1.4rem; font-weight: bold;"></p>
+                <div class="tabela-medidas-box">
+                    <h4>Tabela de Medidas (Altura)</h4>
+                    <table>
+                        <tr><th>P</th><td id="med-p"></td></tr>
+                        <tr><th>M</th><td id="med-m"></td></tr>
+                        <tr><th>G</th><td id="med-g"></td></tr>
+                    </table>
+                </div>
+                <div class="avaliacoes">
+                    <div class="estrelas">⭐⭐⭐⭐⭐ 4.9/5</div>
+                    <p style="font-size: 0.85rem; color: #666;">"Qualidade excelente!"</p>
+                </div>
+                <br>
+                <button class="btn-adicionar" onclick="adicionarDoModal()">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contato" class="footer-custom">
+        <div class="footer-container-custom">
+            <div class="footer-section">
+                <div class="footer-brand">
+                    <i class="fa-regular fa-comments chat-icon"></i>
+                    <div class="brand-info">
+                        <h3>ABJ Moda infantil</h3>
+                        <p>Telefone: 12 981714147</p>
+                        <p>Email: ABJmodainfantil@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section">
+                <div class="footer-links-social">
+                    <div class="social-item"><i class="fa-brands fa-instagram"></i><span>@ABJ_modainfantil</span></div>
+                    <div class="social-item"><i class="fa-solid fa-location-dot"></i><span>Av. Exemplo, 123</span></div>
+                    <a href="#" class="faq-link">FAQ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="side-cart" class="cart-container">
+        <div class="cart-header">
+            <h3>Meu Carrinho</h3>
+            <button onclick="toggleCart()" class="close-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-list"></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cart-total-value">R$ 0,00</span></div>
+            <button class="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <div id="overlay" onclick="fecharTudo()"></div>
+
+    <script src="Carrinho.js"></script>
+    <script>
+        // --- SISTEMA DE USUÁRIOS E LOGIN ---
+        let usuariosCadastrados = JSON.parse(localStorage.getItem('usuarios_abj_lista')) || [];
+
+        function checarLoginSalvo() {
+            const usuarioLogado = JSON.parse(localStorage.getItem('usuario_logado_atual'));
+            const painel = document.getElementById('painel-admin');
+            const statusDiv = document.getElementById('status-usuario');
+
+            if (usuarioLogado) {
+                statusDiv.innerHTML = `
+                    <p>Olá, <strong>${usuarioLogado.nome}</strong> (${usuarioLogado.tipo}) | 
+                    <button onclick="logout()" style="color:red; cursor:pointer; background:none; border:none; text-decoration:underline; font-family:'Quicksand';">Sair</button></p>
+                `;
+                // Se for vendedor, mostra o painel
+                if (usuarioLogado.tipo === 'vendedor') {
+                    painel.style.display = "block";
+                } else {
+                    painel.style.display = "none";
+                }
+            } else {
+                statusDiv.innerHTML = `<p><a href="login.html" style="color: #e94d76; text-decoration: none;">Entrar ou Cadastrar</a></p>`;
+                painel.style.display = "none";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('usuario_logado_atual');
+            location.reload();
+        }
+
+        // --- LÓGICA DO ESTOQUE ---
+        let produtosLoja = JSON.parse(localStorage.getItem('meusProdutos')) || [
+            { id: 1, nome: 'Conjunto Woody', preco: '79.99', img: 'destaque.jpg', estoque: 10, p: '50cm', m: '60cm', g: '70cm' },
+            { id: 2, nome: 'Pijama Confort', preco: '65.00', img: 'roupa1.webp.jpeg', estoque: 5, p: '45cm', m: '55cm', g: '65cm' }
+        ];
+
+        function salvarEAtualizar() {
+            localStorage.setItem('meusProdutos', JSON.stringify(produtosLoja));
+            renderizarLoja();
+            renderizarEstoqueAdm();
+        }
+
+        function renderizarLoja() {
+            const vitrine = document.getElementById('vitrine-produtos');
+            if(!vitrine) return;
+            vitrine.innerHTML = '';
+            produtosLoja.forEach(p => {
+                vitrine.innerHTML += `
+                    <div class="product-card" onclick="abrirDetalhes('${p.nome}', '${p.preco}', '${p.img}', '${p.p}', '${p.m}', '${p.g}')">
+                        <img src="${p.img}" alt="${p.nome}" style="width: 100%; border-radius: 15px; margin-bottom: 15px;">
+                        <h3 style="font-family: 'Quicksand'; font-size: 1.1rem;">${p.nome}</h3>
+                        <p style="color: #ff69b4; font-weight: 700; font-size: 1.2rem; margin-bottom: 5px;">R$ ${p.preco}</p>
+                        <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Estoque: ${p.estoque} un</p>
+                        <button class="btn-adicionar" onclick="event.stopPropagation(); comprar(${p.id})">
+                            ${p.estoque > 0 ? '<i class="fa-solid fa-cart-shopping"></i> Adicionar' : 'Esgotado'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderizarEstoqueAdm() {
+            const tabela = document.getElementById('lista-estoque-adm');
+            if(!tabela) return;
+            tabela.innerHTML = '';
+            produtosLoja.forEach(p => {
+                tabela.innerHTML += `
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px;">${p.nome}</td>
+                        <td><input type="number" value="${p.estoque}" onchange="editarEstoque(${p.id}, this.value)" style="width: 50px;"></td>
+                        <td>R$ ${p.preco}</td>
+                        <td><button onclick="removerProduto(${p.id})" style="color: red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('form-cadastro').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const novo = {
+                id: Date.now(),
+                nome: document.getElementById('adm-nome').value,
+                preco: document.getElementById('adm-preco').value,
+                img: document.getElementById('adm-img').value,
+                estoque: parseInt(document.getElementById('adm-estoque').value),
+                p: document.getElementById('adm-p').value || 'N/A',
+                m: document.getElementById('adm-m').value || 'N/A',
+                g: document.getElementById('adm-g').value || 'N/A'
+            };
+            produtosLoja.push(novo);
+            salvarEAtualizar();
+            e.target.reset();
+        });
+
+        function comprar(id) {
+            const p = produtosLoja.find(i => i.id === id);
+            if (p && p.estoque > 0) {
+                p.estoque--;
+                if(typeof adicionarAoCarrinho === "function") adicionarAoCarrinho(p.nome, parseFloat(p.preco));
+                salvarEAtualizar();
+            } else { alert("Produto esgotado!"); }
+        }
+
+        function abrirDetalhes(nome, preco, img, p, m, g) {
+            document.getElementById('modal-nome').innerText = nome;
+            document.getElementById('modal-preco').innerText = 'R$ ' + preco;
+            document.getElementById('modal-img').src = img;
+            document.getElementById('med-p').innerText = p;
+            document.getElementById('med-m').innerText = m;
+            document.getElementById('med-g').innerText = g;
+            document.getElementById('modal-produto').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function fecharTudo() {
+            document.getElementById('modal-produto').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function editarEstoque(id, valor) {
+            const p = produtosLoja.find(i => i.id === id);
+            if(p) p.estoque = parseInt(valor);
+            salvarEAtualizar();
+        }
+
+        function removerProduto(id) {
+            produtosLoja = produtosLoja.filter(i => i.id !== id);
+            salvarEAtualizar();
+        }
+
+        // Inicialização ao carregar a página
+        window.onload = function() {
+            checarLoginSalvo();
+            renderizarLoja();
+            renderizarEstoqueAdm();
+        };
+    </script>
+
+    <script>
+        async function carregarProdutosDoBanco() {
+            try {
+                const resposta = await fetch('listar_produtos.php');
+                const produtos = await resposta.json();
+                
+                const container = document.getElementById('lista-produtos');
+                container.innerHTML = ''; 
+
+                produtos.forEach(p => {
+                    container.innerHTML += `
+                        <div class="product-card">
+                            <img src="${p.imagem}" alt="${p.nome}">
+                            <h3>${p.nome}</h3>
+                            <p class="price">R$ ${p.preco}</p>
+                            <button onclick="adicionarAoCarrinho(${p.id})">Comprar</button>
+                        </div>
+                    `;
+                });
+            } catch (erro) {
+                console.error("Erro ao carregar produtos:", erro);
+            }
+        }
+
+        // Inicia a carga assim que a página abre
+        document.addEventListener('DOMContentLoaded', carregarProdutosDoBanco);
+    </script>
+    
+    <div id="overlay-favoritos" onclick="toggleFavoritos()"></div>
+
+<div id="favoritos-container" class="fav-container">
+    <div class="fav-header">
+        <div class="fav-header-title">
+            <h3>Favoritos</h3>
+            <i class="fa-solid fa-heart" style="color: #ffb6c1;"></i>
+        </div>
+        <button class="close-btn" onclick="toggleFavoritos()">&times;</button>
+    </div>
+
+    <div class="fav-content">
+        <div class="fav-select-all">
+            <input type="checkbox" id="selecionar-todos">
+            <label for="selecionar-todos">Selecionar</label>
+        </div>
+
+        <div id="lista-favoritos" class="fav-items">
+            <p style="text-align: center; color: #999; margin-top: 20px;">Sua lista está vazia.</p>
+        </div>
+    </div>
+
+    <div class="fav-footer">
+        <button class="btn-fav-carrinho" onclick="adicionarFavoritosAoCarrinho()">
+            Adicionar ao carrinho
+        </button>
+    </div>
+</div>
+</body>
+</html>
+</body>
+</html> 
