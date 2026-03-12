@@ -8,133 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        html { scroll-behavior: smooth; }
-
-        /* Estilo da Notificação (Toast) */
-        .toast-notificacao {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            z-index: 9999;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            opacity: 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .toast-notificacao.show { bottom: 30px; opacity: 1; }
-
-        .produtos-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .grid-produtos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .product-card:hover { transform: translateY(-5px); }
-
-        .btn-adicionar {
-            background-color: #e94d76;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            font-family: 'Quicksand', sans-serif;
-            transition: background 0.3s;
-        }
-
-        .btn-adicionar:hover { background-color: #d13a63; }
-
-        /* Estilos do Modal */
-        .modal-detalhes {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            width: 90%;
-            max-width: 800px;
-            background: white;
-            z-index: 2000;
-            border-radius: 30px;
-            padding: 30px;
-            display: none;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            transition: 0.3s ease;
-        }
-
-        .modal-detalhes.active { display: block; transform: translate(-50%, -50%) scale(1); }
-
-        .modal-grid { display: flex; gap: 20px; flex-wrap: wrap; }
-        .modal-galeria { flex: 1; min-width: 250px; }
-        .modal-galeria img { width: 100%; border-radius: 15px; }
-        .modal-info { flex: 1.2; min-width: 250px; text-align: left; font-family: 'Quicksand'; }
-        
-        .tabela-medidas-box {
-            margin: 15px 0;
-            background: #fdf2f5;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .tabela-medidas-box table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .tabela-medidas-box th { border-bottom: 1px solid #e94d76; padding: 5px; }
-        .estrelas { color: #ffcc00; margin-bottom: 10px; }
-        .fechar-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #888; }
-
-        #overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none; z-index: 1400;
-        }
-        
-        #overlay.active { display: block !important; }
-
-        /* Estilos do Painel Admin */
-        .admin-input { padding: 10px; border-radius: 10px; border: 1px solid #ddd; width: 100%; box-sizing: border-box; }
-
-        #status-usuario {
-            background: #fdf2f5;
-            padding: 5px 20px;
-            text-align: right;
-            font-family: 'Quicksand';
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 768px) {
-            .menu-links { gap: 10px !important; }
-            .modal-detalhes { height: 80vh; overflow-y: auto; }
-        }
-    </style>
 </head>
+
 <body>
     <div id="status-usuario"></div>
 
@@ -146,7 +21,7 @@
                 <a href="#">bebês</a>
             </nav>
             <a href="index.html" class="logo">
-                <img src="logoabj.webp" alt="Balão Logo" style="max-height: 60px;">
+                <img src="img/logoabj.webp" alt="Balão Logo" style="max-height: 60px;">
             </a>
             <div class="user-actions">
                 <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
@@ -170,7 +45,7 @@
 
     <main>
         <section class="hero-banner">
-            <div class="hero-image"><img src="criançafeliz.jpg" alt="Crianças felizes"></div>
+            <div class="hero-image"><img src="img/quatrokids.webp" alt="Crianças felizes"></div>
             <div class="hero-text">
                 <h2>O conforto que seu filho merece!</h2>
                 <p>Com frete grátis.</p>
@@ -180,11 +55,11 @@
         <section class="carousel-section">
             <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="carousel-track" id="track">
-                <div class="card"><img src="destaque.jpg" alt="Destaque"></div>
-                <div class="card"><img src="outras.webp.jpeg" alt="Pijamas"></div>
-                <div class="card"><img src="fantasia.webp.jpeg" alt="Fantasias"></div>
-                <div class="card"><img src="roupa1.webp.jpeg" alt="Acessórios"></div>
-                <div class="card"><img src="roupa2webp.jpeg" alt="Kids"></div>
+                <div class="card"><img src="img/duaskids.webp" alt="Destaque"></div>
+                <div class="card"><img src="img/pij-duaskids.webp" alt="Pijamas"></div>
+                <div class="card"><img src="img/fant_duaskid.webp" alt="Fantasias"></div>
+                <div class="card"><img src="img/fant_batman.webp" alt="Acessórios"></div>
+                <div class="card"><img src="img/fant_wood.webp" alt="Kids"></div>
             </div>
             <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
         </section>
@@ -293,172 +168,7 @@
     <div id="overlay" onclick="fecharTudo()"></div>
 
     <script src="Carrinho.js"></script>
-    <script>
-        // --- SISTEMA DE USUÁRIOS E LOGIN ---
-        let usuariosCadastrados = JSON.parse(localStorage.getItem('usuarios_abj_lista')) || [];
-
-        function checarLoginSalvo() {
-            const usuarioLogado = JSON.parse(localStorage.getItem('usuario_logado_atual'));
-            const painel = document.getElementById('painel-admin');
-            const statusDiv = document.getElementById('status-usuario');
-
-            if (usuarioLogado) {
-                statusDiv.innerHTML = `
-                    <p>Olá, <strong>${usuarioLogado.nome}</strong> (${usuarioLogado.tipo}) | 
-                    <button onclick="logout()" style="color:red; cursor:pointer; background:none; border:none; text-decoration:underline; font-family:'Quicksand';">Sair</button></p>
-                `;
-                // Se for vendedor, mostra o painel
-                if (usuarioLogado.tipo === 'vendedor') {
-                    painel.style.display = "block";
-                } else {
-                    painel.style.display = "none";
-                }
-            } else {
-                statusDiv.innerHTML = `<p><a href="login.html" style="color: #e94d76; text-decoration: none;">Entrar ou Cadastrar</a></p>`;
-                painel.style.display = "none";
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('usuario_logado_atual');
-            location.reload();
-        }
-
-        // --- LÓGICA DO ESTOQUE ---
-        let produtosLoja = JSON.parse(localStorage.getItem('meusProdutos')) || [
-            { id: 1, nome: 'Conjunto Woody', preco: '79.99', img: 'destaque.jpg', estoque: 10, p: '50cm', m: '60cm', g: '70cm' },
-            { id: 2, nome: 'Pijama Confort', preco: '65.00', img: 'roupa1.webp.jpeg', estoque: 5, p: '45cm', m: '55cm', g: '65cm' }
-        ];
-
-        function salvarEAtualizar() {
-            localStorage.setItem('meusProdutos', JSON.stringify(produtosLoja));
-            renderizarLoja();
-            renderizarEstoqueAdm();
-        }
-
-        function renderizarLoja() {
-            const vitrine = document.getElementById('vitrine-produtos');
-            if(!vitrine) return;
-            vitrine.innerHTML = '';
-            produtosLoja.forEach(p => {
-                vitrine.innerHTML += `
-                    <div class="product-card" onclick="abrirDetalhes('${p.nome}', '${p.preco}', '${p.img}', '${p.p}', '${p.m}', '${p.g}')">
-                        <img src="${p.img}" alt="${p.nome}" style="width: 100%; border-radius: 15px; margin-bottom: 15px;">
-                        <h3 style="font-family: 'Quicksand'; font-size: 1.1rem;">${p.nome}</h3>
-                        <p style="color: #ff69b4; font-weight: 700; font-size: 1.2rem; margin-bottom: 5px;">R$ ${p.preco}</p>
-                        <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Estoque: ${p.estoque} un</p>
-                        <button class="btn-adicionar" onclick="event.stopPropagation(); comprar(${p.id})">
-                            ${p.estoque > 0 ? '<i class="fa-solid fa-cart-shopping"></i> Adicionar' : 'Esgotado'}
-                        </button>
-                    </div>
-                `;
-            });
-        }
-
-        function renderizarEstoqueAdm() {
-            const tabela = document.getElementById('lista-estoque-adm');
-            if(!tabela) return;
-            tabela.innerHTML = '';
-            produtosLoja.forEach(p => {
-                tabela.innerHTML += `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 10px;">${p.nome}</td>
-                        <td><input type="number" value="${p.estoque}" onchange="editarEstoque(${p.id}, this.value)" style="width: 50px;"></td>
-                        <td>R$ ${p.preco}</td>
-                        <td><button onclick="removerProduto(${p.id})" style="color: red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>
-                `;
-            });
-        }
-
-        document.getElementById('form-cadastro').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const novo = {
-                id: Date.now(),
-                nome: document.getElementById('adm-nome').value,
-                preco: document.getElementById('adm-preco').value,
-                img: document.getElementById('adm-img').value,
-                estoque: parseInt(document.getElementById('adm-estoque').value),
-                p: document.getElementById('adm-p').value || 'N/A',
-                m: document.getElementById('adm-m').value || 'N/A',
-                g: document.getElementById('adm-g').value || 'N/A'
-            };
-            produtosLoja.push(novo);
-            salvarEAtualizar();
-            e.target.reset();
-        });
-
-        function comprar(id) {
-            const p = produtosLoja.find(i => i.id === id);
-            if (p && p.estoque > 0) {
-                p.estoque--;
-                if(typeof adicionarAoCarrinho === "function") adicionarAoCarrinho(p.nome, parseFloat(p.preco));
-                salvarEAtualizar();
-            } else { alert("Produto esgotado!"); }
-        }
-
-        function abrirDetalhes(nome, preco, img, p, m, g) {
-            document.getElementById('modal-nome').innerText = nome;
-            document.getElementById('modal-preco').innerText = 'R$ ' + preco;
-            document.getElementById('modal-img').src = img;
-            document.getElementById('med-p').innerText = p;
-            document.getElementById('med-m').innerText = m;
-            document.getElementById('med-g').innerText = g;
-            document.getElementById('modal-produto').classList.add('active');
-            document.getElementById('overlay').classList.add('active');
-        }
-
-        function fecharTudo() {
-            document.getElementById('modal-produto').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
-        }
-
-        function editarEstoque(id, valor) {
-            const p = produtosLoja.find(i => i.id === id);
-            if(p) p.estoque = parseInt(valor);
-            salvarEAtualizar();
-        }
-
-        function removerProduto(id) {
-            produtosLoja = produtosLoja.filter(i => i.id !== id);
-            salvarEAtualizar();
-        }
-
-        // Inicialização ao carregar a página
-        window.onload = function() {
-            checarLoginSalvo();
-            renderizarLoja();
-            renderizarEstoqueAdm();
-        };
-    </script>
-
-    <script>
-        async function carregarProdutosDoBanco() {
-            try {
-                const resposta = await fetch('listar_produtos.php');
-                const produtos = await resposta.json();
-                
-                const container = document.getElementById('lista-produtos');
-                container.innerHTML = ''; 
-
-                produtos.forEach(p => {
-                    container.innerHTML += `
-                        <div class="product-card">
-                            <img src="${p.imagem}" alt="${p.nome}">
-                            <h3>${p.nome}</h3>
-                            <p class="price">R$ ${p.preco}</p>
-                            <button onclick="adicionarAoCarrinho(${p.id})">Comprar</button>
-                        </div>
-                    `;
-                });
-            } catch (erro) {
-                console.error("Erro ao carregar produtos:", erro);
-            }
-        }
-
-        // Inicia a carga assim que a página abre
-        document.addEventListener('DOMContentLoaded', carregarProdutosDoBanco);
-    </script>
+    <script src="loja.js"></script>
     
     <div id="overlay-favoritos" onclick="toggleFavoritos()"></div>
 
@@ -490,5 +200,3 @@
 </div>
 </body>
 </html>
-</body>
-</html> 
