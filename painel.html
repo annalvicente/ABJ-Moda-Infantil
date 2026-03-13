@@ -35,47 +35,46 @@
         </div>
     </header>
 
-    <div class="search-container">
-        <form class="search-box" id="searchForm">
-            <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()" style="cursor: pointer;"></i>
-            <input type="text" id="searchInput" placeholder="O que você procura?">
-            <i class="fa-solid fa-xmark" onclick="limparBusca()" style="cursor: pointer;"></i>
-        </form>
-    </div>
 
-    <main>
-        <section class="hero-banner">
-            <div class="hero-image"><img src="img/quatrokids.webp" alt="Crianças felizes"></div>
-            <div class="hero-text">
-                <h2>O conforto que seu filho merece!</h2>
-                <p>Com frete grátis.</p>
+
+
+        <section id="painel-admin" style="display: none; background: #fdf2f2; padding: 40px 20px; border-top: 5px solid #e94d76; margin-top: 50px;">
+            <div class="produtos-container">
+                <h2 style="font-family: 'Quicksand'; text-align: center;"><i class="fa-solid fa-gears"></i> Painel Administrativo</h2>
+                
+                <form id="form-cadastro" style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 600px; margin: 20px auto;">
+                    <div style="display: grid; gap: 15px;">
+                        <input type="text" id="adm-nome" placeholder="Nome do Produto" required class="admin-input">
+                        <input type="number" id="adm-preco" placeholder="Preço (Ex: 79.99)" step="0.01" required class="admin-input">
+                        <input type="text" id="adm-img" placeholder="Nome da Imagem (Ex: destaque.jpg)" required class="admin-input">
+                        <input type="number" id="adm-estoque" placeholder="Qtd em Estoque" required class="admin-input">
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="adm-p" placeholder="Medida P" class="admin-input">
+                            <input type="text" id="adm-m" placeholder="Medida M" class="admin-input">
+                            <input type="text" id="adm-g" placeholder="Medida G" class="admin-input">
+                        </div>
+                        <button type="submit" class="btn-adicionar" style="background: #27ae60;">Cadastrar e Atualizar Loja</button>
+                    </div>
+                </form>
+
+                <div style="margin-top: 30px; overflow-x: auto;">
+                    <table style="width: 100%; background: white; border-radius: 15px; border-collapse: collapse; font-family: 'Quicksand';">
+                        <thead style="background: #e94d76; color: white;">
+                            <tr>
+                                <th style="padding: 12px;">Produto</th>
+                                <th>Estoque</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-estoque-adm" style="text-align: center;"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
-
-        <section class="carousel-section">
-            <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
-            <div class="carousel-track" id="track">
-                <div class="card"><img src="img/duaskids.webp" alt="Destaque"></div>
-                <div class="card"><img src="img/pij-duaskids.webp" alt="Pijamas"></div>
-                <div class="card"><img src="img/fant_duaskid.webp" alt="Fantasias"></div>
-                <div class="card"><img src="img/fant_batman.webp" alt="Acessórios"></div>
-                <div class="card"><img src="img/fant_wood.webp" alt="Kids"></div>
-            </div>
-            <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
-        </section>
-
-
-
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<div class="container-central">
-    <a href="painel.html" class="botao-pilula-simples">
-        <div class="lado-branco-completo">
-            <i class="fa-solid fa-cart-plus"></i>
-            <span>Cadastrar Produto</span>
-        </div>
-    </a>
-</div>
+        
+    </main>
 
     <footer id="contato" class="footer-custom">
         <div class="footer-container-custom">
@@ -143,6 +142,9 @@
             Adicionar ao carrinho
         </button>
     </div>
+
+
+
 
 
 </div>

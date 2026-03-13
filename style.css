@@ -881,3 +881,60 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
 }
 
 #overlay-favoritos.active { display: block; }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+
+/* Classe para centralizar tudo que estiver dentro dela */
+.container-central {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente (se o container tiver altura) */
+    width: 100%;
+    margin: 40px 0;          /* Espaço em cima e embaixo do botão */
+}
+
+/* O Botão */
+.botao-pilula-simples {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none !important;
+    font-family: 'Quicksand', sans-serif;
+    background-color: white;
+    border-radius: 100px;
+    overflow: hidden;
+    height: 60px;
+    min-width: 320px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.lado-branco-completo {
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+}
+
+.lado-branco-completo i {
+    color: #e94d76;
+    font-size: 24px;
+    margin-right: 18px;
+}
+
+.lado-branco-completo span {
+    color: #333;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Efeito de hover */
+.botao-pilula-simples:hover {
+    transform: translateY(-5px); /* Sobe um pouco mais para destaque */
+    box-shadow: 0 10px 30px rgba(233, 77, 118, 0.3);
+}
