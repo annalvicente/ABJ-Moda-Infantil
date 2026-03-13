@@ -241,6 +241,10 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     margin-right: auto;
 }
 
+.toggle-buttons:hover {
+    background-color: #4f47474e;
+}
+
 /* Botão das abas (Cliente / Vendedor) */
 .toggle-btn {
     padding: 10px 30px;
