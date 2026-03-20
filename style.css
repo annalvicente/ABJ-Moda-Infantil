@@ -227,39 +227,56 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
 
 /* --- ESTILOS EXTRAS PARA O CADASTRO (Abas) --- */
 
-/* Container dos botões de troca */
+/* --- APENAS ESTA PARTE MUDA --- */
+
 .toggle-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 30px;
-    background: #f9f9f9;
-    padding: 5px;
-    border-radius: 50px;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 20px !important;            /* Aqui você controla a distância entre eles */
+    margin-bottom: 30px !important;
+    background: transparent !important; /* MATA O FUNDO CINZA QUE GRUDAVA OS DOIS */
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
 }
 
-/* Botão das abas (Cliente / Vendedor) */
 .toggle-btn {
-    padding: 10px 30px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    border-radius: 40px;
-    font-weight: 700;
-    color: #999;
-    transition: all 0.3s ease;
-    font-size: 1rem;
+    flex: 1 !important;
+    max-width: 160px !important;
+    padding: 12px 15px !important;
+    border: none !important;
+    background-color: #f2f2f2 !important; /* Cor da pílula individual cinza */
+    color: #999 !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    border-radius: 50px !important;       /* Garante que cada um seja um "ovo" separado */
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-/* Quando o botão está ativo (selecionado) */
 .toggle-btn.active {
-    background-color: var(--azul-banner); /* Azul do tema */
-    color: #333;
-    box-shadow: 0 4px 10px rgba(176, 220, 232, 0.5);
+    background-color: var(--azul-banner) !important;
+    color: #333 !important;
+    box-shadow: 0 4px 12px rgba(176, 220, 232, 0.5) !important;
 }
+
+/* Efeito de passar o mouse nas pílulas cinzas (não selecionadas) */
+.toggle-btn:hover:not(.active) {
+    background-color: #dceef3 !important; /* Cinza um pouco mais escuro */
+    transform: translateY(-2px) !important; /* Sobe de leve */
+    color: #003747!important;
+}
+
+    /* Efeito de passar o mouse na pílula que já está azul (ativa) */
+    .toggle-btn.active:hover {
+        filter: brightness(0.95) !important; /* Escurece o azul de leve */
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 15px rgba(188, 211, 217, 0.6) !important; /* Aumenta o brilho */
+    }
 
 /* Esconder formulários que não estão ativos */
 .form-section {
