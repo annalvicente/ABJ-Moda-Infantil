@@ -24,9 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['usuario_nome'] = $row['nome'];
             $_SESSION['tipo'] = $tipo;
 
-            // --- PULO DO GATO ---
-            // Cria um script para salvar no localStorage também. 
-            // Assim o seu index.html atual vai reconhecer o login na hora!
             echo "<script>
                 const usuario = {
                     nome: '" . $row['nome'] . "',

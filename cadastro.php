@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // CORREÇÃO: Trocado $conexao por $conn
         if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Vendedor cadastrado com sucesso!'); window.location='index.html';</script>";
+            echo "<script>alert('Vendedor cadastrado com sucesso!'); window.location='tfuncionarios.html';</script>";
         } else {
             echo "Erro: " . $sql . "<br>" . $conn->error;
         }
@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // USANDO $conn
         if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Vendedor cadastrado com sucesso!'); window.location='index.html';</script>";
+            echo "<script>alert('Vendedor cadastrado com sucesso!'); window.location='tfuncionarios.html';</script>";
         } else {
             echo "Erro ao cadastrar vendedor: " . $conn->error;
         }

@@ -1,4 +1,6 @@
-/* --- RESET E FONTES --- */
+/* ============================================================
+   1. RESET, FONTES E VARIÁVEIS BASE
+   ============================================================ */
 * {
     margin: 0;
     padding: 0;
@@ -6,26 +8,27 @@
     font-family: 'Quicksand', sans-serif;
 }
 
-/* ADICIONADO: Deslizamento suave para todo o site */
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smoosh;
 }
 
 :root {
     --amarelo-header: #ffeebb;
     --azul-banner: #b0dce8;
     --texto-marrom: #4a3b32;
-    --rosa-glow: rgba(255, 105, 180, 0.7); /* Rosa mais forte para o brilho */
+    --rosa-glow: rgba(255, 105, 180, 0.7);
     --cor-seta: #e3cfa5;
 }
 
 body {
-    background-color: #fff;
+    background-color: #f8ffd685;
     color: var(--texto-marrom);
     overflow-x: hidden;
 }
 
-/* --- CABEÇALHO --- */
+/* ============================================================
+   2. CABEÇALHO (Header, Menu e Logo)
+   ============================================================ */
 header {
     background-color: var(--amarelo-header);
     padding: 05px 50px 40px 50px;
@@ -43,51 +46,80 @@ header {
     align-items: center;
 }
 
-/* Links do Menu */
-.menu-links { display: flex; gap: 20px; }
+.menu-links {
+    display: flex;
+    gap: 20px;
+}
+
 .menu-links a {
     text-decoration: none;
-    color: var(--texto-marrom);
+    color:#1ab2a8 ;
     font-weight: 700;
     font-size: 1.1rem;
 }
-.menu-links a:hover { color: #ff8c00; }
 
-/* Logo */
-.logo { display: flex; flex-direction: column; align-items: center; text-decoration: none; }
-.logo img { width: 100px;   height: auto;   margin-bottom: -5px; }
-.logo span { font-size: 0.8rem; font-weight: bold; color: #ff69b4; }
-    
-/* Ícones do Usuário */
-.user-actions { 
-    display: flex; 
-    gap: 20px; 
-    align-items: center;
-    font-size: 1.3rem; 
+.menu-links a:hover {
+    color: #ff8c00;
 }
 
-/* Link do Bonequinho E do Comentário (Corrigido para BRANCO) */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+    margin-bottom: -5px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.logo span {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #ff69b4;
+}
+
+/* ============================================================
+   3. ÍCONES E AÇÕES DO USUÁRIO (Topo Direita)
+   ============================================================ */
+.user-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
 .user-actions a {
-    color: #7da0a9 !important; /* Força a cor branca mesmo sendo link */
+    color: #1ab2a8 !important;
     text-decoration: none;
     transition: transform 0.2s;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     display: inline-flex;
     align-items: center;
 }
-.user-actions a:hover { transform: scale(1.1); }
 
-/* Ícones normais (sem link) */
+.user-actions a:hover {
+    transform: scale(1.1);
+}
+
 .user-actions i:not(a i) {
-    color:  #7da0a9;
+    color: #1ab2a8;
     cursor: pointer;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 }
-.user-actions i:hover { transform: scale(1.1); }
 
+.user-actions i:hover {
+    transform: scale(1.1);
+}
 
-/* --- BARRA DE PESQUISA --- */
+/* ============================================================
+   4. BARRA DE PESQUISA (Search Box)
+   ============================================================ */
 .search-container {
     display: flex;
     justify-content: center;
@@ -95,6 +127,7 @@ header {
     z-index: 30;
     position: relative;
 }
+
 .search-box {
     background: white;
     border: 1px solid #ddd;
@@ -104,16 +137,30 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 6px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
 }
-.search-box input { border: none; outline: none; width: 90%; font-size: 1rem; }
-.search-box i { color: #555; cursor: pointer; }
 
+.search-box input {
+    border: none;
+    outline: none;
+    width: 90%;
+    font-size: 1rem;
+}
 
-/* --- CONTEÚDO --- */
-main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
+.search-box i {
+    color: #555;
+    cursor: pointer;
+}
 
-/* Banner Azul */
+/* ============================================================
+   5. BANNER PRINCIPAL (Hero Section)
+   ============================================================ */
+main {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
 .hero-banner {
     background-color: var(--azul-banner);
     border-radius: 40px;
@@ -124,26 +171,55 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     height: 300px;
     margin-bottom: 60px;
 }
-.hero-image { flex: 1; height: 100%; display: flex; align-items: flex-end; }
-.hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-.hero-text { flex: 1; padding: 40px; text-align: center; color: #333; }
-.hero-text h2 { font-size: 1.8rem; margin-bottom: 10px; font-weight: 600; }
 
+.hero-image {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
 
-/* --- CARROSSEL --- */
-.carousel-section { position: relative; padding: 10px 0; }
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.hero-text {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+    color: #333;
+}
+
+.hero-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   6. CARROSSEL E CARDS DE PRODUTOS (Efeito Brilho Rosa)
+   ============================================================ */
+.carousel-section {
+    position: relative;
+    padding: 10px 0;
+}
 
 .carousel-track {
     display: flex;
     gap: 30px;
     overflow-x: auto;
-    padding: 40px 20px; /* Espaço extra para o brilho não cortar */
+    padding: 40px 20px;
     scrollbar-width: none;
     scroll-behavior: smooth;
 }
-.carousel-track::-webkit-scrollbar { display: none; }
 
-/* ESTILO DOS CARDS */
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
 .card {
     min-width: 260px;
     height: 190px;
@@ -152,35 +228,29 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     position: relative;
     cursor: pointer;
     background: #eee;
-    
-    /* Configuração inicial (sem brilho) */
-    border: 3px solid transparent; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animação suave */
+    border: 3px solid transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .card img {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-/* --- A MÁGICA DO HOVER (Brilho Rosa) --- */
-/* Só aplica quando passa o mouse */
 .card:hover {
-    transform: translateY(-8px); /* Sobe um pouco mais */
-    border-color: #ffb6c1; /* Borda rosa clara */
-    
-    /* O Brilho Rosa Fofinho */
-    box-shadow: 0 15px 35px var(--rosa-glow), 
-                inset 0 0 15px rgba(255,105,180,0.2); 
+    transform: translateY(-8px);
+    border-color: #ffb6c1;
+    box-shadow: 0 15px 35px var(--rosa-glow),
+        inset 0 0 15px rgba(255, 105, 180, 0.2);
 }
 
 .card:hover img {
-    transform: scale(1.1); /* Zoom na foto */
+    transform: scale(1.1);
 }
 
-
-/* --- SETAS --- */
 .nav-arrow {
     position: absolute;
     top: 50%;
@@ -190,19 +260,33 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     background: white;
     border: 2px solid var(--cor-seta);
     border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--cor-seta);
     font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 5;
     transition: all 0.3s;
 }
-.nav-arrow:hover { background: var(--cor-seta); color: white; }
-.nav-arrow.prev { left: -20px; }
-.nav-arrow.next { right: -20px; }
 
-/* --- PÁGINA DE CADASTRO (Estilos Extras) --- */
+.nav-arrow:hover {
+    background: var(--cor-seta);
+    color: white;
+}
+
+.nav-arrow.prev {
+    left: -20px;
+}
+
+.nav-arrow.next {
+    right: -20px;
+}
+
+/* ============================================================
+   7. TELAS DE LOGIN E CADASTRO (Botões de Troca/Toggle)
+   ============================================================ */
 .cadastro-wrap {
     max-width: 400px;
     margin: 50px auto;
@@ -210,31 +294,64 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     background: white;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     border: 1px solid #fcfcfc;
 }
-.cadastro-wrap h2 { margin-bottom: 20px; color: var(--texto-marrom); }
-.input-group { margin-bottom: 15px; text-align: left; }
-.input-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: bold; color: #888; }
-.input-group input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; outline: none; }
-.input-group input:focus { border-color: var(--amarelo-header); }
-.btn-submit { 
-    width: 100%; padding: 15px; border: none; border-radius: 50px; 
-    background: var(--azul-banner); font-weight: bold; color: #333; cursor: pointer; margin-top: 10px;
+
+.cadastro-wrap h2 {
+    margin-bottom: 20px;
+    color: var(--texto-marrom);
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #888;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--amarelo-header);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 50px;
+    background: var(--azul-banner);
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    margin-top: 10px;
     transition: transform 0.2s;
 }
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(176,220,232,0.8); }
 
-/* --- ESTILOS EXTRAS PARA O CADASTRO (Abas) --- */
-
-/* --- APENAS ESTA PARTE MUDA --- */
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(176, 220, 232, 0.8);
+}
 
 .toggle-buttons {
     display: flex !important;
     justify-content: center !important;
-    gap: 20px !important;            /* Aqui você controla a distância entre eles */
+    gap: 20px !important;
     margin-bottom: 30px !important;
-    background: transparent !important; /* MATA O FUNDO CINZA QUE GRUDAVA OS DOIS */
+    background: transparent !important;
     padding: 0 !important;
     border: none !important;
     box-shadow: none !important;
@@ -246,11 +363,11 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     max-width: 160px !important;
     padding: 12px 15px !important;
     border: none !important;
-    background-color: #f2f2f2 !important; /* Cor da pílula individual cinza */
+    background-color: #f2f2f2 !important;
     color: #999 !important;
     font-weight: 700 !important;
     font-size: 1rem !important;
-    border-radius: 50px !important;       /* Garante que cada um seja um "ovo" separado */
+    border-radius: 50px !important;
     cursor: pointer !important;
     transition: all 0.3s ease !important;
     display: inline-flex !important;
@@ -264,48 +381,46 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     box-shadow: 0 4px 12px rgba(176, 220, 232, 0.5) !important;
 }
 
-/* Efeito de passar o mouse nas pílulas cinzas (não selecionadas) */
 .toggle-btn:hover:not(.active) {
-    background-color: #dceef3 !important; /* Cinza um pouco mais escuro */
-    transform: translateY(-2px) !important; /* Sobe de leve */
-    color: #003747!important;
+    background-color: #dceef3 !important;
+    transform: translateY(-2px) !important;
+    color: #003747 !important;
 }
 
-    /* Efeito de passar o mouse na pílula que já está azul (ativa) */
-    .toggle-btn.active:hover {
-        filter: brightness(0.95) !important; /* Escurece o azul de leve */
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 15px rgba(188, 211, 217, 0.6) !important; /* Aumenta o brilho */
-    }
+.toggle-btn.active:hover {
+    filter: brightness(0.95) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(188, 211, 217, 0.6) !important;
+}
 
-/* Esconder formulários que não estão ativos */
 .form-section {
-    display: none; /* Esconde por padrão */
+    display: none;
     animation: fadeIn 0.5s;
 }
 
 .form-section.active {
-    display: block; /* Mostra o ativo */
+    display: block;
 }
 
-/* Animação suave */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-
-
-/* ESTILOS DA TELA DE LOGIN */
-
-/* O container central branco */
 .login-box {
     max-width: 400px;
-    margin: 80px auto; /* Margem maior no topo para centralizar na tela */
+    margin: 80px auto;
     background: #fff;
     padding: 40px;
-    border-radius: 8px; /* Bordas levemente arredondadas, mais quadrado que o resto */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Sombra suave */
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     text-align: center;
 }
 
@@ -315,46 +430,42 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     font-size: 1.5rem;
 }
 
-/* Estilo dos inputs de login (cinza claro como na imagem de exemplo) */
 .login-input {
     width: 100%;
     padding: 15px;
     margin-bottom: 15px;
-    background-color: #f2f2f2; /* Fundo cinza claro */
+    background-color: #f2f2f2;
     border: 2px solid transparent;
-    border-radius: 5px; /* Cantos pouco arredondados */
+    border-radius: 5px;
     font-size: 1rem;
     outline: none;
     transition: all 0.3s;
     color: #555;
 }
 
-/* Quando clica no input, ele ganha a cor do tema */
 .login-input:focus {
     border-color: var(--azul-banner);
     background-color: #fff;
 }
 
-/* Botão de Login (Usando a nossa cor Azul Pastel) */
 .btn-login {
     width: 100%;
     padding: 15px;
-    background-color: var(--azul-banner); /* Cor do tema */
+    background-color: var(--azul-banner);
     color: #333;
     font-weight: 700;
     border: none;
-    border-radius: 5px; /* Cantos pouco arredondados */
+    border-radius: 5px;
     font-size: 1.1rem;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
 }
 
 .btn-login:hover {
-    background-color: #9ad0e0; /* Um azul um pouquinho mais escuro no hover */
+    background-color: #9ad0e0;
     transform: translateY(-2px);
 }
 
-/* Link para criar conta */
 .create-account-link {
     margin-top: 25px;
     font-size: 0.9rem;
@@ -372,9 +483,6 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     color: var(--azul-banner);
 }
 
-
-
-/* Estilo para a escolha de Cliente ou Vendedor no Login */
 .login-type-group {
     display: flex;
     justify-content: center;
@@ -393,12 +501,11 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
 }
 
 .radio-label input {
-    accent-color: var(--azul-banner); /* A bolinha fica azul */
+    accent-color: var(--azul-banner);
     transform: scale(1.2);
     cursor: pointer;
 }
 
-/* Link de cadastro destacado */
 .create-account-link span {
     display: block;
     margin-top: 5px;
@@ -406,27 +513,27 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     color: #aaa;
 }
 
-
+/* ============================================================
+   8. CARRINHO LATERAL (Side Cart)
+   ============================================================ */
 .cart-container {
     position: fixed;
     top: 0;
-    right: -450px; /* Começa escondido à direita */
+    right: -450px;
     width: 380px;
     height: 100%;
     background: #fff;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
     transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 2000;
     display: flex;
     flex-direction: column;
 }
 
-/* Classe que o JavaScript ativa para abrir */
 .cart-container.open {
     right: 0;
 }
 
-/* Cabeçalho do Carrinho */
 .cart-header {
     padding: 25px;
     background-color: var(--azul-banner);
@@ -450,7 +557,6 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     line-height: 1;
 }
 
-/* Área onde os itens aparecem */
 .cart-items {
     flex-grow: 1;
     padding: 20px;
@@ -459,7 +565,6 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     flex-direction: column;
 }
 
-/* Estilo de cada item adicionado */
 .cart-item-single {
     display: flex;
     justify-content: space-between;
@@ -472,11 +577,17 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
 }
 
 @keyframes fadeInItem {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-/* Rodapé do Carrinho (Total e Botão) */
 .cart-footer {
     padding: 25px;
     border-top: 1px solid #eee;
@@ -509,7 +620,6 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     transform: scale(1.02);
 }
 
-/* Camada Escura que cobre o site ao abrir o carrinho */
 #overlay {
     display: none;
     position: fixed;
@@ -517,7 +627,7 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1999;
     backdrop-filter: blur(2px);
 }
@@ -526,7 +636,6 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     display: block;
 }
 
-/* Bolinha Rosa com o número de itens */
 .cart-badge {
     position: absolute;
     top: -10px;
@@ -538,10 +647,9 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     border-radius: 50%;
     padding: 2px 6px;
     border: 2px solid white;
-    display: none; /* Só aparece quando tem itens */
+    display: none;
 }
 
-/* Notificação Toast */
 .toast-notificacao {
     position: fixed;
     bottom: 20px;
@@ -563,17 +671,15 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     bottom: 40px;
 }
 
-
-
-
-/* --- NOVO RODAPÉ ESTILO IMAGEM --- */
+/* ============================================================
+   9. RODAPÉ PERSONALIZADO (Footer)
+   ============================================================ */
 .footer-custom {
     background-color: var(--amarelo-header);
-    margin: 50px 20px 20px 20px; /* Margem nas laterais para o efeito arredondado aparecer */
-    border-radius: 50px; /* Bordas bem arredondadas como na imagem */
+    margin: 50px 20px 20px 20px;
+    border-radius: 50px;
     padding: 30px 60px;
     font-family: 'Quicksand', sans-serif;
-    /* ADICIONADO: Respiro no topo para o scroll suave parar no lugar certo */
     scroll-margin-top: 30px;
 }
 
@@ -595,7 +701,7 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
 
 .chat-icon {
     font-size: 2.5rem;
-    color: #f28d8d; /* Cor rosada do ícone de balão */
+    color: #f28d8d;
 }
 
 .brand-info h3 {
@@ -636,17 +742,17 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     display: inline-block;
 }
 
-/* AJUSTE ESPECÍFICO PARA PADRONIZAR AS IMAGENS */
 .product-card img {
     width: 100%;
-    height: 250px; /* Define uma altura fixa para ambas */
-    object-fit: contain; /* Garante que a imagem caiba no espaço sem ser cortada ou esticada */
+    height: 250px;
+    object-fit: contain;
     margin-bottom: 15px;
     border-radius: 15px;
 }
 
-/* --- BLOCO DE RESPONSIVIDADE FINAL UNIFICADO --- */
-
+/* ============================================================
+   10. RESPONSIVIDADE (Mobile e Tablets)
+   ============================================================ */
 @media (min-width: 769px) {
     .menu-links {
         position: static !important;
@@ -659,13 +765,13 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
         left: 0 !important;
         padding: 0 !important;
     }
+
     .menu-mobile-icon {
         display: none !important;
     }
 }
 
 @media (max-width: 768px) {
-    /* ÍCONE HAMBÚRGUER: Acima de tudo */
     .menu-mobile-icon {
         display: block !important;
         font-size: 1.8rem;
@@ -675,20 +781,19 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
         position: relative;
     }
 
-    /* MENU LATERAL: Branco sólido e na frente do banner/busca */
     .menu-links {
         position: fixed;
         top: 0;
-        left: -100%; 
+        left: -100%;
         width: 260px;
         height: 100vh;
-        background-color: #ffffff !important; /* CORREÇÃO: Fundo branco sólido */
+        background-color: #ffffff !important;
         display: flex !important;
         flex-direction: column !important;
         padding: 100px 30px;
         transition: 0.4s ease-in-out;
-        z-index: 3000 !important; /* CORREÇÃO: Valor alto para não ser atropelado */
-        box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+        z-index: 3000 !important;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
     }
 
     .menu-links.active {
@@ -705,18 +810,42 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
         display: block;
     }
 
-    /* AJUSTES GERAIS MOBILE */
-    .logo img { width: 65px; }
-    .user-actions i, .user-actions a i { color: var(--texto-marrom) !important; }
-    .search-container { z-index: 20; } /* Rebaixa a busca para o menu passar por cima */
-    .search-box { width: 90% !important; margin: 0 auto; }
-    
-    .footer-container-custom { flex-direction: column; text-align: center; }
-    .footer-brand { flex-direction: column; }
-    .footer-custom { border-radius: 30px; padding: 30px 20px; }
+    .logo img {
+        width: 65px;
+    }
+
+    .user-actions i,
+    .user-actions a i {
+        color: var(--texto-marrom) !important;
+    }
+
+    .search-container {
+        z-index: 20;
+    }
+
+    .search-box {
+        width: 90% !important;
+        margin: 0 auto;
+    }
+
+    .footer-container-custom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-brand {
+        flex-direction: column;
+    }
+
+    .footer-custom {
+        border-radius: 30px;
+        padding: 30px 20px;
+    }
 }
 
-
+/* ============================================================
+   11. DETALHES DO PRODUTO (Tabelas de Medidas e Avaliações)
+   ============================================================ */
 .produto-detalhes {
     max-width: 1200px;
     margin: 40px auto;
@@ -729,18 +858,23 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     flex-wrap: wrap;
 }
 
-/* Galeria */
-.produto-galeria { flex: 1; min-width: 300px; }
+.produto-galeria {
+    flex: 1;
+    min-width: 300px;
+}
+
 .foto-principal img {
     width: 100%;
     border-radius: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
+
 .fotos-miniatura {
     display: flex;
     gap: 10px;
     margin-top: 15px;
 }
+
 .fotos-miniatura img {
     width: 80px;
     height: 80px;
@@ -749,9 +883,11 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     cursor: pointer;
     border: 2px solid transparent;
 }
-.fotos-miniatura img:hover { border-color: var(--azul-banner); }
 
-/* Tabela de Medidas */
+.fotos-miniatura img:hover {
+    border-color: var(--azul-banner);
+}
+
 .tabela-medidas {
     margin: 25px 0;
     background: #fdfdfd;
@@ -759,57 +895,70 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     border-radius: 15px;
     border: 1px solid #eee;
 }
-.tabela-medidas h3 { margin-bottom: 10px; font-size: 1rem; color: var(--texto-marrom); }
+
+.tabela-medidas h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: var(--texto-marrom);
+}
+
 .tabela-medidas table {
     width: 100%;
     border-collapse: collapse;
 }
-.tabela-medidas th, .tabela-medidas td {
+
+.tabela-medidas th,
+.tabela-medidas td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
-/* Avaliações */
-.avaliacoes-secao { margin-top: 60px; }
+.avaliacoes-secao {
+    margin-top: 60px;
+}
+
 .avaliacao-card {
     background: #fff;
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
-.estrelas { color: #ffcc00; margin-bottom: 5px; }
+
+.estrelas {
+    color: #ffcc00;
+    margin-bottom: 5px;
+}
 
 @media (max-width: 768px) {
-    .produto-container { flex-direction: column; }
+    .produto-container {
+        flex-direction: column;
+    }
 }
 
-
-
-
-
-/* Container Lateral de Favoritos */
+/* ============================================================
+   12. FAVORITOS LATERAL (Side Favorites)
+   ============================================================ */
 .fav-container {
     position: fixed;
     top: 0;
-    right: -450px; /* Começa escondido */
+    right: -450px;
     width: 380px;
     height: 100%;
     background: #fff;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
     transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 3000;
     display: flex;
     flex-direction: column;
-    border-top-left-radius: 30px; /* Curvatura igual à sua imagem */
+    border-top-left-radius: 30px;
 }
 
 .fav-container.open {
     right: 0;
 }
 
-/* Cabeçalho Amarelo */
 .fav-header {
     padding: 25px;
     background-color: var(--amarelo-header);
@@ -833,7 +982,6 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     color: #333;
 }
 
-/* Itens e Conteúdo */
 .fav-content {
     flex-grow: 1;
     padding: 20px;
@@ -863,11 +1011,21 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     border-radius: 5px;
 }
 
-.fav-item-info h4 { font-size: 0.9rem; margin-bottom: 5px; }
-.fav-item-info p { font-size: 0.8rem; color: #666; }
-.fav-item-price { font-weight: bold; margin-left: auto; }
+.fav-item-info h4 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
 
-/* Rodapé e Botão */
+.fav-item-info p {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.fav-item-price {
+    font-weight: bold;
+    margin-left: auto;
+}
+
 .fav-footer {
     padding: 20px;
     text-align: center;
@@ -885,33 +1043,39 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     transition: 0.3s;
 }
 
-.btn-fav-carrinho:hover { filter: brightness(0.9); }
+.btn-fav-carrinho:hover {
+    filter: brightness(0.9);
+}
 
-/* Camada Escura */
 #overlay-favoritos {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
     z-index: 2999;
     backdrop-filter: blur(2px);
 }
 
-#overlay-favoritos.active { display: block; }
-
-
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
-
-/* Classe para centralizar tudo que estiver dentro dela */
-.container-central {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;     /* Centraliza verticalmente (se o container tiver altura) */
-    width: 100%;
-    margin: 40px 0;          /* Espaço em cima e embaixo do botão */
+#overlay-favoritos.active {
+    display: block;
 }
 
-/* O Botão */
+/* ============================================================
+   13. BOTÕES ESPECIAIS (Pílula e Centralização)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+
+.container-central {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 40px 0;
+}
+
 .botao-pilula-simples {
     display: inline-flex;
     align-items: center;
@@ -950,8 +1114,44 @@ main { max-width: 1200px; margin: 35px auto; padding: 0 20px; }
     text-transform: uppercase;
 }
 
-/* Efeito de hover */
 .botao-pilula-simples:hover {
-    transform: translateY(-5px); /* Sobe um pouco mais para destaque */
+    transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(233, 77, 118, 0.3);
+}
+
+/* ============================================================
+   14. PAINEL DE ESTOQUE (Tabelas e Status)
+   ============================================================ */
+.estoque-container {
+    background-color: white;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    
+}
+
+th {
+    background-color: #83cbfe89;
+    color: #555;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #eee;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+tbody {
+    background-color: rgba(247, 220, 224, 0.454);
 }
