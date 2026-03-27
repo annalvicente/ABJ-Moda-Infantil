@@ -86,3 +86,4 @@ function fecharTudo() {
 }
 
 window.onload = renderizarLoja;
+

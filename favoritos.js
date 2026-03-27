@@ -26,10 +26,10 @@ function atualizarListaFavoritos() {
                         <p class="fav-price">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
                     </div>
                 </div>
-               
-                <i class="fa-solid fa-trash-can"
-                   onclick="removerDosFavoritos(${index})"
-                   style="cursor:pointer; color:#ff6b6b; font-size: 1.1rem;"
+                
+                <i class="fa-solid fa-trash-can" 
+                   onclick="removerDosFavoritos(${index})" 
+                   style="cursor:pointer; color:#ff6b6b; font-size: 1.1rem;" 
                    title="Remover"></i>
             </div>
         `;
@@ -39,13 +39,13 @@ function atualizarListaFavoritos() {
 // NOVA FUNÇÃO PARA EXCLUIR O ITEM
 function removerDosFavoritos(index) {
     let favs = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
-   
+    
     // Remove o item da lista pelo índice
     favs.splice(index, 1);
-   
+    
     // Salva a lista atualizada no banco
     localStorage.setItem('meusFavoritos', JSON.stringify(favs));
-   
+    
     // Recarrega a tela para mostrar que saiu
     atualizarListaFavoritos();
 }
