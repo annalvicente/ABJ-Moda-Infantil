@@ -5,7 +5,7 @@ include 'conexão.php'; // Aqui você define a variável $conn
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $tipo = $_POST['tipo_form']; 
-
+ 
     // --- CADASTRO DE CLIENTE ---
     if ($tipo == 'cliente') {
         $nome = $_POST['nome'];
