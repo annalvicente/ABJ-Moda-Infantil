@@ -9,7 +9,7 @@ $resultado = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - ABJ Style</title>
+    <title>Tela de Funcionarios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">  
@@ -19,22 +19,28 @@ $resultado = $conn->query($sql);
 
         <header>
             <div class="nav-container">
-                <nav class="menu-links">
-                    <a href="index.html">meninas</a>
-                    <a href="index.html">meninos</a>
-                    <a href="index.html">bebês</a>
-                </nav>
-                <a href="index.html" class="logo">
-                    <img src="img/logoabj.webp" alt="Balão">
-                </a>
-                <div class="user-actions">
-                    <a href="login.html"><i class="fa-regular fa-user"></i></a>
+            <nav class="menu-links" >
+               <a href="#" style="color: #dc059b;" >meninas</a>
+               <a href="#" style="color: #1ab44d;" >meninos</a>
+               <a href="#" style="color: #07ada5;" >bebês</a>
+                
+            </nav>
+            <a href="index.html" class="logo">
+                <img src="img/logoabj.webp" alt="Balão Logo">
+            </a>
+
+            <div class="user-actions">
+                <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
+                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()">
                     <i class="fa-solid fa-basket-shopping"></i>
-                    <i class="fa-regular fa-heart"></i>
-                    <a href="index.html#contato"><i class="fa-regular fa-comment"></i></a>
-                </div>
+                    <span id="cart-count" class="cart-badge">0</span>
             </div>
-        </header>
+
+                <i class="fa-regular fa-heart"></i>
+                <a href="#contato" ><i class="fa-regular fa-comment"></i></a>
+            </div>
+        </div>
+    </header>
 
         <main class="container">
         <h1>Controle de Estoque</h1>

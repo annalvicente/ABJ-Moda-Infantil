@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Favoritos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #f9f9f9; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #ff69b4; }
+        
+        .fav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .fav-info { display: flex; align-items: center; gap: 15px; }
+        .fav-info img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; }
+        
+        .btn-carrinho {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-carrinho:hover { background-color: #218838; }
+
+        .btn-remover { color: #ff4d4d; cursor: pointer; font-size: 1.2rem; margin-left: 15px; }
+        
+        .voltar { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #888; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1><i class="fa-solid fa-heart"></i> Meus Favoritos</h1>
+        <div id="lista-favoritos">
+            </div>
+        <a href="index.html" class="voltar">← Voltar para a Loja</a>
+    </div>
+
+    <script>
+        // Puxa os dados do localStorage (mesma lógica do seu carrinho)
+        let favoritosLoja = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
+        let produtosLoja = JSON.parse(localStorage.getItem('meusProdutos')) || [];
+
+        function renderizarFavoritos() {
+            const lista = document.getElementById('lista-favoritos');
+            lista.innerHTML = '';
+
+            if (favoritosLoja.length === 0) {
+                lista.innerHTML = '<p style="text-align:center; padding: 40px;">Você ainda não favoritou nada. 💔</p>';
+                return;
+            }
+
+            favoritosLoja.forEach(p => {
+                lista.innerHTML += `
+                    <div class="fav-item">
+                        <div class="fav-info">
+                            <img src="${p.img}" alt="${p.nome}">
+                            <div>
+                                <h3 style="margin:0;">${p.nome}</h3>
+                                <p style="margin:5px 0; color:#ff69b4; font-weight:bold;">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <button class="btn-carrinho" onclick="adicionarAoCarrinhoERedirecionar(${p.id})">
+                                <i class="fa-solid fa-cart-shopping"></i> Ir para o carrinho
+                            </button>
+                            <i class="fa-solid fa-trash-can btn-remover" onclick="removerFavorito(${p.id})"></i>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function removerFavorito(id) {
+            favoritosLoja = favoritosLoja.filter(item => item.id !== id);
+            localStorage.setItem('meusFavoritos', JSON.stringify(favoritosLoja));
+            renderizarFavoritos();
+        }
+
+        // Função que integra com a sua lógica de vendas
+        function adicionarAoCarrinhoERedirecionar(id) {
+            const p = produtosLoja.find(item => item.id === id);
+            if (p && p.estoque > 0) {
+                // Diminuir estoque no localStorage
+                p.estoque--;
+                localStorage.setItem('meusProdutos', JSON.stringify(produtosLoja));
+                
+                // Aqui você pode disparar a lógica de adicionar ao carrinho
+                // Como esta é uma página separada, o ideal é salvar o pedido no localStorage
+                alert(`${p.nome} foi enviado para o carrinho!`);
+                window.location.href = 'index.html'; // Redireciona para a loja onde o carrinho abre
+            } else {
+                alert("Produto esgotado no momento! ❌");
+            }
+        }
+
+        // Inicia a renderização ao abrir a página
+        renderizarFavoritos();
+    </script>
+</body>
+</html>
