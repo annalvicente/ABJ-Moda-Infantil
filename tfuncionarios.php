@@ -4,8 +4,6 @@ $sql = "SELECT * FROM produtos";
 $resultado = $conn->query($sql);
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="pt-br"> 
 <head>
