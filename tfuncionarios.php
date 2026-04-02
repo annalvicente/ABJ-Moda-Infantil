@@ -20,9 +20,9 @@ $resultado = $conn->query($sql);
         <header>
             <div class="nav-container">
             <nav class="menu-links" >
-               <a href="#" style="color: #dc059b;" >meninas</a>
-               <a href="#" style="color: #1ab44d;" >meninos</a>
-               <a href="#" style="color: #07ada5;" >bebês</a>
+               <a href="#" class="menu-links-meninas" >meninas</a>
+               <a href="#" class="menu-links-meninos" >meninos</a>
+               <a href="#" class="menu-links-bebes" >bebês</a>
                 
             </nav>
             <a href="index.html" class="logo">

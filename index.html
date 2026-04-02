@@ -15,9 +15,9 @@
     <header>
             <div class="nav-container">
             <nav class="menu-links" >
-               <a href="#" style="color: #dc059b;" >meninas</a>
-               <a href="#" style="color: #1ab44d;" >meninos</a>
-               <a href="#" style="color: #07ada5;" >bebês</a>
+               <a href="#" class="menu-links-meninas" >meninas</a>
+               <a href="#" class="menu-links-meninos" >meninos</a>
+               <a href="#" class="menu-links-bebes" >bebês</a>
                 
             </nav>
 
@@ -72,14 +72,7 @@
             <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
         </section>
 
-        <div class="container-central">
-            <a href="painel.html" class="botao-pilula-simples">
-                <div class="lado-branco-completo">
-                    <i class="fa-solid fa-cart-plus"></i>
-                    <span>Cadastrar Produto</span>
-                </div>
-            </a>
-        </div>
+       
     </main>
 
     <footer id="contato" class="footer-custom">
@@ -112,29 +105,29 @@
         <div class="cart-items" id="cart-items-list"></div>
         <div class="cart-footer">
             <div class="cart-total"><span>Total:</span><span id="cart-total-value">R$ 0,00</span></div>
-            <button class="checkout-btn" style="background-color: #ffe4b5; border-radius: 25px; border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer;">Finalizar Compra</button>
+            <button class="checkout-btn">Finalizar Compra</button>
         </div>
     </div>
 
     <div id="side-login" class="cart-container" style="right: -100%; transition: 0.4s ease;">
-        <div class="cart-header" style="background-color: #add8e6;">
+        <div class="cart-header" >
             <h3>Minha Conta</h3>
             <button onclick="fecharTudo()" class="close-btn">&times;</button>
         </div>
         <div style="padding: 20px;">
             <form action="login.php" method="POST">
                 <label style="display:block; margin-bottom:5px;">E-mail</label>
-                <input type="email" name="email" placeholder="seu@email.com" required style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd;">
+                <input type="email" name="email" placeholder="seu@email.com" required >
                 
                 <label style="display:block; margin-bottom:5px;">Senha</label>
-                <input type="password" name="senha" placeholder="******" required style="width:100%; padding:10px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd;">
+                <input type="password" name="senha" placeholder="******" required >
                 
-                <button type="submit" style="width:100%; background-color: #ffe4b5; border:none; padding:15px; border-radius:25px; font-weight:bold; cursor:pointer;">
-                    Entrar
+                <button type="submit" >
+                 Entrar
                 </button>
             </form>
             <p style="text-align:center; margin-top:20px;">Ainda não tem conta? <br> 
-                <a href="cadastro.html" style="color:#ff69b4; text-decoration: none; font-weight: bold;">Cadastre-se aqui</a>
+                <a href="cadastro.html" >Cadastre-se aqui</a>
             </p>
         </div>
     </div>
@@ -143,7 +136,6 @@
         <div class="fav-header">
             <div class="fav-header-title">
                 <h3>Favoritos</h3>
-                <i class="fa-solid fa-heart" style="color: #ffb6c1;"></i>
             </div>
             <button class="close-btn" onclick="fecharTudo()">&times;</button>
         </div>
