@@ -1202,22 +1202,35 @@
 
 /* Fixa o tamanho da imagem */
     .tabela-estilizada img {
-    width: 50px;       /* Tamanho pequeno de miniatura */
-    height: 50px;
+    width: 90px;       /* Tamanho pequeno de miniatura */
+    height: 9%;
     object-fit: cover; /* Não distorce a imagem */
     border-radius: 5px;
 }
 
-/* Controla a coluna de descrição para não esticar */
-    .tabela-estilizada td:nth-child(3) {
-    max-width: 150px;         /* Limita a largura da descrição */
-    white-space: nowrap;      /* Não deixa quebrar linha */
-    overflow: hidden;         /* Esconde o que sobrar */
-    text-overflow: ellipsis;  /* Adiciona "..." no final do texto longo */
+.excluir{
+    color: #b90e0e;
+    cursor: pointer;
+
 }
 
-/* Redução geral de espaçamento */
-    .tabela-estilizada th, .tabela-estilizada td {
-    padding: 10px 5px; /* Diminuímos o respiro lateral */
-    font-size: 14px;    /* Uma fonte levemente menor ajuda em tabelas largas */
+.excluir:hover{
+    color: #5f0707;
+    transform: translateY(-2px);
+}
+
+.alterar{
+    color: #2a61b3;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.adicao{
+    background-color:#ffeebb ;
+    color: rgb(39, 29, 1); 
+    padding: 10px 15px; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-weight: bold;
+    margin-left: 80%;   
 }
