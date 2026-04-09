@@ -25,7 +25,7 @@
 
             <div class="user-actions">
                 <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
-                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()">
+                <div onclick="toggleCart()">
                     <i class="fa-solid fa-basket-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>
             </div>
@@ -61,29 +61,29 @@
 
                 <div id="campos-especificos">
                     <div class="input-group">
-                        <label>CPF</label>
-                        <input type="text" name="cpf" placeholder="000.000.000-00">
+                        <label>CPF</label>                      
+                        <input type="text" name="cpf" maxlength="11" placeholder="Somente números">
                     </div>
                     <div class="input-group">
                         <label>Data de Nascimento</label>
-                        <input type="date" name="data_nascimento">
+                        <input type="date" id="data_nascimento" name="data_nascimento" max="2026-04-02"> 
                     </div>
                     <div class="input-group">
                         <label>Telefone</label>
-                        <input type="text" name="telefone" placeholder="(00) 00000-0000">
+                        <input type="tel" name="telefone" maxlength="15" placeholder="(00) 00000-0000">
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label>Senha</label>
-                    <input type="password" name="senha" placeholder="******" required>
+                    <input type="password" name="senha" placeholder="**" required>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submit-text">Cadastrar Cliente</button>
             </form>
             
-            <p style="margin-top: 20px; font-size: 0.9rem;">
-                <a href="index.html" style="color: #999; text-decoration: none;">Voltar para a loja</a>
+            <p>
+                <a href="index.html" >Voltar para a loja</a>
             </p>
         </div>
     </main>

@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABJ Style - Moda Infantil</title>    
+    <title>ABJ - Moda Infantil</title>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="status-usuario"></div>
 
     <header>
             <div class="nav-container">
@@ -27,12 +26,12 @@
 
             <div class="user-actions">
                 <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
-                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()">
+                <div onclick="toggleCart()">
                     <i class="fa-solid fa-basket-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>
             </div>
 
-                <div style="cursor: pointer;" onclick="toggleFavoritos()" title="Meus Favoritos">
+                <div onclick="toggleFavoritos()" title="Meus Favoritos">
                     <i class="fa-regular fa-heart"></i>
                 </div>
 
@@ -47,7 +46,7 @@
         <form class="search-box" id="searchForm">
             <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()"></i>
             <input type="text" id="searchInput" placeholder="O que você procura?">
-            <i class="fa-solid fa-xmark" onclick="limparBusca()" style="cursor: pointer;"></i>
+            <i class="fa-solid fa-xmark" onclick="limparBusca()"></i>
         </form>
     </div>
 
@@ -109,29 +108,6 @@
         </div>
     </div>
 
-    <div id="side-login" class="cart-container" style="right: -100%; transition: 0.4s ease;">
-        <div class="cart-header" >
-            <h3>Minha Conta</h3>
-            <button onclick="fecharTudo()" class="close-btn">&times;</button>
-        </div>
-        <div style="padding: 20px;">
-            <form action="login.php" method="POST">
-                <label style="display:block; margin-bottom:5px;">E-mail</label>
-                <input type="email" name="email" placeholder="seu@email.com" required >
-                
-                <label style="display:block; margin-bottom:5px;">Senha</label>
-                <input type="password" name="senha" placeholder="******" required >
-                
-                <button type="submit" >
-                 Entrar
-                </button>
-            </form>
-            <p style="text-align:center; margin-top:20px;">Ainda não tem conta? <br> 
-                <a href="cadastro.html" >Cadastre-se aqui</a>
-            </p>
-        </div>
-    </div>
-
     <div id="favoritos-container" class="fav-container">
         <div class="fav-header">
             <div class="fav-header-title">
@@ -141,7 +117,7 @@
         </div>
         <div class="fav-content">
             <div id="lista-favoritos" class="fav-items">
-                <p style="text-align: center; color: #999; margin-top: 20px;">Sua lista está vazia.</p>
+                <p>Sua lista está vazia.</p>
             </div>
         </div>
         <div class="fav-footer">
@@ -161,8 +137,6 @@
         function fecharTudo() {
             document.getElementById('side-cart')?.classList.remove('open');
             document.getElementById('favoritos-container')?.classList.remove('open');
-            const login = document.getElementById('side-login');
-            if (login) login.style.right = '-100%';
             document.getElementById('overlay')?.classList.remove('active');
         }
     </script>

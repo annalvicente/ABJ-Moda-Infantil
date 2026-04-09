@@ -25,7 +25,7 @@
             lista.innerHTML = '';
 
             if (favoritosLoja.length === 0) {
-                lista.innerHTML = '<p style="text-align:center; padding: 40px;">Você ainda não favoritou nada.</p>';
+                lista.innerHTML = '<p>Você ainda não favoritou nada.</p>';
                 return;
             }
 
@@ -35,11 +35,11 @@
                         <div class="fav-info">
                             <img src="${p.img}" alt="${p.nome}">
                             <div>
-                                <h3 style="margin:0;">${p.nome}</h3>
-                                <p style="margin:5px 0; color:#ff69b4; font-weight:bold;">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
+                                <h3>${p.nome}</h3>
+                                <p>R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
                             </div>
                         </div>
-                        <div style="display: flex; align-items: center;">
+                        <div>
                             <button class="btn-carrinho" onclick="adicionarAoCarrinhoERedirecionar(${p.id})">
                                 <i class="fa-solid fa-cart-shopping"></i> Ir para o carrinho
                             </button>

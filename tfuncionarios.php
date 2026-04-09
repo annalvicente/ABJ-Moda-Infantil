@@ -31,7 +31,7 @@ $resultado = $conn->query($sql);
 
             <div class="user-actions">
                 <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
-                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()">
+                <div onclick="toggleCart()">
                     <i class="fa-solid fa-basket-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>
             </div>
@@ -70,7 +70,7 @@ $resultado = $conn->query($sql);
                         <td><?php echo $dados['cor']; ?> </td>
                         <td><?php echo $dados['quantidade_estoque']; ?> </td>
 <td>
-    <img src="img/<?php echo basename($dados['imagem']); ?>" alt="Produto" style="width: 50px; height: 50px;">
+    <img src="img/<?php echo basename($dados['imagem']); ?>" alt="Produto">
 </td>                        <td>
                             <?php 
                                 if($dados['quantidade_estoque'] > 10) {
