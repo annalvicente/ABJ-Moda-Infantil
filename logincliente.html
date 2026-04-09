@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
     <header>
             <div class="nav-container">
             <nav class="menu-links" >
@@ -37,36 +34,33 @@
         </div>
     </header>
 
-    <main>
-        <div class="login-box">
+
+    <div class="login-box">
             <h2>Acesse sua conta</h2>
-
+            
             <form id="formLogin" action="login.php" method="POST">
-
-                <div class="toggle-buttons">
-                    <button type="button" class="toggle-btn" id="btn-cliente" onclick="window.location.href='logincliente.html'">Sou Cliente</button>
-                    <button type="button" class="toggle-btn" id="btn-vendedor" onclick="window.location.href='loginfuncionario.html'">Sou Vendedor</button>
+                
+                <div class="login-type-group">
+                    <button type="button" class="toggle-btn active" id="btn-cliente">Sou Cliente</button>
+                <button type="button" class="toggle-btn" id="btn-vendedor" onclick="window.location.href='loginfuncionario.html'">Sou Vendedor</button>
                 </div>
 
+                <input type="email" id="email" name="email" class="login-input" placeholder="Seu e-mail" required>
+                <input type="password" id="senha" name="senha" class="login-input" placeholder="Sua senha" required>
+
+                <button type="submit" class="btn-login">ENTRAR</button>
             </form>
 
             <div class="create-account-link">
-                Ainda não tem conta?
+                Ainda não tem conta? 
                 <a href="cadastro.html">Cadastre-se aqui</a><br>
                 <span style="font-size: 0.75rem;">(Vendedores também se cadastram por lá!)</span>
             </div>
 
-            <p>
-                <a href="index.html" style="color: #035c78;">Voltar para a loja</a>
+            <p style="margin-top: 20px; font-size: 0.85rem;">
+                <a href="index.html" style="color: #aaa; text-decoration: none;">Voltar para a loja</a>
             </p>
         </div>
     </main>
-
-    <script>
-        // A lógica de validação agora é feita pelo login.php no servidor.
-        console.log("Formulário conectado ao Banco de Dados.");
-    </script>
-
 </body>
-
 </html>

@@ -41,9 +41,46 @@
             <h2>Crie sua conta</h2>
             
             <div class="toggle-buttons">
-                <button type="button" class="toggle-btn" id="btn-cliente" onclick="window.location.href='cadastrocliente.html'">Sou Cliente</button>
+                <button type="button" class="toggle-btn active" id="btn-cliente">Sou Cliente</button>
                 <button type="button" class="toggle-btn" id="btn-vendedor" onclick="window.location.href='cadastrofuncionario.html'">Sou Vendedor</button>
-            </div>            
+            </div>
+
+            <form action="cadastro.php" method="POST">
+                
+                <input type="hidden" name="tipo_form" id="tipo_form" value="cliente">
+
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" placeholder="Seu nome" required>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div id="campos-especificos">
+                    <div class="input-group">
+                        <label>CPF</label>
+                        <input type="text" name="cpf" placeholder="000.000.000-00">
+                    </div>
+                    <div class="input-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="data_nascimento">
+                    </div>
+                    <div class="input-group">
+                        <label>Telefone</label>
+                        <input type="text" name="telefone" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha</label>
+                    <input type="password" name="senha" placeholder="******" required>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submit-text">Cadastrar Cliente</button>
+            </form>
             
             <p style="margin-top: 20px; font-size: 0.9rem;">
                 <a href="index.html" style="color: #999; text-decoration: none;">Voltar para a loja</a>
@@ -77,5 +114,6 @@
     <i class="fa-solid fa-check-double"></i> Tudo pronto! Pode clicar em cadastrar.
 </div>
     </header>
+    
 </body>
 </html>

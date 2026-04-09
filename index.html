@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABJ Style - Moda Infantil</title>
-    
+    <title>ABJ Style - Moda Infantil</title>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -14,32 +13,30 @@
     <div id="status-usuario"></div>
 
     <header>
-        <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 20px;">
-            <nav class="menu-links">
-                <a href="#">meninas</a>
-                <a href="#">meninos</a>
-                <a href="#">bebês</a>
+            <div class="nav-container">
+            <nav class="menu-links" >
+               <a href="#" style="color: #dc059b;" >meninas</a>
+               <a href="#" style="color: #1ab44d;" >meninos</a>
+               <a href="#" style="color: #07ada5;" >bebês</a>
+                
             </nav>
 
             <a href="index.html" class="logo">
-                <img src="img/logoabj.webp" alt="Balão Logo" style="max-height: 60px;">
+                <img src="img/logoabj.webp" alt="Balão Logo">
             </a>
 
             <div class="user-actions">
-                <div style="cursor: pointer;" onclick="toggleLogin()" title="Minha Conta">
-                    <i class="fa-regular fa-user"></i>
-                </div>
-
-                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()" title="Meu Carrinho">
+                <a href="login.html" title="Entrar ou Cadastrar"><i class="fa-regular fa-user"></i></a>
+                <div style="position: relative; display: inline-block; cursor: pointer;" onclick="toggleCart()">
                     <i class="fa-solid fa-basket-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>
-                </div>
+            </div>
 
                 <div style="cursor: pointer;" onclick="toggleFavoritos()" title="Meus Favoritos">
                     <i class="fa-regular fa-heart"></i>
                 </div>
 
-                <a href="#" title="Chat">
+                <a href="#contato" title="Chat">
                     <i class="fa-regular fa-comment"></i>
                 </a>
             </div>
@@ -48,7 +45,7 @@
 
     <div class="search-container">
         <form class="search-box" id="searchForm">
-            <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()" style="cursor: pointer;"></i>
+            <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()"></i>
             <input type="text" id="searchInput" placeholder="O que você procura?">
             <i class="fa-solid fa-xmark" onclick="limparBusca()" style="cursor: pointer;"></i>
         </form>
@@ -69,8 +66,7 @@
                 <div class="card"><img src="img/duaskids.webp" alt="Destaque"></div>
                 <div class="card"><img src="img/pij-duaskids.webp" alt="Pijamas"></div>
                 <div class="card"><img src="img/fant_duaskid.webp" alt="Fantasias"></div>
-                <div class="card"><img src="img/fant_batman.webp" alt="Acessórios"></div>
-                <div class="card"><img src="img/fant_wood.webp" alt="Kids"></div>
+                <div class="card"><img src="img/fant_dibatman.webp" alt="Acessórios"></div>
             </div>
             <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
         </section>

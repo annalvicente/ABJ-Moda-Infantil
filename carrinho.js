@@ -19,15 +19,25 @@ function adicionarAoCarrinho(nome, preco) {
     itemDiv.className = 'cart-item-single';
     const precoNum = parseFloat(preco);
     
+    // ESTRUTURA IGUAL AO FAVORITOS:
+    // O segredo está no display:flex e justify-content: space-between DIRETO no HTML
+    itemDiv.style.display = "flex";
+    itemDiv.style.justifyContent = "space-between";
+    itemDiv.style.alignItems = "center";
+    itemDiv.style.width = "100%";
+
     itemDiv.innerHTML = `
-        <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <span style="display:block; font-weight:700;">${nome}</span>
-                <small style="color: #ff69b4;">R$ ${precoNum.toFixed(2).replace('.', ',')}</small>
-            </div>
-            <i class="fa-solid fa-trash-can" onclick="removerItem(this, ${precoNum})" style="cursor:pointer; color:red;"></i>
+        <div style="display: flex; flex-direction: column; text-align: left;">
+            <h4 style="margin:0; font-size: 16px; color: #4a3b32; font-weight: 700;">${nome}</h4>
+            <p style="margin:0; color: #ff69b4; font-size: 14px;">R$ ${precoNum.toFixed(2).replace('.', ',')}</p>
         </div>
+        
+        <i class="fa-solid fa-trash-can" 
+           onclick="removerItem(this, ${precoNum})" 
+           style="cursor:pointer; color:#ff4d4d; font-size: 1.2rem; padding: 10px;" 
+           title="Remover"></i>
     `;
+    
     lista.appendChild(itemDiv);
     totalCarrinho += precoNum;
     quantidadeItens++;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Favoritos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+    <!--<style>
         body { font-family: 'Quicksand', sans-serif; background-color: #f9f9f9; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         h1 { text-align: center; color: #ff69b4; }
@@ -36,7 +36,7 @@
         .btn-remover { color: #ff4d4d; cursor: pointer; font-size: 1.2rem; margin-left: 15px; }
         
         .voltar { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #888; }
-    </style>
+    </style>-->
 </head>
 <body>
 
@@ -57,7 +57,7 @@
             lista.innerHTML = '';
 
             if (favoritosLoja.length === 0) {
-                lista.innerHTML = '<p style="text-align:center; padding: 40px;">Você ainda não favoritou nada. 💔</p>';
+                lista.innerHTML = '<p style="text-align:center; padding: 40px;">Você ainda não favoritou nada.</p>';
                 return;
             }
 
@@ -101,7 +101,7 @@
                 alert(`${p.nome} foi enviado para o carrinho!`);
                 window.location.href = 'index.html'; // Redireciona para a loja onde o carrinho abre
             } else {
-                alert("Produto esgotado no momento! ❌");
+                alert("Produto esgotado no momento! ");
             }
         }
 
