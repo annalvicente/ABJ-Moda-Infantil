@@ -16,20 +16,29 @@
     </head>
 
     <body>
-        <header>
-        
-                <a href="index.html" class="logo">
-                    <img src="img/logoabj.webp" alt="Balão Logo">
-                </a>           
-        </header>
+        <header class="header-admin">
+    <div class="header-left"></div>
+
+    <a href="tfuncionarios.php" class="logo">
+        <img src="img/logoabj.webp" alt="Balão Logo">
+    </a>
+
+    <div class="header-right">
+        <a href="index.html" class="btn-visualizar">
+            <i class="fa-solid fa-shop"></i> Ver loja
+        </a>
+    </div>
+</header>
 
         <main class="container">
-            <h1>Controle de Estoque</h1>
-            <div class="adicao">  
-                <button onclick="abrirModal()" class="adicao"> + Novo Produto </button>
+            <div class = "header-tabela">
+                <h1 class = "h1-tabela"> Controle de Estoque</h1>
+                    <div class="adicao">  
+                        <button onclick="abrirModal()" class="adicao"> + Novo Produto </button>
+                    </div>
             </div>
         
-<table class="tabela-estilizada">
+<table class="tabela-estilizada">   
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -65,9 +74,9 @@
                         <td>
                             <?php 
                                 if($dados['quantidade_estoque'] > 10) {
-                                    echo "<span class='verde'>Em estoque</span>";
+                                    echo "<span> Em estoque</span>";
                                 } else {
-                                    echo "<span class='vermelho'>Repor!</span>";
+                                    echo "<span> Repor!</span>";
                                 }
                             ?>
                         </td>
@@ -114,8 +123,8 @@
                 <input type="text" name="nome" id="prod_nome" required>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
+            <div>
+                <div>
                     <label>Categoria:</label>
                     <select name="categoria" id="prod_categoria">
                         <option value="Meninas">Meninas</option>
@@ -123,18 +132,18 @@
                         <option value="Bebês">Bebês</option>
                     </select>
                 </div>
-                <div class="form-group" style="flex: 1;">
+                <div>
                     <label>Tamanho:</label>
                     <input type="text" name="tamanho" id="prod_tamanho">
                 </div>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
+            <div>
+                <div class="form-group">
                     <label>Cor:</label>
                     <input type="text" name="cor" id="prod_cor">
                 </div>
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group">
                     <label>Preço (R$):</label>
                     <input type="number" step="0.01" name="preco" id="prod_preco" required>
                 </div>
@@ -153,12 +162,12 @@
             <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
                 <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
 
-            <div style="display: flex; gap: 10px;">
-    <div class="form-group" style="flex: 1;">
+            <div>
+    <div class="form-group">
         <label>Foto da Peça (.webp):</label>
         <input type="file" name="imagem" accept="image/webp">
     </div>
-    <div class="form-group" style="flex: 1;">
+    <div class="form-group">
         <label>Foto no Corpo (.webp):</label>
         <input type="file" name="imagem_corpo" accept="image/webp">
     </div>

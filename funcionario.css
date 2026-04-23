@@ -1,6 +1,6 @@
 /* ============================================================
     1. RESET, FONTES E VARIÁVEIS BASE
-    ============================================================ */
+============================================================ */
     * {
         margin: 0;
         padding: 0;
@@ -20,8 +20,6 @@
         --cor-seta: #e3cfa5;
     }
 
-
-
     body {
         font-family: 'Quicksand', sans-serif;
         background-color: #f8ffd685; /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
@@ -38,78 +36,64 @@
         padding: 0 20px;
     }
 
-    /* ============================================================
+/* ============================================================
     2. CABEÇALHO (Header, Menu e Logo)
-    ============================================================ */
-    header {
-        background-color: var(--amarelo-header);
-        padding: 05px 50px 40px 50px;
-        border-bottom-left-radius: 50% 30px;
+============================================================ */
+    .header-admin {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px 40px;
+    background-color: var(--amarelo-header); 
+    border-bottom-left-radius: 50% 30px;
         border-bottom-right-radius: 50% 30px;
-        position: relative;
-        z-index: 10;
-    }
+}
+.header-admin .logo img {
+    width: 100px;
+    height: auto;
+    margin-bottom: -5px;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.3s;
+}
 
-    .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.header-admin .logo img:hover {
+    transform: scale(1.05); 
+}
 
-    .menu-links {
-        display: flex;
-        gap: 20px;
-        font-weight: bold; 
-        font-size: 18px;
-    }
+.btn-visualizar {
+    text-decoration: none;
+    color: #443300;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f8fadd;
+    transition: all 0.3s;
+}
 
-    .menu-links-meninas{
-        color: #dc059b;
-    }
+.btn-visualizar:hover {
+    background-color: #ffdf7f;
+    border-color: #fcebb6;
+    color: #333;
+}
 
-      .menu-links-meninos{
-        color: #07ada5;
-    }
+.header-left, .header-right {
+    flex: 1;                    /* Ocupa o mesmo espaço para o logo ficar no meio */
+}
 
-      .menu-links-bebes{
-        color: #1ab44d;
-    }
-
-    a {
-    transition: opacity 0.3s; /* Deixa a mudança suave */
-    }
-
-    a:hover {
-    opacity: 0.5; /* O link fica levemente transparente, dando o efeito de feedback */
-    transform: scale(1.1);
-    }
-
-    .logo {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-    }
-
-    .logo img {
-        width: 100px;
-        height: auto;
-        margin-bottom: -5px;
-        object-fit: contain;
-        display: block;    
-    }
-
-    .logo span {
-        font-size: 0.8rem;
-        font-weight: bold;
-        color: #ff69b4;
-    }
-
- /* ============================================================
-    9. RODAPÉ PERSONALIZADO (Footer)
-    ============================================================ */
+.header-right {
+    display: flex;
+    justify-content: flex-end; /* Joga o botão "Ver loja" para a direita */
+}
+/* ============================================================
+    3. RODAPÉ (Footer)
+============================================================ */
 .footer-custom {
     background-color: var(--amarelo-header);
     margin: 50px 20px 20px 20px;
@@ -186,9 +170,9 @@
     border-radius: 15px;
 }
   
-        /* ============================================================
-    14. PAINEL DE ESTOQUE (Tabelas e Status)
-    ============================================================ */
+/* ============================================================
+    4. PAINEL DE ESTOQUE (Tabelas e Status)
+=========================================================== */
 .estoque-container {
     background-color: white;
     max-width: 15px;
@@ -224,19 +208,19 @@ tbody {
 
 /* Container que segura as duas fotos na tabela */
 .fotos-grid {
-    display: flex;          /* Coloca lado a lado */
-    gap: 8px;              /* Espaço entre as fotos */
-    justify-content: center; /* Centraliza na célula */
+    display: flex;         
+    gap: 8px;              
+    justify-content: center; 
     align-items: center;
 }
 
 .fotos-grid img {
-    width: 50px;            /* Largura da miniatura */
-    height: 50px;           /* Altura da miniatura */
+    width: 50px;           
+    height: 50px;           
     object-fit: cover;      /* Corta as bordas sem esticar a imagem */
-    border-radius: 8px;     /* Cantos arredondados para ficar fofo */
-    border: 1px solid #ddd; /* Uma bordinha leve */
-    transition: transform 0.3s ease; /* Suaviza o zoom */
+    border-radius: 8px;     
+    border: 1px solid #ddd; 
+    transition: transform 0.3s ease;
     cursor: pointer;
 }
 
@@ -244,7 +228,6 @@ tbody {
     transform: scale(2.5);  /* Aumenta a foto em 2.5 vezes */
     z-index: 10;            /* Garante que ela fique por cima de tudo */
     position: relative;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
 }
 
 .excluir{
@@ -264,6 +247,17 @@ tbody {
     margin-right: 15px;
 }
 
+.header-tabela {
+    display: flex; 
+    justify-content: space-between; /* Empurra o título para esquerda e o botão para direita */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.h1-tabela {
+    color: #443300;
+}
+
 .adicao {
     background-color: #ffeebb;
     padding: 10px 15px;
@@ -277,6 +271,11 @@ tbody {
     margin-left: auto; 
     width: fit-content; 
 }
+
+.adicao :hover{
+    background-color: #e2d3a4;
+    transform: scale(1.1); 
+    transition: 0.2s;}
 
 .modal {
     display: none; 
@@ -343,7 +342,9 @@ tbody {
 }
 
 .btn-salvar:hover {
-    background-color: #f3ddad;
+    background-color: #73a2ae;
+    transform: scale(1.1); 
+    transition: 0.2s;
 }
 
 .close{
