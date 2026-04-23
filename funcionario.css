@@ -1,0 +1,363 @@
+/* ============================================================
+    1. RESET, FONTES E VARIÁVEIS BASE
+    ============================================================ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Quicksand', sans-serif;
+    }
+
+    html {
+        scroll-behavior: smoosh;
+    }
+
+    :root {
+        --amarelo-header: #ffeebb;
+        --azul-banner: #b0dce8;
+        --texto-marrom: #4a3b32;
+        --rosa-glow: rgba(255, 105, 180, 0.7);
+        --cor-seta: #e3cfa5;
+    }
+
+
+
+    body {
+        font-family: 'Quicksand', sans-serif;
+        background-color: #f8ffd685; /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
+        color: var(--texto-marrom);
+        overflow-x: hidden;
+    }
+    p {
+        text-decoration: none;
+    }
+
+    main {
+        max-width: 1200px;
+        margin: 35px auto;
+        padding: 0 20px;
+    }
+
+    /* ============================================================
+    2. CABEÇALHO (Header, Menu e Logo)
+    ============================================================ */
+    header {
+        background-color: var(--amarelo-header);
+        padding: 05px 50px 40px 50px;
+        border-bottom-left-radius: 50% 30px;
+        border-bottom-right-radius: 50% 30px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu-links {
+        display: flex;
+        gap: 20px;
+        font-weight: bold; 
+        font-size: 18px;
+    }
+
+    .menu-links-meninas{
+        color: #dc059b;
+    }
+
+      .menu-links-meninos{
+        color: #07ada5;
+    }
+
+      .menu-links-bebes{
+        color: #1ab44d;
+    }
+
+    a {
+    transition: opacity 0.3s; /* Deixa a mudança suave */
+    }
+
+    a:hover {
+    opacity: 0.5; /* O link fica levemente transparente, dando o efeito de feedback */
+    transform: scale(1.1);
+    }
+
+    .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .logo img {
+        width: 100px;
+        height: auto;
+        margin-bottom: -5px;
+        object-fit: contain;
+        display: block;    
+    }
+
+    .logo span {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #ff69b4;
+    }
+
+ /* ============================================================
+    9. RODAPÉ PERSONALIZADO (Footer)
+    ============================================================ */
+.footer-custom {
+    background-color: var(--amarelo-header);
+    margin: 50px 20px 20px 20px;
+    border-radius: 50px;
+    padding: 30px 60px;
+    font-family: 'Quicksand', sans-serif;
+    scroll-margin-top: 30px;
+}
+
+.footer-container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+   display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.chat-icon {
+    font-size: 2.5rem;
+    color: #f28d8d;
+}
+
+.brand-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.brand-info p {
+    font-size: 0.95rem;
+    margin: 2px 0;
+    font-weight: 600;
+}
+
+.footer-links-social {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.social-item i {
+    font-size: 1.2rem;
+}
+
+.faq-link {
+    text-decoration: underline;
+    color: inherit;
+    font-weight: 700;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.product-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 15px;
+}
+  
+        /* ============================================================
+    14. PAINEL DE ESTOQUE (Tabelas e Status)
+    ============================================================ */
+.estoque-container {
+    background-color: white;
+    max-width: 15px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+table {
+    width: auto;
+    border-collapse: collapse;
+    margin-top: 15px;     
+}
+
+th {
+ background-color: #83cbfe89;
+color: #555;
+padding: 15px;
+text-align: left;
+border-bottom: 2px solid #eee;
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+tbody {
+    background-color: rgba(247, 220, 224, 0.454);
+}
+
+/* Container que segura as duas fotos na tabela */
+.fotos-grid {
+    display: flex;          /* Coloca lado a lado */
+    gap: 8px;              /* Espaço entre as fotos */
+    justify-content: center; /* Centraliza na célula */
+    align-items: center;
+}
+
+.fotos-grid img {
+    width: 50px;            /* Largura da miniatura */
+    height: 50px;           /* Altura da miniatura */
+    object-fit: cover;      /* Corta as bordas sem esticar a imagem */
+    border-radius: 8px;     /* Cantos arredondados para ficar fofo */
+    border: 1px solid #ddd; /* Uma bordinha leve */
+    transition: transform 0.3s ease; /* Suaviza o zoom */
+    cursor: pointer;
+}
+
+.fotos-grid img:hover {
+    transform: scale(2.5);  /* Aumenta a foto em 2.5 vezes */
+    z-index: 10;            /* Garante que ela fique por cima de tudo */
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+}
+
+.excluir{
+    color: #b90e0e;
+    cursor: pointer;
+
+}
+
+.excluir:hover{
+    color: #5f0707;
+    transform: translateY(-2px);
+}
+
+.alterar{
+    color: #2a61b3;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.adicao {
+    background-color: #ffeebb;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color: rgb(39, 29, 1);
+    border: none;
+    cursor: pointer; 
+    font-size: 18   px;
+    margin-left: auto; 
+    width: fit-content; 
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: #fcf7ed;
+    margin: 5% auto; 
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.h2-modal{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 23px;
+    color: #3a2406;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #5d3809;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #3d3d3d;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.btn-salvar {
+    background-color: #8dc7d6;
+    color: #443300;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-salvar:hover {
+    background-color: #f3ddad;
+}
+
+.close{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 35px; 
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #600000; 
+    transform: scale(1.1); 
+    transition: 0.2s;
+}

@@ -20,7 +20,7 @@ include 'conexão.php';
             <p style="text-align:center;">Carregando seus favoritos...</p>
         </div>
 
-        <div class="acoes-lista" ">
+        <div class="acoes-lista" >
              <button class="btn-fav-carrinho" onclick="adicionarFavoritosAoCarrinho()">
                 <i class="fa-solid fa-cart-plus"></i> Adicionar Selecionados ao Carrinho
             </button>

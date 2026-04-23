@@ -1,37 +1,35 @@
-<?php
-include 'conexão.php';
-$sql = "SELECT * FROM produtos";
-$resultado = $conn->query($sql);
-?>
+    <?php
+    include 'conexão.php';
+    $sql = "SELECT * FROM produtos";
+    $resultado = $conn->query($sql);
+    ?>
 
-<!DOCTYPE html>
-<html lang="pt-br"> 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de Funcionários</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">   
-</head>
+    <!DOCTYPE html>
+    <html lang="pt-br"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tela de Funcionários</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="funcionario.css">   
+    </head>
 
-<body>
-    <header>
-            <a href="index.html" class="logo">
-                <img src="img/logoabj.webp" alt="Balão Logo">
-            </a>
+    <body>
+        <header>
         
-    </header>
+                <a href="index.html" class="logo">
+                    <img src="img/logoabj.webp" alt="Balão Logo">
+                </a>           
+        </header>
 
-    <main class="container">
-        <h1>Controle de Estoque</h1>
-        <div class="adicao">
-            
-            <a href="formulario.php" >
-                <i class="fa-solid fa-plus"></i> Adicionar Roupa
-            </a>
-        </div>
-        <table class="tabela-estilizada">
+        <main class="container">
+            <h1>Controle de Estoque</h1>
+            <div class="adicao">  
+                <button onclick="abrirModal()" class="adicao"> + Novo Produto </button>
+            </div>
+        
+<table class="tabela-estilizada">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -41,9 +39,10 @@ $resultado = $conn->query($sql);
                     <th>Tamanho</th>
                     <th>Cor</th>
                     <th>Qtd.estoque</th>
-                    <th>Imagem</th>
+                    <th>Imagens (Peça / Corpo)</th>
                     <th>Status</th>
-                    <th>Ações</th> </tr>
+                    <th>Ações</th>
+                </tr>
             </thead>
             <tbody>
                 <?php while($dados = $resultado->fetch_assoc()) { ?>
@@ -55,7 +54,14 @@ $resultado = $conn->query($sql);
                         <td><?php echo $dados['tamanho']; ?></td>
                         <td><?php echo $dados['cor']; ?></td>
                         <td><?php echo $dados['quantidade_estoque']; ?></td>
-                        <td><img src="img/<?php echo basename($dados['imagem']); ?>" width="50"></td>
+                        
+                        <td>
+                            <div class="fotos-grid">
+                                <img src="img/<?php echo basename($dados['imagem']); ?>" title="Foto da Peça">
+                                <img src="img/<?php echo basename($dados['imagem_corpo']); ?>" title="Foto no Corpo">
+                            </div>
+                        </td>
+
                         <td>
                             <?php 
                                 if($dados['quantidade_estoque'] > 10) {
@@ -65,12 +71,25 @@ $resultado = $conn->query($sql);
                                 }
                             ?>
                         </td>
-                        <td >
-                            <a class="alterar"  href="formulario.php?id=<?php echo $dados['id']; ?>" title="Editar">
-                               <i class="fa-solid fa-pen"></i>
+                        <td>
 
-                            </a>
-                        <a class="excluir"  href="excluir.php?id=<?php echo $dados['id']; ?>" title="Excluir"  onclick="return confirm('Tem certeza que deseja excluir esta peça?')">
+    <a class="alterar" href="javascript:void(0)" 
+        onclick="abrirModal(
+            '<?php echo $dados['id']; ?>', 
+            '<?php echo $dados['nome']; ?>', 
+            '<?php echo $dados['categoria']; ?>', 
+            '<?php echo $dados['descricao']; ?>', 
+            '<?php echo $dados['preco']; ?>', 
+            '<?php echo $dados['tamanho']; ?>', 
+            '<?php echo $dados['cor']; ?>', 
+            '<?php echo $dados['quantidade_estoque']; ?>',
+            '<?php echo $dados['imagem']; ?>', 
+            '<?php echo $dados['imagem_corpo']; ?>'
+   )">
+   <i class="fa-solid fa-pen"></i>
+</a>
+                            
+                            <a class="excluir" href="excluir.php?id=<?php echo $dados['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir esta peça?')">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         </td>
@@ -79,5 +98,78 @@ $resultado = $conn->query($sql);
             </tbody>
         </table>
     </main>
-</body>
-</html>
+
+<div id="modalProduto" class="modal">
+    
+    <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <h2 class= "h2-modal"id="modalTitulo">Adicionar Nova Roupa</h2>
+
+         
+        <form action="produtos.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="prod_id">
+            
+            <div class="form-group">
+                <label>Nome da Peça:</label>
+                <input type="text" name="nome" id="prod_nome" required>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Categoria:</label>
+                    <select name="categoria" id="prod_categoria">
+                        <option value="Meninas">Meninas</option>
+                        <option value="Meninos">Meninos</option>
+                        <option value="Bebês">Bebês</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Tamanho:</label>
+                    <input type="text" name="tamanho" id="prod_tamanho">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Cor:</label>
+                    <input type="text" name="cor" id="prod_cor">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Preço (R$):</label>
+                    <input type="number" step="0.01" name="preco" id="prod_preco" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Quantidade em Estoque:</label>
+                <input type="number" name="quantidade_estoque" id="prod_qtd" required>
+            </div>
+
+            <div class="form-group">
+                <label>Descrição:</label>
+                <textarea name="descricao" id="prod_desc" rows="2"></textarea>
+            </div>
+
+            <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
+                <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
+
+            <div style="display: flex; gap: 10px;">
+    <div class="form-group" style="flex: 1;">
+        <label>Foto da Peça (.webp):</label>
+        <input type="file" name="imagem" accept="image/webp">
+    </div>
+    <div class="form-group" style="flex: 1;">
+        <label>Foto no Corpo (.webp):</label>
+        <input type="file" name="imagem_corpo" accept="image/webp">
+    </div>
+</div>
+
+            <button type="submit" class="btn-salvar">Gravar Dados</button>
+        </form>
+    </div>
+</div>
+
+    <script src="funcionarios.js"></script>
+
+    </body>
+    </html>
