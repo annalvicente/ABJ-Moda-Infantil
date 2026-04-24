@@ -124,15 +124,17 @@
             </div>
 
             <div>
-                <div>
+                <div class="form-group">
                     <label>Categoria:</label>
                     <select name="categoria" id="prod_categoria">
                         <option value="Meninas">Meninas</option>
                         <option value="Meninos">Meninos</option>
                         <option value="Bebês">Bebês</option>
+                        <option value="Pijamas">Pijamas</option>
+                        <option value="Fantasias">Fantasias</option>
                     </select>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Tamanho:</label>
                     <input type="text" name="tamanho" id="prod_tamanho">
                 </div>
