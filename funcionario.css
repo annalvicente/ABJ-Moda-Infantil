@@ -189,17 +189,27 @@ table {
 }
 
 th {
- background-color: #83cbfe89;
-color: #555;
-padding: 15px;
-text-align: left;
-border-bottom: 2px solid #eee;
+    background-color: #83cbfe89;
+    color: #555;
+    padding: 15px;
+    text-align: left;
+    /* Linha horizontal mais forte no cabeçalho */
+    border-bottom: 2px solid #fff; 
+    /* Linha vertical para separar as colunas */
+    border-right: 1px solid #fff; 
+}
+
+/* Remove a linha vertical da última coluna para ficar mais limpo */
+th:last-child, td:last-child {
+    border-right: none;
 }
 
 td {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
+    padding: 12px 8px; /* Aumentei um pouco o respiro vertical */
+    border-bottom: 1px solid #fff; /* Linha horizontal entre produtos */
+    border-right: 1px solid #fff;  /* Linha vertical entre colunas */
     color: #333;
+    vertical-align: middle; /* Garante que o texto fique alinhado ao centro da altura */
 }
 
 tbody {
