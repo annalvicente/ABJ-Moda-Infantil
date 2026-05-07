@@ -1,8 +1,13 @@
-    <?php
-    include 'conexão.php';
-    $sql = "SELECT * FROM produtos";
-    $resultado = $conn->query($sql);
-    ?>
+<?php
+include 'conexão.php';
+
+// O segredo está aqui: pedimos o nome da categoria que mora na outra tabela
+$sql = "SELECT p.*, c.nome AS nome_categoria 
+        FROM produtos p 
+        LEFT JOIN categoria c ON p.id_categoria = c.id";
+
+$resultado = $conn->query($sql);
+?>
 
     <!DOCTYPE html>
     <html lang="pt-br"> 
@@ -57,7 +62,7 @@
                 <?php while($dados = $resultado->fetch_assoc()) { ?>
                     <tr>
                         <td><?php echo $dados['nome']; ?></td>
-                        <td><?php echo $dados['categoria']; ?></td>
+                        <td><?php echo $dados['nome_categoria'] ?? 'Sem Categoria'; ?></td>
                         <td><?php echo $dados['descricao']; ?></td>
                         <td>R$ <?php echo number_format($dados['preco'], 2, ',', '.'); ?></td>
                         <td><?php echo $dados['tamanho']; ?></td>
@@ -86,7 +91,7 @@
         onclick="abrirModal(
             '<?php echo $dados['id']; ?>', 
             '<?php echo $dados['nome']; ?>', 
-            '<?php echo $dados['categoria']; ?>', 
+            '<?php echo $dados['nome_categoria']; ?>', 
             '<?php echo $dados['descricao']; ?>', 
             '<?php echo $dados['preco']; ?>', 
             '<?php echo $dados['tamanho']; ?>', 
@@ -126,13 +131,14 @@
             <div>
                 <div class="form-group">
                     <label>Categoria:</label>
-                    <select name="categoria" id="prod_categoria">
-                        <option value="Meninas">Meninas</option>
-                        <option value="Meninos">Meninos</option>
-                        <option value="Bebês">Bebês</option>
-                        <option value="Pijamas">Pijamas</option>
-                        <option value="Fantasias">Fantasias</option>
+                    <select name="id_categoria" id="prod_categoria">
+                        <option value="1">Meninas</option>
+                        <option value="2">Meninos</option>
+                        <option value="3">Bebês</option>
+                        <option value="4">Fantasias</option>
+                        <option value="5">Pijamas</option>
                     </select>
+                    
                 </div>
                 <div class="form-group">
                     <label>Tamanho:</label>
@@ -163,7 +169,6 @@
 
             <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
                 <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
-
             <div>
     <div class="form-group">
         <label>Foto da Peça (.webp):</label>

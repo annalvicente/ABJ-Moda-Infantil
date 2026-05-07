@@ -1241,3 +1241,56 @@
 
 
 }
+
+
+
+/* Container que segura tudo */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* Cria as 6 colunas iguais */
+  gap: 15px; /* Espaço entre as fotos */
+  padding: 20px;
+  background-color: #fce4ec; /* Esse rosinha do seu fundo */
+}
+
+/* Caixa da foto */
+.foto-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.2; /* Mantém o formato retangular vertical */
+  overflow: hidden;
+}
+
+.foto-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a foto preencha o espaço sem deformar */
+  transition: opacity 0.3s ease; /* Transição suave */
+}
+
+/* Imagem da peça sozinha começa invisível */
+.img-cabide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* O PULO DO GATO: Quando o mouse passa no card... */
+.produto-card:hover .img-corpo {
+  opacity: 0; /* Esconde a menina */
+}
+
+.produto-card:hover .img-cabide {
+  opacity: 1; /* Mostra o cabide */
+}
+
+/* Textos embaixo da foto */
+.produto-detalhes {
+  text-align: center;
+  font-family: sans-serif;
+  margin-top: 8px;
+}
+
+.nome { font-size: 14px; margin: 0; }
+.preco { font-weight: bold; margin: 0; }
