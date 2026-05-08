@@ -11,10 +11,11 @@
 
 <body>
 
+    <!-- header -->
     <header>
             <div class="nav-container">
             <nav class="menu-links" >
-               <a href="#" class="menu-links-meninas" >meninas</a>
+               <a href="#meninas" class="menu-links-meninas" >meninas</a>
                <a href="#" class="menu-links-meninos" >meninos</a>
                <a href="#" class="menu-links-bebes" >bebês</a>
                 
@@ -42,6 +43,7 @@
         </div>
     </header>
 
+    <!-- Busca -->
     <div class="search-container">
         <form class="search-box" id="searchForm">
             <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()"></i>
@@ -51,6 +53,8 @@
     </div>
 
     <main>
+
+        <!-- Banner principal -->
         <section class="hero-banner">
             <div class="hero-image"><img src="img/criancasgeral.webp" alt="Crianças felizes"></div>
             <div class="hero-text">
@@ -59,6 +63,7 @@
             </div>
         </section>
 
+        <!-- Carrossel -->
         <section class="carousel-section">
             <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="carousel-track" id="track">
@@ -71,10 +76,11 @@
             <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
         </section>
 
+        <!-- Vitrine Meninas -->
         <section class="vitrine-meninas">
   <div class="grid-container">
     
-    <div class="produto-card">
+    <div id="meninas" class="produto-card">
       <div class="foto-box">
         <img src="menina-com-roupa.jpg" class="img-corpo">
         <img src="roupa-no-cabide.jpg" class="img-cabide">
@@ -89,7 +95,9 @@
 </section>
        
     </main>
+]
 
+    <!-- Footer -->
     <footer id="contato" class="footer-custom">
         <div class="footer-container-custom">
             <div class="footer-section">
@@ -112,6 +120,9 @@
         </div>
     </footer>
 
+    
+
+    <!-- Carrinho -->
     <div id="side-cart" class="cart-container">
         <div class="cart-header">
             <h3>Meu Carrinho</h3>
@@ -124,6 +135,7 @@
         </div>
     </div>
 
+    <!-- Favoritos -->
     <div id="favoritos-container" class="fav-container">
         <div class="fav-header">
             <div class="fav-header-title">
@@ -145,6 +157,7 @@
 
     <div id="overlay" onclick="fecharTudo()"></div>
 
+    <!-- JS -->
     <script src="Carrinho.js"></script>
     <script src="favoritos.js"></script>
     <script src="loja.js"></script>
@@ -156,5 +169,6 @@
             document.getElementById('overlay')?.classList.remove('active');
         }
     </script>
+
 </body>
 </html>
