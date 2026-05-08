@@ -1,77 +1,81 @@
-// --- LÓGICA DE FAVORITOS ---
-
-function atualizarListaFavoritos() {
+// Função para carregar os dados do banco assim que a página abre
+async function carregarFavoritos() {
     const lista = document.getElementById('lista-favoritos');
-    if (!lista) return;
 
-    // Puxando os itens do seu banco de dados (LocalStorage)
-    let favs = JSON.parse(localStorage.getItem('meusFavoritos')) || [
-        { nome: 'Conjunto Woody', preco: '79.99', img: 'img/fant_wood.webp' }
-    ];
+    try {
+        // Busca os dados do arquivo PHP centralizador
+        const response = await fetch('acoesfav.php?acao=listar');
+        const favoritos = await response.json();
 
-    if (favs.length === 0) {
-        lista.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">Sua lista está vazia.</p>';
-        return;
-    }
+        lista.innerHTML = '';
 
-    lista.innerHTML = '';
-    favs.forEach((p, index) => {
-        lista.innerHTML += `
-            <div class="fav-item-single" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 15px; padding-right: 10px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <input type="checkbox" class="fav-checkbox">
-                    <img src="${p.img}" style="width:50px; border-radius:8px;">
-                    <div class="fav-item-info">
-                        <h4 class="fav-name">${p.nome}</h4>
-                        <p class="fav-price">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
+        if (favoritos.length === 0) {
+            lista.innerHTML = '<p>Você ainda não favoritou nada.</p>';
+            return;
+        }
+
+        favoritos.forEach(p => {
+            lista.innerHTML += `
+                <div class="fav-item" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px;">
+                    <div class="fav-info" style="display: flex; align-items: center; gap: 15px;">
+                        <input type="checkbox" class="fav-checkbox" value="${p.id_produto}">
+                        <img src="${p.imagem}" alt="${p.nome}" style="width: 80px; border-radius: 8px;">
+                        <div>
+                            <h3 style="margin:0;">${p.nome}</h3>
+                            <p style="color: #ff69b4; font-weight: bold;">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
+                        </div>
+                    </div>
+                    <div class="fav-actions">
+                        <i class="fa-solid fa-trash-can btn-remover" 
+                           onclick="removerFavorito(${p.id_favorito})" 
+                           style="cursor:pointer; color:#ff6b6b; font-size: 1.2rem;"></i>
                     </div>
                 </div>
-                
-                <i class="fa-solid fa-trash-can" 
-                   onclick="removerDosFavoritos(${index})" 
-                   style="cursor:pointer; color:#ff6b6b; font-size: 1.1rem;" 
-                   title="Remover"></i>
-            </div>
-        `;
+            `;
+        });
+    } catch (error) {
+        lista.innerHTML = '<p>Erro ao carregar dados do servidor.</p>';
+        console.error("Erro:", error);
+    }
+}
+
+// Função para remover um item do banco
+async function removerFavorito(idFavorito) {
+    if (!confirm("Deseja remover este item dos favoritos?")) return;
+
+    const formData = new FormData();
+    formData.append('id_favorito', idFavorito);
+
+    await fetch('acoesfav.php?acao=remover', {
+        method: 'POST',
+        body: formData
     });
+
+    carregarFavoritos(); // Atualiza a tela após remover
 }
 
-// NOVA FUNÇÃO PARA EXCLUIR O ITEM
-function removerDosFavoritos(index) {
-    let favs = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
-    
-    // Remove o item da lista pelo índice
-    favs.splice(index, 1);
-    
-    // Salva a lista atualizada no banco
-    localStorage.setItem('meusFavoritos', JSON.stringify(favs));
-    
-    // Recarrega a tela para mostrar que saiu
-    atualizarListaFavoritos();
-}
-
-function adicionarFavoritosAoCarrinho() {
-    const selecionados = document.querySelectorAll('#lista-favoritos input[type="checkbox"]:checked');
+// Função para enviar os selecionados para a tabela carrinho no banco
+async function adicionarFavoritosAoCarrinho() {
+    const selecionados = document.querySelectorAll('.fav-checkbox:checked');
 
     if (selecionados.length === 0) {
-        alert("Selecione um item primeiro! 😊");
+        alert("Selecione pelo menos um item!");
         return;
     }
 
-    selecionados.forEach(checkbox => {
-        const container = checkbox.closest('.fav-item-single');
-        const nome = container.querySelector('.fav-name').innerText;
-        const precoTxt = container.querySelector('.fav-price').innerText;
-        const precoNum = parseFloat(precoTxt.replace('R$', '').replace('.', '').replace(',', '.').trim());
+    for (let checkbox of selecionados) {
+        const formData = new FormData();
+        formData.append('produto_id', checkbox.value);
 
-        adicionarAoCarrinho(nome, precoNum);
-    });
+        await fetch('acoesfav.php?acao=adicionar_carrinho', {
+            method: 'POST',
+            body: formData
+        });
+    }
 
-    fecharTudo();
-    const cart = document.getElementById('side-cart');
-    if (cart) cart.classList.add('open');
-    document.getElementById('overlay')?.classList.add('active');
+    alert("Itens adicionados ao carrinho!");
+    window.location.href = 'index.html';
 }
 
-// Carrega a lista assim que abrir a página
-document.addEventListener('DOMContentLoaded', atualizarListaFavoritos);
+// Inicializa a lista
+document.addEventListener('DOMContentLoaded', carregarFavoritos);
