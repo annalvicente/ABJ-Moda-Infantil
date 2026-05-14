@@ -1294,3 +1294,98 @@
 
 .nome { font-size: 14px; margin: 0; }
 .preco { font-weight: bold; margin: 0; }
+
+
+/* Importando uma fonte mais delicada */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap');
+
+.hero-banner {
+    background-color: #9cd6de; /* O azul claro do fundo */
+    border-radius: 40px; /* Bordas bem arredondadas como na imagem */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    margin: 20px;
+}
+
+.hero-content {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.hero-image {
+    flex: 1;
+    line-height: 0; /* Remove espaços indesejados embaixo da foto */
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-text {
+    flex: 1;
+    padding: 40px;
+    text-align: center; /* Centralizado como na imagem */
+    color: #444; /* Cinza suave */
+}
+
+.hero-text h2 {
+    font-size: 2.2rem; /* Tamanho equilibrado */
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    max-width: 80%; /* Para o texto não espalhar muito */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-banner {
+    display: inline-block;
+    background-color: rgba(255, 105, 180, 0.801);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: transform 0.2s;
+}
+
+.btn-banner:hover {
+    background-color: rgba(255, 105, 180, 0.7);;
+    transform: scale(1.05);
+}
+
+
+
+.carousel-track {
+    display: flex;
+    gap: 20px;
+    align-items: center; /* Garante que os itens se alinhem ao centro */
+}
+
+.card {
+    min-width: 300px; /* Defina uma largura mínima para o card aparecer */
+    height: 400px;    /* Defina uma altura para o card */
+    flex-shrink: 0;   /* ISSO É IMPORTANTE: impede que o carrossel esmague a imagem */
+    position: relative;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a imagem preencher o card sem distorcer */
+    display: block;    /* Remove espaços fantasmas embaixo da imagem */
+    border-radius: 20px;
+}

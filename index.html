@@ -55,15 +55,48 @@
     <main>
 
         <!-- Banner principal -->
-        <section class="hero-banner">
-            <div class="hero-image"><img src="img/criancasgeral.webp" alt="Crianças felizes"></div>
-            <div class="hero-text">
-                <h2>O conforto que seu filho merece!</h2>
-                <p>Com frete grátis.</p>
+    <section class="hero-banner">
+        <div class="hero-content">
+            <div class="hero-image">                
+                <img src="img/criancasgeral.webp" alt="Crianças felizes">
             </div>
-        </section>
+            <div class="hero-text">
+                <h2>Estilo que abraça,<br>conforto que acompanha.</h2>
+                <p>Peças escolhidas com carinho para cada descoberta do seu pequeno. <strong>Frete grátis incluso!</strong></p>
+                <a href="#" class="btn-banner">Ver Coleção Completa</a>
+            </div>
+        </div>
+    </section>
 
         <!-- Carrossel -->
+         <script>
+let index = 0;
+
+function moverCarrossel(direcao) {
+    const track = document.getElementById('track');
+    const cards = document.querySelectorAll('.card');
+    const totalCards = cards.length;
+    
+    // Calcula quantos cards cabem na tela (ex: se o container mostra 3 cards por vez)
+    const cardsVisiveis = Math.floor(track.offsetWidth / cards[0].offsetWidth);
+    const maxIndex = totalCards - cardsVisiveis;
+
+    index += direcao;
+
+    // Impede de ir além do início ou do fim
+    if (index < 0) {
+        index = 0;
+    } else if (index > maxIndex) {
+        index = maxIndex;
+    }
+
+    // Move o carrossel usando transform
+    const larguraCard = cards[0].offsetWidth + 20; // Largura + margem/gap
+    track.style.transform = `translateX(${-index * larguraCard}px)`;
+}
+</script>
+        
+
         <section class="carousel-section">
             <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="carousel-track" id="track">

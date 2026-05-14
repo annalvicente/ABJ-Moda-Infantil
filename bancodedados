@@ -1,0 +1,63 @@
+CREATE DATABASE IF NOT EXISTS loja_kids;
+USE loja_kids;
+
+
+CREATE TABLE IF NOT EXISTS clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    cpf VARCHAR(14),
+    data_nascimento DATE,
+    telefone VARCHAR(20),
+    senha VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS vendedores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    data_nascimento DATE,
+    telefone VARCHAR(20),
+    senha VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    tamanho VARCHAR(50) NOT NULL,
+    cor VARCHAR(50),
+    quantidade_estoque INT DEFAULT 0 NOT NULL,
+    imagem VARCHAR(255), 
+    imagem_corpo VARCHAR(255),
+    id_categoria INT,
+    id_vendedor INT,
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id),
+    FOREIGN KEY (id_vendedor) REFERENCES vendedores(id)
+);
+
+CREATE TABLE IF NOT EXISTS favoritos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    id_produto INT,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id),
+    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+);
+
+CREATE TABLE IF NOT EXISTS carrinho (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    id_produto INT,
+    quantidade INT DEFAULT 1,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id),
+    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+);
