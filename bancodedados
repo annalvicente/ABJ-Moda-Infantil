@@ -61,3 +61,74 @@ CREATE TABLE IF NOT EXISTS carrinho (
     FOREIGN KEY (id_cliente) REFERENCES clientes(id),
     FOREIGN KEY (id_produto) REFERENCES produtos(id)
 );
+
+
+INSERT INTO categoria (nome) VALUES 
+('Meninas'),
+('Meninos'),
+('Bebês'),
+('Fantasias'),
+('Pijamas');
+
+INSERT INTO favoritos (id_cliente, id_produto) VALUES (1, 4);
+
+INSERT INTO produtos (
+    nome, 
+    descricao, 
+    preco, 
+    tamanho, 
+    cor, 
+    quantidade_estoque, 
+    imagem, 
+    imagem_corpo, 
+    id_categoria, 
+    id_vendedor
+) VALUES 
+(
+    'Conjunto Camisa Ursinhos e Bermuda Marrom', 
+    'Conjunto infantil com camisa de manga curta texturizada branca estampada com ursinhos e bermuda marrom.', 
+    59.90, 
+    'P', 
+    'Branco e Marrom', 
+    10, 
+    'b-brancomarrom-peça.webp', 
+    'b-brancomarrom-corpo.webp', 
+    3, 
+    1
+),
+(
+    'Jardineira Dinossauro Verde com Camiseta', 
+    'Conjunto de jardineira curta verde oliva com estampa de dinossauros acompanhada de camiseta branca lisa.', 
+    59.90, 
+    'P', 
+    'Verde e Branco', 
+    10, 
+    'b-macacaoverde-peça.webp', 
+    'b-macacaoverde-corpo.webp', 
+    3, 
+    1
+),
+(
+    'Jardineira Jeans Coelhinho com Camiseta', 
+    'Jardineira curta em tecido estilo jeans azul com detalhe de orelhinhas no bolso frontal e barra listrada, acompanha camiseta branca.', 
+    59.90, 
+    'P', 
+    'Azul e Branco', 
+    10, 
+    'b-macacaoazul-peça.webp', 
+    'b-macacaoazul-corpo.webp', 
+    3, 
+    1
+),
+(
+    'Conjunto Camisa Polo Cavalo e Bermuda Azul', 
+    'Conjunto elegante com camisa gola polo branca, detalhes em azul e bordado de cavalo, acompanhada de bermuda azul texturizada.', 
+    59.90, 
+    'P', 
+    'Branco e Azul', 
+    10, 
+    'b-brancoazul-peça.webp', 
+    'b-brancoazul-corpo.webp', 
+    3, 
+    1
+);

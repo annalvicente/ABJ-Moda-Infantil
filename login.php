@@ -1,44 +1,56 @@
 <?php
 session_start();
-include 'conexão.php';
+
+// Inclui a conexão com o banco (com acento, igual ao arquivo real)
+if (!file_exists('conexão.php')) {
+    die("<script>alert('Erro crítico: conexão.php não encontrado!'); window.location='index.html';</script>");
+}
+require_once 'conexão.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $email        = trim($_POST['email'] ?? '');
+    $senha        = $_POST['senha'] ?? '';
+    $tipo_usuario = $_POST['tipo_usuario'] ?? 'cliente'; // campo enviado pelo index.html
 
-    // 1. Tenta procurar na tabela de CLIENTES primeiro
-    $sql_cliente = "SELECT * FROM clientes WHERE email = '$email'";
-    $res_cliente = $conn->query($sql_cliente);
-
-    if ($res_cliente->num_rows > 0) {
-        $row = $res_cliente->fetch_assoc();
-        if (password_verify($senha, $row['senha'])) {
-            $_SESSION['usuario_nome'] = $row['nome'];
-            $_SESSION['tipo'] = 'cliente';
-            
-            echo "<script>alert('Bem-vindo Cliente!'); window.location='index.html';</script>";
-            exit();
-        }
+    if (empty($email) || empty($senha)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Preencha e-mail e senha.']);
+        exit;
     }
 
-    // 2. Se não achou no cliente, tenta na de VENDEDORES
-    $sql_vendedor = "SELECT * FROM vendedores WHERE email = '$email'";
-    $res_vendedor = $conn->query($sql_vendedor);
+    // Escolhe a tabela certa
+    $tabela = ($tipo_usuario === 'vendedor') ? 'vendedores' : 'clientes';
 
-    if ($res_vendedor->num_rows > 0) {
-        $row = $res_vendedor->fetch_assoc();
-        if (password_verify($senha, $row['senha'])) {
-            $_SESSION['usuario_nome'] = $row['nome'];
-            $_SESSION['tipo'] = 'vendedor';
-            
-            // MUDE AQUI para o nome exato do seu arquivo de funcionário
-            echo "<script>alert('Bem-vindo Vendedor!'); window.location='tfuncionarios.php';</script>";
-            exit();
-        }
+    // Busca o usuário pelo e-mail (prepared statement — seguro)
+    $stmt = $conn->prepare("SELECT id, nome, senha FROM $tabela WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows === 0) {
+        // Usuário não existe
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail não cadastrado.']);
+        exit;
     }
 
-    // 3. Se chegou aqui, é porque não achou em nenhum ou a senha errou
-    echo "<script>alert('E-mail ou senha incorretos!'); window.history.back();</script>";
+    $usuario = $resultado->fetch_assoc();
+
+    // Verifica a senha
+    if (!password_verify($senha, $usuario['senha'])) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Senha incorreta.']);
+        exit;
+    }
+
+    // Login OK — salva na sessão
+    $_SESSION['cliente_id']   = $usuario['id'];
+    $_SESSION['usuario_nome'] = $usuario['nome'];
+    $_SESSION['tipo']         = $tipo_usuario;
+
+    $redirect = ($tipo_usuario === 'vendedor') ? 'tfuncionarios.php' : 'index.html';
+
+    echo json_encode([
+        'status'   => 'sucesso',
+        'mensagem' => 'Bem-vindo(a), ' . $usuario['nome'] . '!',
+        'redirect' => $redirect
+    ]);
+    exit;
 }
-$conn->close();
-?>
