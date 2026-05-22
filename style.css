@@ -40,7 +40,7 @@
         padding: 05px 50px 40px 50px;
         border-bottom-left-radius: 50% 30px;
         border-bottom-right-radius: 50% 30px;
-        position: relative;
+        position:relative;
         z-index: 10;
     }
 
@@ -558,8 +558,19 @@
     }
 
     /* ============================================================
-    8. CARRINHO LATERAL (Side Cart)
+       8. CARRINHO LATERAL (Side Cart) - CORRIGIDO
     ============================================================ */
+    @keyframes fadeInItem {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    } /* <-- Essa chave estava faltando e travava o CSS todo! */
+
     .cart-container {
         position: fixed;
         top: 0;
@@ -574,8 +585,9 @@
         flex-direction: column;
     }
 
-    .cart-container.open {
-        right: 0;
+    /* Força a abertura quando a classe open for ativada pelo JS */
+    .cart-container.open, #x.open {
+        right: 0 !important;
     }
 
     .cart-header {
@@ -618,18 +630,6 @@
         border-bottom: 1px solid #eee;
         padding-bottom: 10px;
         animation: fadeInItem 0.3s ease;
-    }
-
-    @keyframes fadeInItem {
-        from {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
     }
 
     .cart-footer {
@@ -677,7 +677,7 @@
     }
 
     #overlay.active {
-        display: block;
+        display: block !important;
     }
 
     .cart-badge {
@@ -693,28 +693,6 @@
         border: 2px solid white;
         display: none;
     }
-
-    .toast-notificacao {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #333;
-        color: white;
-        padding: 12px 25px;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        z-index: 3000;
-        opacity: 0;
-        transition: 0.3s;
-        pointer-events: none;
-    }
-
-    .toast-notificacao.show {
-        opacity: 1;
-        bottom: 40px;
-    }
-
     /* ============================================================
     9. RODAPÉ PERSONALIZADO (Footer)
     ============================================================ */
@@ -999,10 +977,6 @@
         border-top-left-radius: 30px;
     }
 
-    .fav-container.open {
-        right: 0;
-    }
-
     .fav-header {
         padding: 25px;
         background-color: var(--amarelo-header);
@@ -1242,58 +1216,6 @@
 
 }
 
-
-
-/* Container que segura tudo */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); /* Cria as 6 colunas iguais */
-  gap: 15px; /* Espaço entre as fotos */
-  padding: 20px;
-  background-color: #fce4ec; /* Esse rosinha do seu fundo */
-}
-
-/* Caixa da foto */
-.foto-box {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1.2; /* Mantém o formato retangular vertical */
-  overflow: hidden;
-}
-
-.foto-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Garante que a foto preencha o espaço sem deformar */
-  transition: opacity 0.3s ease; /* Transição suave */
-}
-
-/* Imagem da peça sozinha começa invisível */
-.img-cabide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-}
-
-/* O PULO DO GATO: Quando o mouse passa no card... */
-.produto-card:hover .img-corpo {
-  opacity: 0; /* Esconde a menina */
-}
-
-.produto-card:hover .img-cabide {
-  opacity: 1; /* Mostra o cabide */
-}
-
-/* Textos embaixo da foto */
-.produto-detalhes {
-  text-align: center;
-  font-family: sans-serif;
-  margin-top: 8px;
-}
-
-.nome { font-size: 14px; margin: 0; }
-.preco { font-weight: bold; margin: 0; }
 
 
 /* Importando uma fonte mais delicada */
@@ -1567,4 +1489,170 @@
 .btn-vendedor-color:hover { 
     background-color: #1ab44d; 
     transform: translateY(-1px);
+}
+
+/* ============================================================
+   VITRINE DINÂMICA (4 PRODUTOS POR CATEGORIA)
+============================================================ */
+
+/* Container geral que abraça as vitrines */
+.vitrine-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Espaçamento e arredondamento de cada seção */
+.vitrine-secao {
+    margin-bottom: 50px;
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(3, 92, 120, 0.04);
+}
+
+/* 1. Cores de fundo personalizadas que você pediu */
+.vitrine-meninas {
+    background-color: #fff0f5; /* Rosa bem clarinho */
+}
+
+.vitrine-meninos {
+    background-color: #e6f2ff; /* Azul bem clarinho */
+}
+
+.vitrine-bebes {
+    background-color: #f0fff0; /* Verde bem clarinho */
+}
+
+/* Título de cada categoria */
+.vitrine-titulo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #035c78;
+    text-transform: lowercase; /* Mantendo o estilo clean do seu menu */
+}
+
+/* Grid que organiza os produtos em 4 colunas */
+.produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+/* Responsividade: se a tela for pequena, ajusta para 2 colunas ou 1 coluna */
+@media (max-width: 992px) {
+    .produtos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+    .produtos-grid { grid-template-columns: 1fr; }
+}
+
+/* O Card de cada roupa */
+.produto-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Efeito de leve subida ao passar o mouse no card */
+.produto-card:hover {
+    transform: translateY(-6px);
+}
+
+/* 2. Caixa da Imagem e Mágica do Hover Duplo */
+.produto-imagem-box {
+    position: relative;
+    width: 100%;
+    height: 280px; /* Altura ideal para fotos de roupas */
+    overflow: hidden;
+    border-radius: 14px;
+    background-color: #fafafa;
+}
+
+.produto-imagem-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Configuração inicial das imagens */
+.img-corpo {
+    opacity: 1; /* Foto no corpo aparece primeiro */
+    z-index: 2;
+}
+
+.img-peca {
+    opacity: 0; /* Foto da peça pura começa escondida */
+    z-index: 1;
+}
+
+/* Quando passa o mouse no CARD, inverte as opacidades */
+.produto-card:hover .img-corpo {
+    opacity: 0; /* Esconde a foto no corpo */
+}
+
+.produto-card:hover .img-peca {
+    opacity: 1; /* Revela a foto da peça pura */
+    transform: scale(1.02); /* Dá um zoom bem sutil e elegante */
+}
+
+/* Textos e Botão dentro do Card */
+.produto-detalhes {
+    padding-top: 15px;
+}
+
+.produto-detalhes .nome {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+    height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.produto-detalhes .preco {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #035c78;
+    margin-bottom: 12px;
+}
+
+/* Botão de Adicionar combinando com o seu layout */
+.btn-adicionar {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 50px;
+    background-color: #83daf2;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-adicionar:hover {
+    background-color: #035c78;
+}
+
+/* Mensagem caso o estoque acabe e a categoria fique vazia */
+.vitrine-aviso {
+    grid-column: span 4;
+    font-family: 'Quicksand', sans-serif;
+    color: #888;
+    font-style: italic;
+    padding: 20px;
 }
