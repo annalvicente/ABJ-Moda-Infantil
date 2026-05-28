@@ -1,101 +1,52 @@
+// --- BANCO DE DADOS (LOCALSTORAGE) ---
+var produtosLoja = JSON.parse(localStorage.getItem('meusProdutos')) || [
+    { id: 1, nome: 'Conjunto Woody', preco: '79.99', img: 'img/fant_wood.webp', estoque: 10 },
+    { id: 2, nome: 'Pijama Confort', preco: '65.00', img: 'img/pij-duaskids.webp', estoque: 5 }
+];
+
 let totalCarrinho = 0;
 let quantidadeItens = 0;
 
-// Assim que a página abre, busca o que já está salvo no banco
-document.addEventListener("DOMContentLoaded", function() {
-    carregarCarrinho();
-});
-
-// --- 1. BUSCAR ITENS DO BANCO DE DADOS ---
-async function carregarCarrinho() {
+// --- FUNÇÕES DO CARRINHO ---
+function adicionarAoCarrinho(nome, preco) {
     const lista = document.getElementById('cart-items-list');
     if (!lista) return;
 
-    try {
-        const response = await fetch('acoescart.php?acao=listar');
-        const itens = await response.json();
+    const msgVazio = document.getElementById('empty-msg');
+    if (msgVazio) msgVazio.remove();
 
-        lista.innerHTML = '';
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'cart-item-single';
+    const precoNum = parseFloat(preco);
+    
+    itemDiv.innerHTML = `
+        <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span style="display:block; font-weight:700;">${nome}</span>
+                <small style="color: #ff69b4;">R$ ${precoNum.toFixed(2).replace('.', ',')}</small>
+            </div>
+            <i class="fa-solid fa-trash-can" onclick="removerItem(this, ${precoNum})" style="cursor:pointer; color:red;"></i>
+        </div>
+    `;
+    lista.appendChild(itemDiv);
+    totalCarrinho += precoNum;
+    quantidadeItens++;
+    atualizarInterface();
+}
+
+function removerItem(elemento, preco) {
+    elemento.closest('.cart-item-single').remove();
+    totalCarrinho -= parseFloat(preco);
+    quantidadeItens--;
+    
+    if (quantidadeItens <= 0) {
         totalCarrinho = 0;
-        quantidadeItens = 0;
-
-        if (!itens || itens.length === 0) {
-            lista.innerHTML = '<p id="empty-msg" style="text-align:center; margin-top:50px; color:#888;">Seu carrinho está vazio.</p>';
-            atualizarInterface();
-            return;
-        }
-
-        itens.forEach(item => {
-            const precoNum = parseFloat(item.preco);
-            const qtd = parseInt(item.quantidade);
-            const subtotal = precoNum * qtd;
-
-            totalCarrinho += subtotal;
-            quantidadeItens += qtd;
-
-            lista.innerHTML += `
-                <div class="cart-item-single" style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="img/${item.imagem}" style="width: 50px; height: 50px; border-radius: 5px; object-fit: cover;">
-                        <div>
-                            <span style="display:block; font-weight:700; color:#444;">${item.nome}</span>
-                            <small style="color: #ff69b4;">${qtd}x R$ ${precoNum.toFixed(2).replace('.', ',')}</small>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-trash-can" onclick="removerDoCarrinho(${item.id_carrinho})" style="cursor:pointer; color:red; margin-left: 15px;"></i>
-                </div>
-            `;
-        });
-
-        atualizarInterface();
-
-    } catch (error) {
-        console.error("Erro ao carregar o carrinho:", error);
+        const lista = document.getElementById('cart-items-list');
+        if (lista) lista.innerHTML = '<p id="empty-msg" style="text-align:center; margin-top:50px; color:#888;">Seu carrinho está vazio.</p>';
     }
+    atualizarInterface();
 }
 
-// --- 2. SALVAR NO BANCO DE DADOS ---
-async function adicionarAoCarrinho(produtoId) {
-    if (!produtoId) return;
-
-    const formData = new FormData();
-    formData.append('produto_id', produtoId);
-
-    try {
-        // Envia pro banco de dados via PHP
-        await fetch('acoescart.php?acao=adicionar', {
-            method: 'POST',
-            body: formData
-        });
-
-        // Recarrega a lista trazendo do banco atualizado
-        await carregarCarrinho();
-
-        // ABRE A BARRA LATERAL DO CARRINHO (IGUAL OS FAVORITOS FAZEM)
-        toggleCart();
-
-    } catch (error) {
-        console.error("Erro ao adicionar produto:", error);
-    }
-}
-
-// --- 3. DELETAR DO BANCO DE DADOS ---
-async function removerDoCarrinho(idCarrinho) {
-    const formData = new FormData();
-    formData.append('id_carrinho', idCarrinho);
-
-    try {
-        await fetch('acoescart.php?acao=remover', {
-            method: 'POST',
-            body: formData
-        });
-        carregarCarrinho();
-    } catch (error) {
-        console.error("Erro ao remover produto:", error);
-    }
-}
-
-// --- 4. ATUALIZAR INTERFACE (TOTAL E BADGE) ---
 function atualizarInterface() {
     const totalElemento = document.getElementById('cart-total-value');
     if (totalElemento) totalElemento.innerText = `R$ ${totalCarrinho.toFixed(2).replace('.', ',')}`;
@@ -107,33 +58,34 @@ function atualizarInterface() {
     }
 }
 
-// --- 5. LÓGICA DE ABRIR E FECHAR ---
+// --- FUNÇÃO PARA ABRIR / FECHAR O CARRINHO ---
 function toggleCart() {
     const carrinho = document.getElementById('x'); 
     const overlay = document.getElementById('overlay');
-    const favoritos = document.getElementById('favoritos-container');
     
-    if (favoritos) favoritos.classList.remove('open');
-
     if (carrinho) {
-        carrinho.classList.toggle('open');
+        // Verifica se o carrinho já está aberto na tela (right igual a 0px)
+        if (carrinho.style.right === '0px') {
+            carrinho.style.right = '-450px'; // Esconde de volta
+        } else {
+            carrinho.style.right = '0px';    // Puxa para a tela!
+        }
     }
     
     if (overlay) {
-        if (carrinho && carrinho.classList.contains('open')) {
-            overlay.classList.add('active');
-        } else {
-            overlay.classList.remove('active');
-        }
+        overlay.classList.toggle('active');
     }
 }
 
+// --- FUNÇÃO PARA FECHAR TUDO ---
 function fecharTudo() {
     const carrinho = document.getElementById('x');
-    const favoritos = document.getElementById('favoritos-container');
     const overlay = document.getElementById('overlay');
 
-    if (carrinho) carrinho.classList.remove('open');
-    if (favoritos) favorites.classList.remove('open');
-    if (overlay) overlay.classList.remove('active');
+    if (carrinho) {
+        carrinho.style.right = '-450px'; // Esconde o carrinho
+    }
+    if (overlay) {
+        overlay.classList.remove('active'); // Desativa o fundo escuro
+    }
 }
