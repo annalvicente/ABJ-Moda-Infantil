@@ -1,8 +1,7 @@
 <?php
-include 'conexao.php';
+include 'conexão.php';
 header('Content-Type: application/json');
 
-// Recebe os dados do JavaScript
 $dados = json_decode(file_get_contents('php://input'), true);
 
 if (!$dados) {
@@ -10,19 +9,17 @@ if (!$dados) {
     exit;
 }
 
-$tipo = $dados['tipo']; // 'cliente' ou 'vendedor'
+$tipo   = $dados['tipo'] ?? 'cliente';
 $tabela = ($tipo === 'cliente') ? 'clientes' : 'vendedores';
 
-// Prepara os dados
-$nome = $dados['nome'];
-$email = $dados['email'];
-$cpf = $dados['cpf'];
-$nascimento = $dados['nascimento'];
-$telefone = $dados['telefone'];
-$senha = password_hash($dados['senha'], PASSWORD_DEFAULT); // Criptografia de segurança
+$nome       = $dados['nome']       ?? '';
+$email      = $dados['email']      ?? '';
+$cpf        = $dados['cpf']        ?? '';
+$nascimento = $dados['nascimento'] ?? '';
+$telefone   = $dados['telefone']   ?? '';
+$senha      = password_hash($dados['senha'] ?? '', PASSWORD_DEFAULT);
 
-// Query SQL
-$sql = "INSERT INTO $tabela (nome, email, cpf, data_nascimento, telefone, senha) VALUES (?, ?, ?, ?, ?, ?)";
+$sql  = "INSERT INTO $tabela (nome, email, cpf, data_nascimento, telefone, senha) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ssssss", $nome, $email, $cpf, $nascimento, $telefone, $senha);
 
@@ -31,4 +28,3 @@ if ($stmt->execute()) {
 } else {
     echo json_encode(['status' => 'erro', 'mensagem' => $conn->error]);
 }
-?>

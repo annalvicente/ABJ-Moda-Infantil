@@ -1,95 +1,62 @@
 <?php
-include 'conexão.php'; // Aqui você define a variável $conn
+session_start();
 
-// 2. Receber os dados do formulário
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    $tipo = $_POST['tipo_form']; 
-
-    // --- CADASTRO DE CLIENTE ---
-    if ($tipo == 'cliente') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); 
-
-        $sql = "INSERT INTO clientes (nome, email, senha) VALUES ('$nome', '$email', '$senha')";
-
-        // CORREÇÃO: Trocado $conexao por $conn
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Cliente cadastrado com sucesso!'); window.location='index.html';</script>";
-        } else {
-            echo "Erro: " . $sql . "<br>" . $conn->error;
-        }
-    }
-
-    // --- CADASTRO DE VENDEDOR ---
-    if ($tipo == 'vendedor') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $cpf = $_POST['cpf'];
-        $data_nascimento = $_POST['data_nascimento'];
-        $telefone = $_POST['telefone'];
-        $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO vendedores (nome, email, cpf, data_nascimento, telefone, senha) 
-                VALUES ('$nome', '$email', '$cpf', '$data_nascimento', '$telefone', '$senha')";
-
-        // CORREÇÃO: Trocado $conexao por $conn
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Vendedor cadastrado com sucesso!'); window.location='tfuncionarios.html';</script>";
-        } else {
-            echo "Erro: " . $sql . "<br>" . $conn->error;
-        }
-    }
+if (!file_exists('conexão.php')) {
+    die(json_encode(['status' => 'erro', 'mensagem' => 'Arquivo conexão.php não encontrado!']));
 }
+require_once 'conexão.php';
 
-$conn->close(); // CORREÇÃO: Trocado para $conn
-?>
-
-<?php
-include 'conexão.php'; // Aqui você tem o $conn
+header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    // Pegando o tipo (cliente ou vendedor) do formulário
-    $tipo = $_POST['tipo_form']; 
+    $nome            = trim($_POST['nome']            ?? '');
+    $email           = trim($_POST['email']           ?? '');
+    $senha           = $_POST['senha']                ?? '';
+    $cpf             = trim($_POST['cpf']             ?? '');
+    $data_nascimento = $_POST['data_nascimento']      ?? '';
+    $telefone        = trim($_POST['telefone']        ?? '');
+    $tipo_usuario    = $_POST['tipo_form']            ?? 'cliente';
 
-    // --- CADASTRO DE CLIENTE ---
-    if ($tipo == 'cliente') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); 
-
-        $sql = "INSERT INTO clientes (nome, email, senha) VALUES ('$nome', '$email', '$senha')";
-
-        // USANDO $conn (que vem do conexão.php)
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Cliente cadastrado com sucesso!'); window.location='index.html';</script>";
-        } else {
-            echo "Erro ao cadastrar cliente: " . $conn->error;
-        }
+    // Validações básicas
+    if (empty($nome) || empty($email) || empty($senha)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Nome, e-mail e senha são obrigatórios.']);
+        exit;
     }
 
-    // --- CADASTRO DE VENDEDOR ---
-    if ($tipo == 'vendedor') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $cpf = $_POST['cpf'];
-        $data_nascimento = $_POST['data_nascimento'];
-        $telefone = $_POST['telefone'];
-        $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO vendedores (nome, email, cpf, data_nascimento, telefone, senha) 
-                VALUES ('$nome', '$email', '$cpf', '$data_nascimento', '$telefone', '$senha')";
-
-        // USANDO $conn
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Vendedor cadastrado com sucesso!'); window.location='tfuncionarios.html';</script>";
-        } else {
-            echo "Erro ao cadastrar vendedor: " . $conn->error;
-        }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail inválido.']);
+        exit;
     }
+
+    $tabela = ($tipo_usuario === 'vendedor') ? 'vendedores' : 'clientes';
+
+    // Verifica se e-mail já está cadastrado
+    $stmt_check = $conn->prepare("SELECT id FROM $tabela WHERE email = ?");
+    $stmt_check->bind_param("s", $email);
+    $stmt_check->execute();
+    $stmt_check->store_result();
+
+    if ($stmt_check->num_rows > 0) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Este e-mail já está cadastrado.']);
+        exit;
+    }
+
+    $senha_criptografada = password_hash($senha, PASSWORD_DEFAULT);
+
+    // Prepared statement — seguro contra SQL Injection
+    $stmt = $conn->prepare(
+        "INSERT INTO $tabela (nome, email, cpf, data_nascimento, telefone, senha)
+         VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    $stmt->bind_param("ssssss", $nome, $email, $cpf, $data_nascimento, $telefone, $senha_criptografada);
+
+    if ($stmt->execute()) {
+        $label = ($tipo_usuario === 'vendedor') ? 'Vendedor' : 'Cliente';
+        echo json_encode(['status' => 'sucesso', 'mensagem' => "Cadastro de $label realizado com sucesso!"]);
+    } else {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Erro ao salvar: ' . $conn->error]);
+    }
+    exit;
 }
 
-$conn->close();
-?>
+echo json_encode(['status' => 'erro', 'mensagem' => 'Requisição inválida.']);
