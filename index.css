@@ -1151,121 +1151,7 @@
     padding: 20px;
 }
 
-/* ================= VERSÃO ENXUTA DO MODAL ================= */
 
-/* Faz o fundo escuro cobrir o site todo */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-    /* Fica na frente de tudo */
-}
-
-/* Caixa branca do formulário - Super Arredondada e Delicada */
-.modal-box {
-    background: #fffff8;
-    padding: 35px;
-    border-radius: 24px;
-    /* Mais redondinho igual ao estilo infantil */
-    width: 90%;
-    max-width: 440px;
-    position: relative;
-    box-shadow: 0 12px 35px rgba(3, 92, 120, 0.12);
-    /* Sombra leve com o azul do site */
-    font-family: 'Quicksand', sans-serif;
-    border: 3px solid rgba(131, 218, 242, 0.2);
-    /* Borda sutil azulzinha */
-
-    /* Mantém a correção da rolagem interna */
-    max-height: 85vh;
-    overflow-y: auto;
-}
-
-/* Scrollbar (Barra de rolagem) bonitinha e fina para não quebrar o visual */
-.modal-box::-webkit-scrollbar {
-    width: 6px;
-}
-
-.modal-box::-webkit-scrollbar-track {
-    background: #f9fbfd;
-    border-radius: 10px;
-}
-
-.modal-box::-webkit-scrollbar-thumb {
-    background: #83daf2;
-    border-radius: 10px;
-}
-
-/* ============================================================
-   AJUSTE DO MODAL (COLE ISSO NO FINAL DO STYLE.CSS)
-   ============================================================ */
-
-/* A camada que cobre a tela toda */
-.modal-overlay {
-    position: fixed !important;    /* Tira do fluxo e fixa na tela */
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.7) !important; /* Fundo escuro */
-    display: none;                 /* Começa escondido, JS muda para flex */
-    justify-content: center !important;
-    align-items: center !important;
-    z-index: 999999 !important;    /* Fica na frente de TUDO */
-}
-
-/* A caixa branca onde fica o formulário */
-.modal-box {
-    background-color: white !important;
-    width: 90% !important;
-    max-width: 450px !important;
-    padding: 30px !important;
-    border-radius: 20px !important;
-    position: relative !important;
-    z-index: 1000000 !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
-    animation: surgindo 0.3s ease-out; /* Efeito de zoom ao abrir */
-}
-
-/* Modal de Feedback (sucesso/erro) */
-#feedbackModal.modal-overlay {
-    z-index: 1000001 !important; /* Fica acima do modal de login se precisar */
-}
-
-/* Animação para o modal não aparecer "seco" */
-@keyframes surgindo {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* Garante que o corpo do site não role quando o modal estiver aberto (opcional) */
-body.modal-open {
-    overflow: hidden;
-}
-
-/* O 'X' para fechar - Mais delicado e na cor do site */
-.close-modal {
-    position: absolute;
-    top: 18px;
-    right: 22px;
-    font-size: 1.6rem;
-    cursor: pointer;
-    color: #035c78;
-    opacity: 0.5;
-    transition: all 0.2s ease;
-}
-
-.close-modal:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
 
 /* Abas de Entrar / Cadastrar */
 .auth-tabs {
@@ -1429,3 +1315,161 @@ body.modal-open {
     position: relative !important;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
 }     
+
+/* ========================================================
+   ESTRUTURA BASE DOS MODAIS (Auth e Feedback)
+   ======================================================== */
+
+/* Isso vai resetar qualquer bloqueio e colocar o modal na sua frente */
+.modal-overlay, #feedbackModal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    
+    /* Centralização Absoluta */
+    display: none; 
+    justify-content: center !important;
+    align-items: center !important;
+    
+    /* Camada máxima */
+    z-index: 999999 !important;
+}
+
+/* Quando o modal estiver ativo */
+.modal-overlay[style*="display: flex"], 
+#feedbackModal.aberto {
+    display: flex !important;
+}
+
+.modal-box, .feedback-box {
+    background: #fff !important;
+    padding: 30px !important;
+    border-radius: 15px !important;
+    width: 90% !important;
+    max-width: 400px !important;
+    position: relative !important;
+    z-index: 1000000 !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* ========================================================
+   ESTILIZAÇÃO INTERNA (Abas e Botões)
+   ======================================================== */
+
+.auth-tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #999;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    color: #ff6b6b; /* Cor de destaque */
+    border-bottom: 3px solid #ff6b6b;
+}
+
+/* Botão de fechar (X) */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #333;
+    line-height: 1;
+}
+
+/* Inputs dentro do modal */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #ff6b6b;
+}
+
+/* Botão de envio */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #ff6b6b;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background: #ee5253;
+}
+
+/* Estilos específicos para o Feedback (Sucesso/Erro) */
+.feedback-box.sucesso { border-top: 8px solid #27ae60; }
+.feedback-box.erro { border-top: 8px solid #e74c3c; }
+
+.feedback-icone {
+    font-size: 50px;
+    margin-bottom: 15px;
+    display: block;
+    text-align: center;
+}
+
+#feedback-titulo {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#feedback-msg {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.btn-feedback-ok {
+    display: block;
+    width: 100px;
+    margin: 0 auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-feedback-ok.sucesso { background: #27ae60; }
+.btn-feedback-ok.erro { background: #e74c3c; }

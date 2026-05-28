@@ -160,7 +160,7 @@ $vitrines = [
     <!-- ========================================================
          MODAL DE AUTH (Login / Cadastro)
     ========================================================= -->
-    <div id="authModal" class="modal-overlay" style="display: none;">
+    <div id="authModal" class="modal-overlay">
         <div class="modal-box">
             <span class="close-modal" onclick="closeModal()">&times;</span>
 
@@ -288,19 +288,88 @@ $vitrines = [
     <script src="loja.js"></script>
     <script src="login.js"></script>
 
+    <style>
+        /* Estilo de emergência para o Modal de Feedback */
+        #feedbackModal {
+            display: none; /* Começa escondido, o JS ativa */
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: rgba(0, 0, 0, 0.8) !important;
+            z-index: 999999 !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        /* Quando o JS colocar a classe 'aberto' */
+        #feedbackModal.aberto {
+            display: flex !important;
+        }
+
+        .feedback-box {
+            background: white !important;
+            padding: 30px !important;
+            border-radius: 20px !important;
+            text-align: center !important;
+            max-width: 350px !important;
+            width: 90% !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            font-family: 'Quicksand', sans-serif !important;
+        }
+
+        .feedback-icone {
+            font-size: 50px !important;
+            display: block !important;
+            margin-bottom: 15px !important;
+        }
+
+        #feedback-titulo {
+            color: #333 !important;
+            margin-bottom: 10px !important;
+        }
+
+        .btn-feedback-ok {
+            background: #ff6b6b !important;
+            color: white !important;
+            border: none !important;
+            padding: 10px 40px !important;
+            border-radius: 10px !important;
+            cursor: pointer !important;
+            font-weight: bold !important;
+            margin-top: 15px !important;
+        }
+
+        /* Garante que o modal de Login também funcione */
+        .modal-overlay {
+            display: none;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: rgba(0, 0, 0, 0.8) !important;
+            z-index: 999998 !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+    </style>
+
     <script>
-    // Se voltar com erro ou sucesso, garante que o modal apareça no centro
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('login') || urlParams.has('cadastro')) {
-            const modal = document.getElementById('authModal');
-            if(modal) {
-                modal.style.display = 'flex'; // Força a exibição
-                modal.style.position = 'fixed'; // Força a flutuação
+            const modo = urlParams.has('cadastro') ? 'cadastro' : 'login';
+            if (typeof openModal === 'function') {
+                openModal(modo);
+            } else {
+                const modal = document.getElementById('authModal');
+                if(modal) modal.style.display = 'flex';
             }
         }
     });
-</script>
+    </script>
 
 
 </body>

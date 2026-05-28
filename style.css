@@ -1181,41 +1181,30 @@
 
 /* ================= VERSÃO ENXUTA DO MODAL ================= */
 
+/* Isso garante que ele fique ESCONDIDO e FORA do final da página */
 .modal-overlay {
-    position: fixed !important; /* Fixa na tela, não no fundo da página */
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.7) !important; /* Escurece o fundo */
-    display: none; /* O JavaScript muda para 'flex' quando você clica */
-    justify-content: center !important;
-    align-items: center !important;
-    z-index: 999999 !important; /* Coloca na frente de TODOS os elementos */
+    position: fixed;   /* Fixa na tela, não no final do site */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 99999;    /* Valor altíssimo para ignorar qualquer outro elemento */
+    display: none;     /* Começa escondido */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
 }
 
-/* Garante que a caixinha branca tenha um tamanho bom e não suma */
+/* Essa classe o seu JavaScript deve adicionar para mostrar o modal */
+.modal-overlay.active {
+    display: flex !important;
+}
+
 .modal-box {
-    position: relative !important;
-    background: white !important;
-    padding: 30px !important;
-    border-radius: 20px !important;
-    max-width: 450px !important;
-    width: 90% !important;
-    z-index: 1000000 !important;
-}
-
-/* Scrollbar (Barra de rolagem) bonitinha e fina para não quebrar o visual */
-.modal-box::-webkit-scrollbar {
-    width: 6px;
-}
-.modal-box::-webkit-scrollbar-track {
-    background: #f9fbfd;
-    border-radius: 10px;
-}
-.modal-box::-webkit-scrollbar-thumb {
-    background: #83daf2;
-    border-radius: 10px;
+    position: relative; /* Para o botão fechar funcionar */
+    z-index: 100000;
+    /* ... o restante do seu código ... */
 }
 
 /* O 'X' para fechar - Mais delicado e na cor do site */
