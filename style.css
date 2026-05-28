@@ -40,7 +40,7 @@
         padding: 05px 50px 40px 50px;
         border-bottom-left-radius: 50% 30px;
         border-bottom-right-radius: 50% 30px;
-        position: relative;
+        position:relative;
         z-index: 10;
     }
 
@@ -558,8 +558,19 @@
     }
 
     /* ============================================================
-    8. CARRINHO LATERAL (Side Cart)
+       8. CARRINHO LATERAL (Side Cart) - CORRIGIDO
     ============================================================ */
+    @keyframes fadeInItem {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    } /* <-- Essa chave estava faltando e travava o CSS todo! */
+
     .cart-container {
         position: fixed;
         top: 0;
@@ -574,8 +585,9 @@
         flex-direction: column;
     }
 
-    .cart-container.open {
-        right: 0;
+    /* Força a abertura quando a classe open for ativada pelo JS */
+    .cart-container.open, #x.open {
+        right: 0 !important;
     }
 
     .cart-header {
@@ -618,18 +630,6 @@
         border-bottom: 1px solid #eee;
         padding-bottom: 10px;
         animation: fadeInItem 0.3s ease;
-    }
-
-    @keyframes fadeInItem {
-        from {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
     }
 
     .cart-footer {
@@ -677,7 +677,7 @@
     }
 
     #overlay.active {
-        display: block;
+        display: block !important;
     }
 
     .cart-badge {
@@ -693,28 +693,6 @@
         border: 2px solid white;
         display: none;
     }
-
-    .toast-notificacao {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #333;
-        color: white;
-        padding: 12px 25px;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        z-index: 3000;
-        opacity: 0;
-        transition: 0.3s;
-        pointer-events: none;
-    }
-
-    .toast-notificacao.show {
-        opacity: 1;
-        bottom: 40px;
-    }
-
     /* ============================================================
     9. RODAPÉ PERSONALIZADO (Footer)
     ============================================================ */
@@ -999,10 +977,6 @@
         border-top-left-radius: 30px;
     }
 
-    .fav-container.open {
-        right: 0;
-    }
-
     .fav-header {
         padding: 25px;
         background-color: var(--amarelo-header);
@@ -1244,53 +1218,441 @@
 
 
 
-/* Container que segura tudo */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); /* Cria as 6 colunas iguais */
-  gap: 15px; /* Espaço entre as fotos */
-  padding: 20px;
-  background-color: #fce4ec; /* Esse rosinha do seu fundo */
+/* Importando uma fonte mais delicada */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap');
+
+.hero-banner {
+    background-color: #9cd6de; /* O azul claro do fundo */
+    border-radius: 40px; /* Bordas bem arredondadas como na imagem */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    margin: 20px;
 }
 
-/* Caixa da foto */
-.foto-box {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1.2; /* Mantém o formato retangular vertical */
-  overflow: hidden;
+.hero-content {
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
 
-.foto-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Garante que a foto preencha o espaço sem deformar */
-  transition: opacity 0.3s ease; /* Transição suave */
+.hero-image {
+    flex: 1;
+    line-height: 0; /* Remove espaços indesejados embaixo da foto */
 }
 
-/* Imagem da peça sozinha começa invisível */
-.img-cabide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
-/* O PULO DO GATO: Quando o mouse passa no card... */
+.hero-text {
+    flex: 1;
+    padding: 40px;
+    text-align: center; /* Centralizado como na imagem */
+    color: #444; /* Cinza suave */
+}
+
+.hero-text h2 {
+    font-size: 2.2rem; /* Tamanho equilibrado */
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    max-width: 80%; /* Para o texto não espalhar muito */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-banner {
+    display: inline-block;
+    background-color: rgba(255, 105, 180, 0.801);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: transform 0.2s;
+}
+
+.btn-banner:hover {
+    background-color: rgba(255, 105, 180, 0.7);;
+    transform: scale(1.05);
+}
+
+
+
+.carousel-track {
+    display: flex;
+    gap: 20px;
+    align-items: center; /* Garante que os itens se alinhem ao centro */
+}
+
+.card {
+    min-width: 300px; /* Defina uma largura mínima para o card aparecer */
+    height: 400px;    /* Defina uma altura para o card */
+    flex-shrink: 0;   /* ISSO É IMPORTANTE: impede que o carrossel esmague a imagem */
+    position: relative;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a imagem preencher o card sem distorcer */
+    display: block;    /* Remove espaços fantasmas embaixo da imagem */
+    border-radius: 20px;
+}
+
+
+
+/* ================= VERSÃO ENXUTA DO MODAL ================= */
+
+/* Faz o fundo escuro cobrir o site todo */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999; /* Fica na frente de tudo */
+}
+
+/* Caixa branca do formulário - Super Arredondada e Delicada */
+.modal-box {
+    background: #fffff8;
+    padding: 35px;
+    border-radius: 24px; /* Mais redondinho igual ao estilo infantil */
+    width: 90%;
+    max-width: 440px;
+    position: relative;
+    box-shadow: 0 12px 35px rgba(3, 92, 120, 0.12); /* Sombra leve com o azul do site */
+    font-family: 'Quicksand', sans-serif;
+    border: 3px solid rgba(131, 218, 242, 0.2); /* Borda sutil azulzinha */
+    
+    /* Mantém a correção da rolagem interna */
+    max-height: 85vh;    
+    overflow-y: auto;    
+}
+
+/* Scrollbar (Barra de rolagem) bonitinha e fina para não quebrar o visual */
+.modal-box::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-box::-webkit-scrollbar-track {
+    background: #f9fbfd;
+    border-radius: 10px;
+}
+.modal-box::-webkit-scrollbar-thumb {
+    background: #83daf2;
+    border-radius: 10px;
+}
+
+/* O 'X' para fechar - Mais delicado e na cor do site */
+.close-modal {
+    position: absolute;
+    top: 18px; right: 22px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #035c78;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+}
+.close-modal:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Abas de Entrar / Cadastrar */
+.auth-tabs { 
+    display: flex; 
+    border-bottom: 2px solid #e1f5fa; 
+    margin-bottom: 25px; 
+}
+.tab-btn { 
+    flex: 1; 
+    background: none; 
+    border: none; 
+    padding: 12px; 
+    font-size: 1.05rem;
+    font-weight: 700; 
+    cursor: pointer; 
+    color: #a0a0a0; 
+    font-family: 'Quicksand', sans-serif;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.tab-btn.active { 
+    color: #035c78; 
+    border-bottom: 4px solid #035c78; /* Barra marcante no azul do cabeçalho */
+}
+
+/* Botões Cliente / Vendedor - Estilo Pílula Fofa */
+.user-type-toggle { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 25px; 
+    background: #f0f9fc; /* Fundo azul bem clarinho acolhedor */
+    padding: 6px;
+    border-radius: 30px;
+}
+.type-btn { 
+    flex: 1; 
+    padding: 10px 15px; 
+    border: none; 
+    background: transparent; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    font-weight: 700; 
+    font-family: 'Quicksand', sans-serif;
+    color: #035c78;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+.type-btn.active { 
+    background: #035c78; 
+    color: white; 
+    box-shadow: 0 4px 10px rgba(3, 92, 120, 0.2);
+}
+
+/* Inputs do Form - Bordas suaves e cores combinando */
+.input-group { 
+    margin-bottom: 18px; 
+    display: flex; 
+    flex-direction: column; 
+}
+.input-group label { 
+    font-size: 0.9rem; 
+    margin-bottom: 6px; 
+    font-weight: 700; 
+    color: #035c78; /* Textos em azul escuro */
+}
+.input-group input { 
+    padding: 14px; 
+    border: 2px solid #e1f5fa; 
+    border-radius: 12px; /* Inputs fofinhos e redondos */
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.95rem;
+    color: #333;
+    outline: none;
+    background: #fbfdfe;
+    transition: all 0.2s ease;
+}
+.input-group input:focus {
+    border-color: #83daf2;
+    box-shadow: 0 0 8px rgba(131, 218, 242, 0.4);
+    background: #ffffff;
+}
+
+/* Botões de Enviar - Estilo Arredondado Forte */
+.btn-submit { 
+    width: 100%; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 25px; /* Formato pílula */
+    color: white; 
+    font-weight: 700; 
+    font-size: 1rem;
+    cursor: pointer; 
+    margin-top: 10px; 
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+/* Rosa Chiclete para Clientes (Combina com o "Meninas") */
+.btn-cliente-color { 
+    background-color: #e94d76; 
+    box-shadow: 0 4px 12px rgba(233, 77, 118, 0.25);
+}
+.btn-cliente-color:hover { 
+    background-color: #dc059b; 
+    transform: translateY(-1px);
+}
+
+/* Verde Alegre para Vendedores (Combina com o "Meninos") */
+.btn-vendedor-color { 
+    background-color: #27ae60; 
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+}
+.btn-vendedor-color:hover { 
+    background-color: #1ab44d; 
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   VITRINE DINÂMICA (4 PRODUTOS POR CATEGORIA)
+============================================================ */
+
+/* Container geral que abraça as vitrines */
+.vitrine-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Espaçamento e arredondamento de cada seção */
+.vitrine-secao {
+    margin-bottom: 50px;
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(3, 92, 120, 0.04);
+}
+
+/* 1. Cores de fundo personalizadas que você pediu */
+.vitrine-meninas {
+    background-color: #fff0f5; /* Rosa bem clarinho */
+}
+
+.vitrine-meninos {
+    background-color: #e6f2ff; /* Azul bem clarinho */
+}
+
+.vitrine-bebes {
+    background-color: #f0fff0; /* Verde bem clarinho */
+}
+
+/* Título de cada categoria */
+.vitrine-titulo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #035c78;
+    text-transform: lowercase; /* Mantendo o estilo clean do seu menu */
+}
+
+/* Grid que organiza os produtos em 4 colunas */
+.produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+/* Responsividade: se a tela for pequena, ajusta para 2 colunas ou 1 coluna */
+@media (max-width: 992px) {
+    .produtos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+    .produtos-grid { grid-template-columns: 1fr; }
+}
+
+/* O Card de cada roupa */
+.produto-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Efeito de leve subida ao passar o mouse no card */
+.produto-card:hover {
+    transform: translateY(-6px);
+}
+
+/* 2. Caixa da Imagem e Mágica do Hover Duplo */
+.produto-imagem-box {
+    position: relative;
+    width: 100%;
+    height: 280px; /* Altura ideal para fotos de roupas */
+    overflow: hidden;
+    border-radius: 14px;
+    background-color: #fafafa;
+}
+
+.produto-imagem-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Configuração inicial das imagens */
+.img-corpo {
+    opacity: 1; /* Foto no corpo aparece primeiro */
+    z-index: 2;
+}
+
+.img-peca {
+    opacity: 0; /* Foto da peça pura começa escondida */
+    z-index: 1;
+}
+
+/* Quando passa o mouse no CARD, inverte as opacidades */
 .produto-card:hover .img-corpo {
-  opacity: 0; /* Esconde a menina */
+    opacity: 0; /* Esconde a foto no corpo */
 }
 
-.produto-card:hover .img-cabide {
-  opacity: 1; /* Mostra o cabide */
+.produto-card:hover .img-peca {
+    opacity: 1; /* Revela a foto da peça pura */
+    transform: scale(1.02); /* Dá um zoom bem sutil e elegante */
 }
 
-/* Textos embaixo da foto */
+/* Textos e Botão dentro do Card */
 .produto-detalhes {
-  text-align: center;
-  font-family: sans-serif;
-  margin-top: 8px;
+    padding-top: 15px;
 }
 
-.nome { font-size: 14px; margin: 0; }
-.preco { font-weight: bold; margin: 0; }
+.produto-detalhes .nome {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+    height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.produto-detalhes .preco {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #035c78;
+    margin-bottom: 12px;
+}
+
+/* Botão de Adicionar combinando com o seu layout */
+.btn-adicionar {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 50px;
+    background-color: #83daf2;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-adicionar:hover {
+    background-color: #035c78;
+}
+
+/* Mensagem caso o estoque acabe e a categoria fique vazia */
+.vitrine-aviso {
+    grid-column: span 4;
+    font-family: 'Quicksand', sans-serif;
+    color: #888;
+    font-style: italic;
+    padding: 20px;
+}

@@ -57,3 +57,35 @@ function atualizarInterface() {
         badge.style.display = quantidadeItens > 0 ? 'block' : 'none';
     }
 }
+
+// --- FUNÇÃO PARA ABRIR / FECHAR O CARRINHO ---
+function toggleCart() {
+    const carrinho = document.getElementById('x'); 
+    const overlay = document.getElementById('overlay');
+    
+    if (carrinho) {
+        // Verifica se o carrinho já está aberto na tela (right igual a 0px)
+        if (carrinho.style.right === '0px') {
+            carrinho.style.right = '-450px'; // Esconde de volta
+        } else {
+            carrinho.style.right = '0px';    // Puxa para a tela!
+        }
+    }
+    
+    if (overlay) {
+        overlay.classList.toggle('active');
+    }
+}
+
+// --- FUNÇÃO PARA FECHAR TUDO ---
+function fecharTudo() {
+    const carrinho = document.getElementById('x');
+    const overlay = document.getElementById('overlay');
+
+    if (carrinho) {
+        carrinho.style.right = '-450px'; // Esconde o carrinho
+    }
+    if (overlay) {
+        overlay.classList.remove('active'); // Desativa o fundo escuro
+    }
+}
