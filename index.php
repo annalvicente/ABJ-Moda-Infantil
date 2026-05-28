@@ -43,13 +43,13 @@ $vitrines = [
                     <i class="fa-regular fa-user"></i>
                 </a>
 
-            <a href="javascript:void(0);" onclick="toggleCart()">
-                <i class="fa-solid fa-basket-shopping"></i>
-            </a>
-
-                <div onclick="toggleFavoritos()" title="Meus Favoritos">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
+            <div class="menu-icons">
+                <a href="javascript:void(0);" onclick="toggleFavoritos()"><i class="fa-solid fa-heart"></i></a>
+                <a href="javascript:void(0);" onclick="toggleCart()">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </a>
+            </div>
 
                 <a href="#contato" title="Chat">
                     <i class="fa-regular fa-comment"></i>

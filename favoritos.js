@@ -79,3 +79,30 @@ async function adicionarFavoritosAoCarrinho() {
 
 // Inicializa a lista
 document.addEventListener('DOMContentLoaded', carregarFavoritos);
+
+// --- FUNÇÃO PARA ABRIR / FECHAR OS FAVORITOS ---
+function toggleFavoritos() {
+    const favoritos = document.getElementById('favoritos-container');
+    const overlay = document.getElementById('overlay');
+    const carrinho = document.getElementById('x');
+
+    // Se o carrinho estiver aberto, fecha-o primeiro
+    if (carrinho) carrinho.classList.remove('open');
+
+    if (favoritos) {
+        favoritos.classList.toggle('open');
+    }
+
+    if (overlay) {
+        if (favoritos && favoritos.classList.contains('open')) {
+            overlay.classList.add('active');
+        } else {
+            overlay.classList.remove('active');
+        }
+    }
+}
+
+// Executa a carga dos favoritos assim que a página inicia
+document.addEventListener("DOMContentLoaded", () => {
+    carregarFavoritos();
+});
