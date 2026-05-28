@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['usuario_nome'] = $usuario['nome'];
     $_SESSION['tipo']         = $tipo_usuario;
 
-    $redirect = ($tipo_usuario === 'vendedor') ? 'tfuncionarios.php' : 'index.html';
+    $redirect = ($tipo_usuario === 'vendedor') ? 'tfuncionarios.php' : 'index.php';
 
     echo json_encode([
         'status'   => 'sucesso',

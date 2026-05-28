@@ -20,11 +20,11 @@ $vitrines = [
     <title>ABJ - Moda Infantil</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 
 </head>
 
-<body>
+<body>  
 
     <header>
         <div class="nav-container">
@@ -34,7 +34,7 @@ $vitrines = [
                 <a href="#" class="menu-links-bebes">bebês</a>
             </nav>
 
-            <a href="index.html" class="logo">
+            <a href="index.php" class="logo">
                 <img src="img/logoabj.webp" alt="Balão Logo">
             </a>
 
@@ -239,14 +239,14 @@ $vitrines = [
     <!-- ========================================================
          MODAL DE FEEDBACK (Sucesso / Erro)
     ========================================================= -->
-    <div id="feedbackModal">
-        <div class="feedback-box" id="feedback-box">
-            <span class="feedback-icone" id="feedback-icone"></span>
-            <h3 id="feedback-titulo"></h3>
-            <p id="feedback-msg"></p>
-            <button class="btn-feedback-ok" id="btn-feedback-ok" onclick="fecharFeedback()">OK</button>
-        </div>
+<div id="feedbackModal">
+    <div class="feedback-box" id="feedback-box">
+        <span class="feedback-icone" id="feedback-icone"></span>
+        <h3 id="feedback-titulo"></h3>
+        <p id="feedback-msg"></p>
+        <button class="btn-feedback-ok" id="btn-feedback-ok" onclick="fecharFeedback()">OK</button>
     </div>
+</div>
 
     <!-- Carrinho Lateral -->
     <div id="x" class="cart-container">
@@ -287,6 +287,20 @@ $vitrines = [
     <script src="favoritos.js"></script>
     <script src="loja.js"></script>
     <script src="login.js"></script>
+
+    <script>
+    // Se voltar com erro ou sucesso, garante que o modal apareça no centro
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('login') || urlParams.has('cadastro')) {
+            const modal = document.getElementById('authModal');
+            if(modal) {
+                modal.style.display = 'flex'; // Força a exibição
+                modal.style.position = 'fixed'; // Força a flutuação
+            }
+        }
+    });
+</script>
 
 
 </body>

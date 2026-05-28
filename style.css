@@ -557,142 +557,7 @@
         color: #aaa;
     }
 
-    /* ============================================================
-       8. CARRINHO LATERAL (Side Cart) - CORRIGIDO
-    ============================================================ */
-    @keyframes fadeInItem {
-        from {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    } /* <-- Essa chave estava faltando e travava o CSS todo! */
-
-    .cart-container {
-        position: fixed;
-        top: 0;
-        right: -450px;
-        width: 380px;
-        height: 100%;
-        background: #fff;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        z-index: 2000;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Força a abertura quando a classe open for ativada pelo JS */
-    .cart-container.open, #x.open {
-        right: 0 !important;
-    }
-
-    .cart-header {
-        padding: 25px;
-        background-color: var(--azul-banner);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: #333;
-    }
-
-    .cart-header h3 {
-        font-weight: 700;
-        font-size: 1.2rem;
-    }
-
-    .close-btn {
-        background: none;
-        border: none;
-        font-size: 1.8rem;
-        color: #333;
-        cursor: pointer;
-        line-height: 1;
-    }
-
-    .cart-items {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .cart-item-single {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        animation: fadeInItem 0.3s ease;
-    }
-
-    .cart-footer {
-        padding: 25px;
-        border-top: 1px solid #eee;
-        background: #fdfdfd;
-    }
-
-    .cart-total {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        font-weight: 700;
-        font-size: 1.1rem;
-    }
-
-    .checkout-btn {
-        width: 100%;
-        padding: 15px;
-        background-color: var(--amarelo-header);
-        border: none;
-        border-radius: 50px;
-        font-weight: bold;
-        color: var(--texto-marrom);
-        cursor: pointer;
-        font-size: 1rem;
-        transition: 0.2s;
-    }
-
-    .checkout-btn:hover {
-        filter: brightness(0.9);
-        transform: scale(1.02);
-    }
-
-    #overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1999;
-        backdrop-filter: blur(2px);
-    }
-
-    #overlay.active {
-        display: block !important;
-    }
-
-    .cart-badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background-color: #ff69b4;
-        color: white;
-        font-size: 0.7rem;
-        font-weight: bold;
-        border-radius: 50%;
-        padding: 2px 6px;
-        border: 2px solid white;
-        display: none;
-    }
+   
     /* ============================================================
     9. RODAPÉ PERSONALIZADO (Footer)
     ============================================================ */
@@ -1316,32 +1181,28 @@
 
 /* ================= VERSÃO ENXUTA DO MODAL ================= */
 
-/* Faz o fundo escuro cobrir o site todo */
 .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999; /* Fica na frente de tudo */
+    position: fixed !important; /* Fixa na tela, não no fundo da página */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.7) !important; /* Escurece o fundo */
+    display: none; /* O JavaScript muda para 'flex' quando você clica */
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 999999 !important; /* Coloca na frente de TODOS os elementos */
 }
 
-/* Caixa branca do formulário - Super Arredondada e Delicada */
+/* Garante que a caixinha branca tenha um tamanho bom e não suma */
 .modal-box {
-    background: #fffff8;
-    padding: 35px;
-    border-radius: 24px; /* Mais redondinho igual ao estilo infantil */
-    width: 90%;
-    max-width: 440px;
-    position: relative;
-    box-shadow: 0 12px 35px rgba(3, 92, 120, 0.12); /* Sombra leve com o azul do site */
-    font-family: 'Quicksand', sans-serif;
-    border: 3px solid rgba(131, 218, 242, 0.2); /* Borda sutil azulzinha */
-    
-    /* Mantém a correção da rolagem interna */
-    max-height: 85vh;    
-    overflow-y: auto;    
+    position: relative !important;
+    background: white !important;
+    padding: 30px !important;
+    border-radius: 20px !important;
+    max-width: 450px !important;
+    width: 90% !important;
+    z-index: 1000000 !important;
 }
 
 /* Scrollbar (Barra de rolagem) bonitinha e fina para não quebrar o visual */
@@ -1655,4 +1516,123 @@
     color: #888;
     font-style: italic;
     padding: 20px;
+}
+
+
+
+/* ============================================================
+   15. MODAL DE FEEDBACK (Sucesso / Erro)
+============================================================ */
+
+/* Fundo escuro que cobre tudo — igual ao .modal-overlay do auth */
+#feedbackModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(3px);
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+}
+
+/* Quando a classe .aberto for adicionada via JS, exibe o modal */
+#feedbackModal.aberto {
+    display: flex;
+}
+
+/* Caixinha de feedback — mesma linguagem do .modal-box */
+.feedback-box {
+    background: #fffff8;
+    border-radius: 24px;
+    padding: 40px 35px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(3, 92, 120, 0.18);
+    border: 3px solid rgba(131, 218, 242, 0.25);
+    font-family: 'Quicksand', sans-serif;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Ícone grande */
+.feedback-icone {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Sucesso = verde do site / Erro = rosa do site */
+.feedback-box.sucesso .feedback-icone { color: #1ab44d; }
+.feedback-box.erro    .feedback-icone { color: #e94d76; }
+
+#feedback-titulo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #035c78;
+    margin-bottom: 10px;
+}
+
+#feedback-msg {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Botão OK — mesmo padrão pílula do resto do modal */
+.btn-feedback-ok {
+    padding: 12px 40px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.btn-feedback-ok.sucesso {
+    background-color: #1ab44d;
+    box-shadow: 0 4px 12px rgba(26, 180, 77, 0.25);
+}
+.btn-feedback-ok.sucesso:hover { background-color: #27ae60; transform: translateY(-1px); }
+
+.btn-feedback-ok.erro {
+    background-color: #e94d76;
+    box-shadow: 0 4px 12px rgba(233, 77, 118, 0.25);
+}
+.btn-feedback-ok.erro:hover { background-color: #dc059b; transform: translateY(-1px); }
+
+
+
+
+/* FORÇAR MODAL NO CENTRO DA TELA */
+#authModal.modal-overlay, 
+#feedbackModal.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    display: none; /* O JS muda para flex */
+    justify-content: center !important;
+    align-items: center !important;
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    z-index: 999999 !important;
+}
+
+/* Garante que a caixa branca apareça */
+.modal-box, #feedback-box {
+    position: relative !important;
+    background: white !important;
+    z-index: 1000000 !important;
+    margin: auto !important;
+    padding: 30px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
 }
