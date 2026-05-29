@@ -14,10 +14,11 @@ function openModal(mode = 'login') {
     
     const modal = document.getElementById('authModal');
     if (modal) {
-        // Força o posicionamento e exibição
+        // Força a exibição removendo bloqueios de CSS
         modal.style.display = 'flex';
+        modal.classList.add('aberto'); 
         
-        // Trava o scroll do site ao fundo para o usuário não se perder
+        // Trava o scroll do site
         document.body.style.overflow = 'hidden';
         
         // Define se abre em Login ou Cadastro
@@ -29,6 +30,8 @@ function closeModal() {
     const modal = document.getElementById('authModal');
     if (modal) {
         modal.style.display = 'none';
+        modal.classList.remove('aberto');
+        
         // Devolve o scroll ao site
         document.body.style.overflow = 'auto';
         limparErrosCampos();
@@ -37,9 +40,14 @@ function closeModal() {
 
 // Fechar modal ao clicar na área escura (overlay)
 window.addEventListener('click', function (event) {
-    const modal = document.getElementById('authModal');
-    if (event.target === modal) {
+    const authModal = document.getElementById('authModal');
+    const feedbackModal = document.getElementById('feedbackModal');
+    
+    if (event.target === authModal) {
         closeModal();
+    }
+    if (event.target === feedbackModal) {
+        fecharFeedback();
     }
 });
 
@@ -62,34 +70,39 @@ function switchAuthMode(mode) {
     if (formCad) formCad.style.display = isLogin ? 'none' : 'block';
 }
 
-// Configura se é Cliente ou Vendedor (ajustando cores e inputs hidden)
+// Configura se é Cliente ou Vendedor
 function setUserType(type) {
     currentType = type;
     const isCliente = type === 'cliente';
 
-    // Ajusta botões de seleção de tipo
     document.getElementById('btn-tipo-cliente')?.classList.toggle('active', isCliente);
     document.getElementById('btn-tipo-vendedor')?.classList.toggle('active', !isCliente);
 
-    // Atualiza os inputs hidden nos formulários
     document.querySelectorAll('.input-tipo-usuario').forEach(input => {
         input.value = type;
     });
 
-    // Ajusta visual dos botões de submit
     const btnLogin = document.getElementById('btn-submit-login');
     const btnCad = document.getElementById('btn-submit-cadastro');
 
     if (isCliente) {
-        btnLogin?.classList.replace('btn-vendedor-color', 'btn-cliente-color');
-        btnCad?.classList.replace('btn-vendedor-color', 'btn-cliente-color');
-        if (btnLogin) btnLogin.innerText = "ENTRAR COMO CLIENTE";
-        if (btnCad) btnCad.innerText = "CADASTRAR CLIENTE";
+        if (btnLogin) {
+            btnLogin.classList.replace('btn-vendedor-color', 'btn-cliente-color');
+            btnLogin.innerText = "ENTRAR COMO CLIENTE";
+        }
+        if (btnCad) {
+            btnCad.classList.replace('btn-vendedor-color', 'btn-cliente-color');
+            btnCad.innerText = "CADASTRAR CLIENTE";
+        }
     } else {
-        btnLogin?.classList.replace('btn-cliente-color', 'btn-vendedor-color');
-        btnCad?.classList.replace('btn-cliente-color', 'btn-vendedor-color');
-        if (btnLogin) btnLogin.innerText = "ENTRAR COMO VENDEDOR";
-        if (btnCad) btnCad.innerText = "CADASTRAR VENDEDOR";
+        if (btnLogin) {
+            btnLogin.classList.replace('btn-cliente-color', 'btn-vendedor-color');
+            btnLogin.innerText = "ENTRAR COMO VENDEDOR";
+        }
+        if (btnCad) {
+            btnCad.classList.replace('btn-cliente-color', 'btn-vendedor-color');
+            btnCad.innerText = "CADASTRAR VENDEDOR";
+        }
     }
 }
 
@@ -110,17 +123,17 @@ function mostrarFeedback(tipo, titulo, mensagem, redirectUrl = null) {
     mensagemEl.innerText = mensagem;
     pendingRedirect = redirectUrl;
 
-    // Ajusta cores do alerta
+    // Ajusta cores e classes
     box.className = 'feedback-box ' + tipo;
     if (btnOk) btnOk.className = 'btn-feedback-ok ' + tipo;
 
     if (icone) {
         icone.innerHTML = tipo === 'sucesso'
-            ? '<i class="fa-solid fa-circle-check" style="color: #27ae60;"></i>'
-            : '<i class="fa-solid fa-circle-xmark" style="color: #e74c3c;"></i>';
+            ? '<i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 3rem;"></i>'
+            : '<i class="fa-solid fa-circle-xmark" style="color: #e74c3c; font-size: 3rem;"></i>';
     }
 
-    // Exibe o modal de feedback
+    // Exibe o modal
     modal.style.display = 'flex';
     modal.classList.add('aberto');
     document.body.style.overflow = 'hidden';
@@ -131,11 +144,12 @@ function fecharFeedback() {
     if (modal) {
         modal.style.display = 'none';
         modal.classList.remove('aberto');
-        if (!pendingRedirect) document.body.style.overflow = 'auto';
-    }
-
-    if (pendingRedirect) {
-        window.location.href = pendingRedirect;
+        
+        if (!pendingRedirect) {
+            document.body.style.overflow = 'auto';
+        } else {
+            window.location.href = pendingRedirect;
+        }
     }
 }
 
@@ -147,7 +161,7 @@ async function enviarLogin(event) {
 
     const form = document.getElementById('form-login');
     const formData = new FormData(form);
-    const btn = form.querySelector('button[type="submit"]');
+    const btn = document.getElementById('btn-submit-login');
 
     if (btn) {
         btn.innerText = "Validando...";
@@ -223,9 +237,11 @@ function limparErrosCampos() {
 }
 
 function fecharTudo() {
-    // Fecha menus laterais se existirem
+    // Fecha menus laterais, carrinhos, etc.
     document.getElementById('x')?.classList.remove('open', 'active');
     document.getElementById('favoritos-container')?.classList.remove('open');
     document.getElementById('overlay')?.classList.remove('active');
-    document.getElementById('overlay')?.style.setProperty('display', 'none');
+    
+    const overlay = document.getElementById('overlay');
+    if(overlay) overlay.style.display = 'none';
 }

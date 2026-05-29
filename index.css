@@ -328,233 +328,205 @@
         right: -20px;
     }
 
-    /* ============================================================
-    7. TELAS DE LOGIN E CADASTRO (Botões de Troca/Toggle)
-    ============================================================ */
-.cadastro-wrap {
-    max-width: 400px;
-    margin: 50px auto;
-    text-align: center;
-    background: white;
+/* ============================================================
+   MODAL DE AUTH (Mantendo suas classes originais)
+   ============================================================ */
+
+.modal-overlay {
+    position: fixed !important;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5) !important; /* Escurecimento suave */
+    display: none; /* Controlado pelo JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(2px);
+}
+
+/* .modal-box {
+    background: #fff;
+    width: 90%;
+    max-width: 480px;
     padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-    border: 1px solid #fcfcfc;
+    border-radius: 25px; /* Cantos arredondados das fotos *
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    text-align: center;
+} */
+
+.modal-box {
+    /* ... suas outras propriedades ... */
+    
+    max-height: 90vh;    /* Não deixa o modal ser maior que 90% da altura da tela */
+    overflow-y: auto;    /* Ativa o scroll vertical se o conteúdo passar do limite */
+    scrollbar-width: thin; /* Deixa a barrinha de scroll mais elegante (Firefox) */
 }
 
-.cadastro-wrap h2 {
-    margin-bottom: 20px;
-    color: var(--texto-marrom);
+/* Opcional: Estilizar a barra de scroll para ficar bonitinha no Chrome/Edge */
+.modal-box::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-box::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
 }
 
+/* O "X" de fechar */
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+/* Abas: Acessar Conta / Criar Conta */
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f2f2f2;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ccc;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.tab-btn.active {
+    color: #074a46; /* Cor do texto ativo */
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #1b6d91; /* Linha azul de destaque */
+    border-radius: 10px;
+}
+
+/* Toggle: Sou Cliente / Sou Vendedor */
+.user-type-toggle {
+    display: flex;
+    background: #f0f7f9;
+    padding: 6px;
+    border-radius: 50px;
+    margin-bottom: 25px;
+    gap: 5px;
+}
+
+.type-btn {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+    color: #1b6d91;
+    transition: all 0.3s ease;
+}
+
+.type-btn.active {
+    background: #005a7d; /* Azul escuro do botão selecionado */
+    color: #fff;
+}
+
+/* Grupos de Input */
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     text-align: left;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-size: 0.9rem;
-    font-weight: bold;
-    color: #888;
+    font-weight: 700;
+    color: #444;
 }
 
 .input-group input {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #eee;
-    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid #e0eef2;
+    border-radius: 12px;
+    font-size: 1rem;
     outline: none;
+    transition: border-color 0.3s;
 }
 
 .input-group input:focus {
-    border-color: var(--amarelo-header);
+    border-color: #1b6d91;
 }
 
+/* Mensagem de erro embaixo do input */
+.erro-campo {
+    display: block; /* Mude para none no JS se quiser esconder */
+    font-size: 0.85rem;
+    color: #999; /* Cinza claro como na foto */
+    margin-top: 5px;
+}
+
+/* Botão Principal Rosa/Verde */
 .btn-submit {
     width: 100%;
-    padding: 15px;
+    padding: 18px;
     border: none;
-    border-radius: 50px;
-    background: var(--azul-banner);
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: transform 0.2s;
-}
-
-.btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(176, 220, 232, 0.8);
-}
-
-.toggle-buttons {
-    display: flex !important;
-    justify-content: center !important;
-    gap: 20px !important;
-    margin-bottom: 30px !important;
-    background: transparent !important;
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    width: 100% !important;
-}
-
-.toggle-btn {
-    flex: 1 !important;
-    max-width: 160px !important;
-    padding: 12px 15px !important;
-    border: none !important;
-    background-color: #f2f2f2 !important;
-    color: #999 !important;
-    font-weight: 700 !important;
-    font-size: 1rem !important;
-    border-radius: 50px !important;
-    cursor: pointer !important;
-    transition: all 0.3s ease !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.toggle-btn.active {
-    background-color: var(--azul-banner) !important;
-    color: #333 !important;
-    box-shadow: 0 4px 12px rgba(176, 220, 232, 0.5) !important;
-}
-
-.toggle-btn:hover:not(.active) {
-    background-color: #dceef3 !important;
-    transform: translateY(-2px) !important;
-    color: #003747 !important;
-}
-
-.toggle-btn.active:hover {
-    filter: brightness(0.95) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 15px rgba(188, 211, 217, 0.6) !important;
-}
-
-.form-section {
-    display: none;
-    animation: fadeIn 0.5s;
-}
-
-.form-section.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.login-box {
-    max-width: 400px;
-    margin: 80px auto;
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    text-align: center;
-}
-
-.login-box h2 {
-    color: var(--texto-marrom);
-    margin-bottom: 30px;
-    font-size: 1.5rem;
-}
-
-.login-input {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 15px;
-    background-color: #f2f2f2;
-    border: 2px solid transparent;
-    border-radius: 5px;
+    border-radius: 50px; /* Estilo pílula */
+    font-weight: 700;
     font-size: 1rem;
-    outline: none;
-    transition: all 0.3s;
-    color: #555;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 10px;
+    transition: transform 0.2s, filter 0.2s;
 }
 
-.login-input:focus {
-    border-color: var(--azul-banner);
-    background-color: #fff;
+.btn-submit:active {
+    transform: scale(0.98);
 }
 
-.btn-login {
+/* Cores dinâmicas mantendo suas classes */
+.btn-cliente-color {
+    background-color: #f4628a !important; /* Rosa da foto */
+}
+
+.btn-vendedor-color {
+    background-color: #2cb672 !important; /* Verde da foto */
+}
+
+/* Feedback Modal (seguindo o mesmo estilo) */
+#feedbackModal .feedback-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.btn-feedback-ok {
     width: 100%;
     padding: 15px;
-    background-color: var(--azul-banner);
-    color: #333;
-    font-weight: 700;
+    border-radius: 50px;
     border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.btn-login:hover {
-    background-color: #9ad0e0;
-    transform: translateY(-2px);
-}
-
-.create-account-link {
-    margin-top: 25px;
-    font-size: 0.9rem;
-    color: #888;
-}
-
-.create-account-link a {
-    color: #4a3b32;
+    color: #fff;
     font-weight: 700;
-    text-decoration: none;
-}
-
-.create-account-link a:hover {
-    text-decoration: underline;
-    color: #074a46;
-}
-
-.login-type-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.radio-label {
-    font-size: 0.95rem;
-    color: #666;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 600;
-}
-
-.radio-label input {
-    accent-color: var(--azul-banner);
-    transform: scale(1.2);
-    cursor: pointer;
-}
-
-.create-account-link span {
-    display: block;
-    margin-top: 5px;
-    font-size: 0.8rem;
-    color: #aaa;
+    margin-top: 20px;
 }
 /* ============================================================
        8. CARRINHO LATERAL (Side Cart) - CORRIGIDO
@@ -692,84 +664,134 @@
         border: 2px solid white;
         display: none;
     }
-    /* ============================================================
-    9. RODAPÉ PERSONALIZADO (Footer)
-    ============================================================ */
-    .footer-custom {
-        background-color: var(--amarelo-header);
-        margin: 50px 20px 20px 20px;
-        border-radius: 50px;
-        padding: 30px 60px;
-        font-family: 'Quicksand', sans-serif;
-        scroll-margin-top: 30px;
-    }
 
-    .footer-container-custom {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
+/* ========================================================
+   ESTILIZAÇÃO DO FOOTER - ABJ MODA INFANTIL
+========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
 
-    .footer-brand {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
+.footer-container-jactech {
+    width: 100%;
+    margin-top: 60px;
+    font-family: 'Quicksand', sans-serif;
+    background-color:var(--amarelo-header) /* Creme suave como o topo do site */
+}
 
-    .chat-icon {
-        font-size: 2.5rem;
-        color: #f28d8d;
-    }
+/* --- PARTE 1: ÁREA DE E-COMMERCE --- */
+.footer-ecommerce-body {
+    background-color: #FFFBEA; 
+    padding: 60px 20px;
+    width: 100%;
+    /* Substituindo a borda reta por uma curva suave no topo (opcional) */
+    border-top: 2px solid #FDF2B3; 
+}
 
-    .brand-info h3 {
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
+.ecommerce-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.2fr; 
+    gap: 50px;
+}
 
-    .brand-info p {
-        font-size: 0.95rem;
-        margin: 2px 0;
-        font-weight: 600;
-    }
+/* Títulos coloridos seguindo a logo */
+.ecom-col h4 {
+    font-size: 1.2rem;
+    color: #4DBBB4; /* Verde menta do menu */
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: lowercase; /* Estilo lúdico do site */
+}
 
-    .footer-links-social {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+/* Linha decorativa em rosa (cor do botão principal) */
+.title-line {
+    border: 0;
+    height: 3px;
+    width: 40px;
+    background-color: #EE81B4; 
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
 
-    .social-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
+/* Ícones das Bandeiras */
+.payment-brands {
+    display: flex;
+    gap: 15px;
+    font-size: 1.6rem;
+    color: #666;
+    margin-bottom: 15px;
+}
 
-    .social-item i {
-        font-size: 1.2rem;
-    }
+/* Caixa do Boleto mais arredondada */
+.boleto-box-clean {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 10px 22px;
+    border-radius: 25px; /* Super arredondado */
+    font-size: 0.9rem;
+    color: #555;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
 
-    .faq-link {
-        text-decoration: underline;
-        color: inherit;
-        font-weight: 700;
-        margin-top: 5px;
-        display: inline-block;
-    }
+/* Selos de Segurança com estilo "cloud" */
+.security-flex-row {
+    display: flex;
+    gap: 15px;
+}
 
-    .product-card img {
-        width: 100%;
-        height: 250px;
-        object-fit: contain;
-        margin-bottom: 15px;
-        border-radius: 15px;
-    }
+.badge-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.badge-item strong { color: #EE81B4; } /* Título do selo em rosa */
+
+/* Atendimento */
+.info-list li {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.info-list i {
+    color: #EE81B4; /* Ícones em rosa para destacar */
+}
+
+/* --- PARTE 2: BARRA INFERIOR (DARK BAR) --- */
+.footer-dark-bar {
+    background-color: #2D2D2D; /* Cinza grafite, menos agressivo que o preto total */
+    color: #ffffff;
+    padding: 25px 0;
+    font-size: 0.85rem;
+    width: 100%;
+}
+
+.dark-bar-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dark-bar-wrapper a {
+    color: #EE81B4; /* Links em rosa para destaque */
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dark-bar-wrapper a:hover {
+    color: #4DBBB4; /* Muda para verde menta no hover */
+}
     /* ============================================================
     12. FAVORITOS LATERAL (Side Favorites)
     ============================================================ */
@@ -1286,75 +1308,101 @@
     transform: translateY(-1px);
 }
 
-/* FORÇAR OS MODAIS NO CENTRO DA TELA */
+/* ========================================================
+   ESTRUTURA DOS MODAIS (Auth e Feedback)
+   ======================================================== */
+
+/* Container que cobre a tela inteira */
 .modal-overlay, #feedbackModal {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.75) !important;
-    display: none; /* JS muda para flex */
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Fundo mais escuro para foco */
+    
+    /* Começa escondido, o JS vai mudar para flex */
+    display: none; 
+    
+    /* Centralização perfeita */
     justify-content: center !important;
     align-items: center !important;
+    
+    /* Camada máxima para ficar na frente de tudo */
     z-index: 999999 !important;
 }
 
-/* Garante que o FeedbackModal fique visível */
+/* Classe que o JS adiciona para mostrar */
+.modal-overlay.aberto, 
 #feedbackModal.aberto {
     display: flex !important;
 }
 
-/* Estilo da caixa branca */
+/* A caixa branca interna */
 .modal-box, .feedback-box {
-    background: white !important;
+    background: #ffffff !important;
     padding: 30px !important;
     border-radius: 15px !important;
-    max-width: 400px !important;
     width: 90% !important;
+    max-width: 420px !important;
     position: relative !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
-}     
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
+    
+    /* Animação suave ao aparecer */
+    animation: modalSurge 0.3s ease-out;
+}
+
+@keyframes modalSurge {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 /* ========================================================
-   ESTRUTURA BASE DOS MODAIS (Auth e Feedback)
+   ESTILOS ESPECÍFICOS DO FEEDBACK
    ======================================================== */
 
-/* Isso vai resetar qualquer bloqueio e colocar o modal na sua frente */
-.modal-overlay, #feedbackModal {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.8) !important;
-    
-    /* Centralização Absoluta */
-    display: none; 
-    justify-content: center !important;
-    align-items: center !important;
-    
-    /* Camada máxima */
-    z-index: 999999 !important;
+#feedback-icone {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 50px;
+    text-align: center;
 }
 
-/* Quando o modal estiver ativo */
-.modal-overlay[style*="display: flex"], 
-#feedbackModal.aberto {
-    display: flex !important;
+#feedback-titulo {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
 }
 
-.modal-box, .feedback-box {
-    background: #fff !important;
-    padding: 30px !important;
-    border-radius: 15px !important;
-    width: 90% !important;
-    max-width: 400px !important;
-    position: relative !important;
-    z-index: 1000000 !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+#feedback-msg {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
+/* Botão de OK do Feedback */
+.btn-feedback-ok {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Cores dinâmicas para Sucesso e Erro */
+.feedback-box.sucesso { border-top: 6px solid #27ae60; }
+.feedback-box.erro { border-top: 6px solid #e74c3c; }
+
+.btn-feedback-ok.sucesso { background-color: #27ae60; }
+.btn-feedback-ok.sucesso:hover { background-color: #219150; }
+
+.btn-feedback-ok.erro { background-color: #e74c3c; }
+.btn-feedback-ok.erro:hover { background-color: #c0392b; }
 /* ========================================================
    ESTILIZAÇÃO INTERNA (Abas e Botões)
    ======================================================== */

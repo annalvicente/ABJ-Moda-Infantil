@@ -194,6 +194,72 @@ if ($resultado_categorias) {
     </div>
 </div>
 
+    <footer id="contato" class="footer-container-jactech">
+        
+        <div class="footer-ecommerce-body">
+            <div class="ecommerce-wrapper">
+                
+                <div class="ecom-col">
+                    <h4>Pague com</h4>
+                    <hr class="title-line">
+                    <div class="payment-brands">
+                        <i class="fa-brands fa-cc-visa" title="Visa"></i>
+                        <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                        <i class="fa-brands fa-cc-diners-club" title="Diners"></i>
+                        <i class="fa-brands fa-cc-amex" title="Amex"></i>
+                        <i class="fa-solid fa-pix" title="Pix"></i>
+                    </div>
+                    <div class="boleto-box-clean">
+                        <i class="fa-solid fa-barcode"></i>
+                        <span>Boleto Bancário</span>
+                    </div>
+                </div>
+
+                <div class="ecom-col">
+                    <h4>Selos</h4>
+                    <hr class="title-line">
+                    <div class="security-flex-row">
+                        <div class="badge-item ssl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <strong>Site Protegido</strong>
+                                <span>Certificado SSL</span>
+                            </div>
+                        </div>
+                        <div class="badge-item google">
+                            <i class="fa-brands fa-google"></i>
+                            <div>
+                                <strong>Safe Browsing</strong>
+                                <span>Google</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ecom-col">
+                    <h4>Atendimento</h4>
+                    <hr class="title-line">
+                    <ul class="info-list">
+                        <li><i class="fa-regular fa-clock"></i> Segunda a Sexta das 9h as 18h</li>
+                        <li><i class="fa-solid fa-phone"></i> (12) 98171-14147</li>
+                        <li><i class="fa-regular fa-envelope"></i> ABJmodainfantil@gmail.com</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Av. Ficticia, 123</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-dark-bar">
+            <div class="dark-bar-wrapper">
+                <p>&copy; <?php echo date('Y'); ?> <a href="#">ABJ MODA INFANTIL</a>. Todos os Direitos Reservados.</p>
+                <p class="dev-by">Desenvolvido por <strong>Anna Lívia Rodrigues | Bryan Oliveira | J. Pedro Dario | J. Pedro Felix</strong></p>
+            </div>
+        </div>
+
+    </footer>
+
+
 <script src="funcionarios.js"></script>
 </body>
 </html>

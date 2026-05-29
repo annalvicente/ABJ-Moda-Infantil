@@ -29,7 +29,7 @@ $vitrines = [
     <header>
         <div class="nav-container">
             <nav class="menu-links">
-                <a href="#meninas" class="menu-links-meninas">menissssnas</a>
+                <a href="#meninas" class="menu-links-meninas">meninas</a>
                 <a href="#" class="menu-links-meninos">meninos</a>
                 <a href="#" class="menu-links-bebes">bebês</a>
             </nav>
@@ -84,7 +84,7 @@ $vitrines = [
         <section class="carousel-section">
             <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="carousel-track" id="track">
-                <div class="card"><img src="img/duaskids.webp" alt="Destaque"></div>
+                <div class="card"><img src="img/criancasfelizes.jpg" alt="Destaque"></div>
                 <div class="card"><img src="img/pij-duaskids.webp" alt="Pijamas"></div>
                 <div class="card"><img src="img/fant_duaskid.webp" alt="Fantasias"></div>
                 <div class="card"><img src="img/fant_batman.webp" alt="Acessórios"></div>
@@ -184,7 +184,7 @@ $vitrines = [
                         <li><i class="fa-regular fa-clock"></i> Segunda a Sexta das 9h as 18h</li>
                         <li><i class="fa-solid fa-phone"></i> (12) 98171-14147</li>
                         <li><i class="fa-regular fa-envelope"></i> ABJmodainfantil@gmail.com</li>
-                        <li><i class="fa-solid fa-location-dot"></i> Av. Exemplo, 123</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Av. Ficticia, 123</li>
                     </ul>
                 </div>
 
@@ -194,7 +194,7 @@ $vitrines = [
         <div class="footer-dark-bar">
             <div class="dark-bar-wrapper">
                 <p>&copy; <?php echo date('Y'); ?> <a href="#">ABJ MODA INFANTIL</a>. Todos os Direitos Reservados.</p>
-                <p class="dev-by">Desenvolvido por <strong>OLECRAM TI</strong></p>
+                <p class="dev-by">Desenvolvido por <strong>Anna Lívia Rodrigues | Bryan Oliveira | J. Pedro Dario | J. Pedro Felix</strong></p>
             </div>
         </div>
 
@@ -282,9 +282,14 @@ $vitrines = [
     <!-- ========================================================
          MODAL DE FEEDBACK (Sucesso / Erro)
     ========================================================= -->
-<div id="feedbackModal">
+<div id="authModal" class="modal-overlay">
+    <div class="modal-box">
+        </div>
+</div>
+
+<div id="feedbackModal" class="modal-overlay">
     <div class="feedback-box" id="feedback-box">
-        <span class="feedback-icone" id="feedback-icone"></span>
+        <span id="feedback-icone"></span>
         <h3 id="feedback-titulo"></h3>
         <p id="feedback-msg"></p>
         <button class="btn-feedback-ok" id="btn-feedback-ok" onclick="fecharFeedback()">OK</button>

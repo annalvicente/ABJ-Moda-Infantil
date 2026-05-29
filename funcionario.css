@@ -372,3 +372,132 @@ tbody {
     transform: scale(1.1); 
     transition: 0.2s;
 }
+
+
+/* * ========================================================
+   ESTILIZAÇÃO DO FOOTER - ABJ MODA INFANTIL */
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+
+.footer-container-jactech {
+    width: 100%;
+    margin-top: 60px;
+    font-family: 'Quicksand', sans-serif;
+    background-color:var(--amarelo-header) /* Creme suave como o topo do site */
+}
+
+/* --- PARTE 1: ÁREA DE E-COMMERCE --- */
+.footer-ecommerce-body {
+    background-color: #FFFBEA; 
+    padding: 60px 20px;
+    width: 100%;
+    /* Substituindo a borda reta por uma curva suave no topo (opcional) */
+    border-top: 2px solid #FDF2B3; 
+}
+
+.ecommerce-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.2fr; 
+    gap: 50px;
+}
+
+/* Títulos coloridos seguindo a logo */
+.ecom-col h4 {
+    font-size: 1.2rem;
+    color: #4DBBB4; /* Verde menta do menu */
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: lowercase; /* Estilo lúdico do site */
+}
+
+/* Linha decorativa em rosa (cor do botão principal) */
+.title-line {
+    border: 0;
+    height: 3px;
+    width: 40px;
+    background-color: #EE81B4; 
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+/* Ícones das Bandeiras */
+.payment-brands {
+    display: flex;
+    gap: 15px;
+    font-size: 1.6rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Caixa do Boleto mais arredondada */
+.boleto-box-clean {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 10px 22px;
+    border-radius: 25px; /* Super arredondado */
+    font-size: 0.9rem;
+    color: #555;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Selos de Segurança com estilo "cloud" */
+.security-flex-row {
+    display: flex;
+    gap: 15px;
+}
+
+.badge-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.badge-item strong { color: #EE81B4; } /* Título do selo em rosa */
+
+/* Atendimento */
+.info-list li {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.info-list i {
+    color: #EE81B4; /* Ícones em rosa para destacar */
+}
+
+/* --- PARTE 2: BARRA INFERIOR (DARK BAR) --- */
+.footer-dark-bar {
+    background-color: #2D2D2D; /* Cinza grafite, menos agressivo que o preto total */
+    color: #ffffff;
+    padding: 25px 0;
+    font-size: 0.85rem;
+    width: 100%;
+}
+
+.dark-bar-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dark-bar-wrapper a {
+    color: #EE81B4; /* Links em rosa para destaque */
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dark-bar-wrapper a:hover {
+    color: #4DBBB4; /* Muda para verde menta no hover */
+}
