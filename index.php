@@ -29,7 +29,7 @@ $vitrines = [
     <header>
         <div class="nav-container">
             <nav class="menu-links">
-                <a href="#meninas" class="menu-links-meninas">meninas</a>
+                <a href="#meninas" class="menu-links-meninas">menissssnas</a>
                 <a href="#" class="menu-links-meninos">meninos</a>
                 <a href="#" class="menu-links-bebes">bebês</a>
             </nav>
@@ -135,26 +135,69 @@ $vitrines = [
         </section>
     </main>
 
-    <footer id="contato" class="footer-custom">
-        <div class="footer-container-custom">
-            <div class="footer-section">
-                <div class="footer-brand">
-                    <i class="fa-regular fa-comments chat-icon"></i>
-                    <div class="brand-info">
-                        <h3>ABJ Moda infantil</h3>
-                        <p>Telefone: 12 981714147</p>
-                        <p>Email: ABJmodainfantil@gmail.com</p>
+    <footer id="contato" class="footer-container-jactech">
+        
+        <div class="footer-ecommerce-body">
+            <div class="ecommerce-wrapper">
+                
+                <div class="ecom-col">
+                    <h4>Pague com</h4>
+                    <hr class="title-line">
+                    <div class="payment-brands">
+                        <i class="fa-brands fa-cc-visa" title="Visa"></i>
+                        <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                        <i class="fa-brands fa-cc-diners-club" title="Diners"></i>
+                        <i class="fa-brands fa-cc-amex" title="Amex"></i>
+                        <i class="fa-solid fa-pix" title="Pix"></i>
+                    </div>
+                    <div class="boleto-box-clean">
+                        <i class="fa-solid fa-barcode"></i>
+                        <span>Boleto Bancário</span>
                     </div>
                 </div>
-            </div>
-            <div class="footer-section">
-                <div class="footer-links-social">
-                    <div class="social-item"><i class="fa-brands fa-instagram"></i><span>@ABJ_modainfantil</span></div>
-                    <div class="social-item"><i class="fa-solid fa-location-dot"></i><span>Av. Exemplo, 123</span></div>
-                    <a href="#" class="faq-link">FAQ</a>
+
+                <div class="ecom-col">
+                    <h4>Selos</h4>
+                    <hr class="title-line">
+                    <div class="security-flex-row">
+                        <div class="badge-item ssl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <strong>Site Protegido</strong>
+                                <span>Certificado SSL</span>
+                            </div>
+                        </div>
+                        <div class="badge-item google">
+                            <i class="fa-brands fa-google"></i>
+                            <div>
+                                <strong>Safe Browsing</strong>
+                                <span>Google</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="ecom-col">
+                    <h4>Atendimento</h4>
+                    <hr class="title-line">
+                    <ul class="info-list">
+                        <li><i class="fa-regular fa-clock"></i> Segunda a Sexta das 9h as 18h</li>
+                        <li><i class="fa-solid fa-phone"></i> (12) 98171-14147</li>
+                        <li><i class="fa-regular fa-envelope"></i> ABJmodainfantil@gmail.com</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Av. Exemplo, 123</li>
+                    </ul>
+                </div>
+
             </div>
         </div>
+
+        <div class="footer-dark-bar">
+            <div class="dark-bar-wrapper">
+                <p>&copy; <?php echo date('Y'); ?> <a href="#">ABJ MODA INFANTIL</a>. Todos os Direitos Reservados.</p>
+                <p class="dev-by">Desenvolvido por <strong>OLECRAM TI</strong></p>
+            </div>
+        </div>
+
     </footer>
 
     <!-- ========================================================
@@ -288,73 +331,7 @@ $vitrines = [
     <script src="loja.js"></script>
     <script src="login.js"></script>
 
-    <style>
-        /* Estilo de emergência para o Modal de Feedback */
-        #feedbackModal {
-            display: none; /* Começa escondido, o JS ativa */
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: rgba(0, 0, 0, 0.8) !important;
-            z-index: 999999 !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
 
-        /* Quando o JS colocar a classe 'aberto' */
-        #feedbackModal.aberto {
-            display: flex !important;
-        }
-
-        .feedback-box {
-            background: white !important;
-            padding: 30px !important;
-            border-radius: 20px !important;
-            text-align: center !important;
-            max-width: 350px !important;
-            width: 90% !important;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-            font-family: 'Quicksand', sans-serif !important;
-        }
-
-        .feedback-icone {
-            font-size: 50px !important;
-            display: block !important;
-            margin-bottom: 15px !important;
-        }
-
-        #feedback-titulo {
-            color: #333 !important;
-            margin-bottom: 10px !important;
-        }
-
-        .btn-feedback-ok {
-            background: #ff6b6b !important;
-            color: white !important;
-            border: none !important;
-            padding: 10px 40px !important;
-            border-radius: 10px !important;
-            cursor: pointer !important;
-            font-weight: bold !important;
-            margin-top: 15px !important;
-        }
-
-        /* Garante que o modal de Login também funcione */
-        .modal-overlay {
-            display: none;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: rgba(0, 0, 0, 0.8) !important;
-            z-index: 999998 !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
-    </style>
 
     <script>
     window.addEventListener('load', () => {
