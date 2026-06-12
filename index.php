@@ -30,8 +30,8 @@ $vitrines = [
         <div class="nav-container">
             <nav class="menu-links">
                 <a href="#meninas" class="menu-links-meninas">meninas</a>
-                <a href="#" class="menu-links-meninos">meninos</a>
-                <a href="#" class="menu-links-bebes">bebês</a>
+                <a href="#meninos" class="menu-links-meninos">meninos</a>
+                <a href="#bebes" class="menu-links-bebes">bebês</a>
             </nav>
 
             <a href="index.php" class="logo">
@@ -43,7 +43,7 @@ $vitrines = [
                     <i class="fa-regular fa-user"></i>
                 </a>
 
-            <a href="javascript:void(0);" onclick="toggleCart()">
+            <a href="javascript:void(0);" onclick="interacaoCart()">
                 <i class="fa-solid fa-basket-shopping"></i>
             </a>
 
@@ -107,7 +107,7 @@ $vitrines = [
             
             if ($resultado && $resultado->num_rows > 0): 
             ?>
-                <section class="vitrine-meninas <?php echo $info['classe']; ?>">
+                <section id="meninas" class="vitrine-meninas <?php echo $info['classe']; ?>">
                     <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
                     <div class="produtos-grid">
                         <?php while($produto = $resultado->fetch_assoc()): ?>
@@ -151,7 +151,7 @@ $vitrines = [
             
             if ($resultado && $resultado->num_rows > 0): 
             ?>
-                <section class="vitrine-meninos <?php echo $info['classe']; ?>">
+                <section id="meninos" class="vitrine-meninos <?php echo $info['classe']; ?>">
                     <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
                     <div class="produtos-grid">
                         <?php while($produto = $resultado->fetch_assoc()): ?>
@@ -195,7 +195,7 @@ $vitrines = [
             
             if ($resultado && $resultado->num_rows > 0): 
             ?>
-                <section class="vitrine-bebes <?php echo $info['classe']; ?>">
+                <section id="bebes" class="vitrine-bebes <?php echo $info['classe']; ?>">
                     <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
                     <div class="produtos-grid">
                         <?php while($produto = $resultado->fetch_assoc()): ?>
@@ -386,7 +386,7 @@ $vitrines = [
     <div id="x" class="cart-container">
         <div class="cart-header">
             <h3>Meu Carrinho</h3>
-            <button onclick="fecharTudo()" class="close-btn">&times;</button>
+            <button onclick="fecharAll()" class="close-btn">&times;</button>
         </div>
         <div class="cart-items" id="cart-items-list"></div>
         <div class="cart-footer">

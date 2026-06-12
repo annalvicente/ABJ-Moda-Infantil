@@ -652,7 +652,7 @@
 
     /* Força a abertura quando a classe open for ativada pelo JS */
     .cart-container.open, #x.open {
-        right: 0 !important;
+        right: 0 ;
     }
 
     .cart-header {

@@ -10,6 +10,7 @@ let quantidadeItens = 0;
  * @param {string} nome - Nome do produto
  * @param {number|string} preco - Preço do produto
  */
+
 async function adicionarAoCarrinho(idProduto, nome, preco) {
     const lista = document.getElementById('cart-items-list');
     if (!lista) return;
@@ -91,7 +92,7 @@ function atualizarInterface() {
 }
 
 // --- FUNÇÃO PARA ABRIR / FECHAR O CARRINHO ---
-function toggleCart() {
+function interacaoCart() {
     const carrinho = document.getElementById('x'); 
     const overlay = document.getElementById('overlay');
     
@@ -107,10 +108,12 @@ function toggleCart() {
     if (overlay) {
         overlay.classList.toggle('active');
     }
+
+    
 }
 
 // --- FUNÇÃO PARA FECHAR TUDO ---
-function fecharTudo() {
+function fecharAll() {
     const carrinho = document.getElementById('x');
     const overlay = document.getElementById('overlay');
     const favoritos = document.getElementById('favoritos-container');
