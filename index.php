@@ -84,52 +84,138 @@ $vitrines = [
         <section class="carousel-section">
             <button class="nav-arrow prev" onclick="moverCarrossel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
             <div class="carousel-track" id="track">
-                <div class="card"><img src="img/criancasfelizes.jpg" alt="Destaque"></div>
-                <div class="card"><img src="img/pij-duaskids.webp" alt="Pijamas"></div>
-                <div class="card"><img src="img/fant_duaskid.webp" alt="Fantasias"></div>
-                <div class="card"><img src="img/fant_batman.webp" alt="Acessórios"></div>
-                <div class="card"><img src="img/fant_wood.webp" alt="Kids"></div>
+                <div class="card"><img src="img/quatrocriancas-geral.webp" alt="Geral"></div>
+                <div class="card"><img src="img/duascriancas-pijama.webp" alt="Pijamas"></div>
+                <div class="card"><img src="img/duascriancas-fantasia.webp" alt="Fantasias"></div>
+                <div class="card"><img src="img/fant_batman.webp" alt="Meninas"></div>
+                <div class="card"><img src="img/fant_wood.webp" alt="Meninos"></div>
+                <div class="card"><img src="img/fant_wood.webp" alt="Bebês"></div>
             </div>
             <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
         </section>
 
-        <section class="vitrine-meninas">
-            <div class="vitrine-container">
-
-    <?php foreach ($vitrines as $id_cat => $info): 
-        // Busca apenas 4 produtos com estoque disponível da categoria atual
-        $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
-                WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
-                LIMIT 4";
-        $resultado = $conn->query($sql);
-    ?>
         
-        <?php if ($resultado && $resultado->num_rows > 0): ?>
-            <section class="vitrine-secao <?php echo $info['classe']; ?>">
-                <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
-                
-                <div class="produtos-grid">
-                    <?php while($produto = $resultado->fetch_assoc()): ?>
-                        
-                        <div class="produto-card">
-                            <div class="produto-imagem-box">
-                                <img src="img/<?php echo $produto['imagem_corpo']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-corpo">
-                                <img src="img/<?php echo $produto['imagem']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-peca">
-                            </div>
-                            
-                            <div class="produto-info">
-                                <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
-                                <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
-                            </div>
-                        </div>
+        <div class="vitrine-container">
 
-                    <?php endwhile; ?>
+            <?php 
+            $id_cat = 1; // ID das Meninas no seu banco
+            $info = $vitrines[$id_cat];
+            $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
+                    WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
+                    LIMIT 4";
+            $resultado = $conn->query($sql);
+            
+            if ($resultado && $resultado->num_rows > 0): 
+            ?>
+                <section class="vitrine-meninas <?php echo $info['classe']; ?>">
+                    <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
+                    <div class="produtos-grid">
+                        <?php while($produto = $resultado->fetch_assoc()): ?>
+                            <div class="produto-card">
+                                <div class="produto-imagem-box">
+                                    <img src="img/<?php echo $produto['imagem_corpo']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-corpo">
+                                    <img src="img/<?php echo $produto['imagem']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-peca">
+                                </div>
+                                <div class="produto-info">
+                                    <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
+                                    <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
+
+
+            <section class="pijama-banner">
+                <div class="pijama-content">
+                    <div class="pijama-image">
+                        <img src="img/banner-meninos.webp" alt="Coleção Meninos"> </div>
+                    <div class="pijama-text">
+                        <h2>Prontos para a aventura!</h2>
+                        <p>Roupas confortáveis e estilosas para os meninos explorarem o mundo.</p>
+                        <a href="#" class="btn-banner">Ver Moda Masculina</a>
+                    </div>
                 </div>
             </section>
-        <?php endif; ?>
 
-    <?php endforeach; ?>
+
+            <?php 
+            $id_cat = 2; // ID os Meninos no seu banco
+            $info = $vitrines[$id_cat];
+            $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
+                    WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
+                    LIMIT 4";
+            $resultado = $conn->query($sql);
+            
+            if ($resultado && $resultado->num_rows > 0): 
+            ?>
+                <section class="vitrine-meninos <?php echo $info['classe']; ?>">
+                    <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
+                    <div class="produtos-grid">
+                        <?php while($produto = $resultado->fetch_assoc()): ?>
+                            <div class="produto-card">
+                                <div class="produto-imagem-box">
+                                    <img src="img/<?php echo $produto['imagem_corpo']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-corpo">
+                                    <img src="img/<?php echo $produto['imagem']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-peca">
+                                </div>
+                                <div class="produto-info">
+                                    <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
+                                    <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
+
+
+            <section class="fantasia-banner">
+                <div class="fantasia-content">
+                    <div class="fantasia-image">
+                        <img src="img/banner-bebes.web" alt="Coleção Bebês"> </div>
+                    <div class="fantasia-text">
+                        <h2>O aconchego que eles merecem</h2>
+                        <p>Algodão premium e proteção para a pele sensível do seu bebê.</p>
+                        <a href="#" class="btn-banner">Ver Linha Baby</a>
+                    </div>
+                </div>
+            </section>
+
+
+            <?php 
+            $id_cat = 3; // ID dos Bebês no seu banco
+            $info = $vitrines[$id_cat];
+            $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
+                    WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
+                    LIMIT 4";
+            $resultado = $conn->query($sql);
+            
+            if ($resultado && $resultado->num_rows > 0): 
+            ?>
+                <section class="vitrine-bebes <?php echo $info['classe']; ?>">
+                    <h2 class="vitrine-titulo"><?php echo $info['nome']; ?></h2>
+                    <div class="produtos-grid">
+                        <?php while($produto = $resultado->fetch_assoc()): ?>
+                            <div class="produto-card">
+                                <div class="produto-imagem-box">
+                                    <img src="img/<?php echo $produto['imagem_corpo']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-corpo">
+                                    <img src="img/<?php echo $produto['imagem']; ?>" alt="<?php echo $produto['nome']; ?>" class="img-peca">
+                                </div>
+                                <div class="produto-info">
+                                    <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
+                                    <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
+
+        </div>
 
 </div>
         </section>

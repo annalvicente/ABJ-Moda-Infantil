@@ -1,17 +1,42 @@
-// --- BANCO DE DADOS (LOCALSTORAGE) ---
-var produtosLoja = JSON.parse(localStorage.getItem('meusProdutos')) || [
-    { id: 1, nome: 'Conjunto Woody', preco: '79.99', img: 'img/fant_wood.webp', estoque: 10 },
-    { id: 2, nome: 'Pijama Confort', preco: '65.00', img: 'img/pij-duaskids.webp', estoque: 5 }
-];
-
+// --- CONTROLE DE ESTADO DO CARRINHO (MEMÓRIA LOCAL DA INTERFACE) ---
 let totalCarrinho = 0;
 let quantidadeItens = 0;
 
 // --- FUNÇÕES DO CARRINHO ---
-function adicionarAoCarrinho(nome, preco) {
+
+/**
+ * Adiciona um produto ao carrinho no Banco de Dados e atualiza a interface de usuário
+ * @param {number} idProduto - ID do produto vindo do banco
+ * @param {string} nome - Nome do produto
+ * @param {number|string} preco - Preço do produto
+ */
+async function adicionarAoCarrinho(idProduto, nome, preco) {
     const lista = document.getElementById('cart-items-list');
     if (!lista) return;
 
+    // 1. ENVIAR PARA O BANCO DE DADOS (Via PHP)
+    const formData = new FormData();
+    formData.append('produto_id', idProduto);
+
+    try {
+        const response = await fetch('acoesfav.php?acao=adicionar_carrinho', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const dados = await response.json();
+
+        if (dados.status !== 'sucesso') {
+            alert("Erro ao adicionar produto ao carrinho no banco de dados.");
+            return; // Interrompe a execução caso o banco retorne erro
+        }
+    } catch (erro) {
+        console.error("Erro na requisição:", erro);
+        alert("Ops! Certifique-se de estar logado para adicionar itens ao carrinho.");
+        return; // Interrompe a execução caso a requisição falhe (ex: sem sessão)
+    }
+
+    // 2. ATUALIZAR A INTERFACE VISUAL (Caso tenha inserido no banco com sucesso)
     const msgVazio = document.getElementById('empty-msg');
     if (msgVazio) msgVazio.remove();
 
@@ -29,9 +54,16 @@ function adicionarAoCarrinho(nome, preco) {
         </div>
     `;
     lista.appendChild(itemDiv);
+    
     totalCarrinho += precoNum;
     quantidadeItens++;
     atualizarInterface();
+
+    // Abre a barra lateral do carrinho automaticamente para dar feedback ao usuário
+    const carrinho = document.getElementById('x');
+    if (carrinho && carrinho.style.right !== '0px') {
+        toggleCart();
+    }
 }
 
 function removerItem(elemento, preco) {
@@ -81,9 +113,13 @@ function toggleCart() {
 function fecharTudo() {
     const carrinho = document.getElementById('x');
     const overlay = document.getElementById('overlay');
+    const favoritos = document.getElementById('favoritos-container');
 
     if (carrinho) {
         carrinho.style.right = '-450px'; // Esconde o carrinho
+    }
+    if (favoritos) {
+        favoritos.style.right = '-450px'; // Esconde os favoritos lateral se estiver aberto
     }
     if (overlay) {
         overlay.classList.remove('active'); // Desativa o fundo escuro
