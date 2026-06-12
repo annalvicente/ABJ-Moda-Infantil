@@ -119,7 +119,9 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
+                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho('<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
+                                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                                </button>
                                 </div>
                             </div>
                         <?php endwhile; ?>
