@@ -1,14 +1,37 @@
     <?php
     // 1. Conecta ao banco de dados
-    include 'conexão.php';
+    // include 'conexão.php';
 
-    session_start();
+    // session_start();
 
-    $id_cliente = $_SESSION['cliente_id']; //qual cliente esta favoritando
+    // $id_cliente = $_SESSION['cliente_id']; //qual cliente esta favoritando
 
-    header('Content-Type: application/json');       //mostra que essa pagina não deve ser exposta, e serve apenas para entregar dados
+    // header('Content-Type: application/json');       //mostra que essa pagina não deve ser exposta, e serve apenas para entregar dados
 
-    $acao = $_GET['acao'] ?? '';        //recebe qual ação vai realizar
+    // $acao = $_GET['acao'] ?? '';        //recebe qual ação vai realizar
+
+// 1. Conecta ao banco de dados
+include 'conexão.php';
+
+// CORREÇÃO DA VARIÁVEL: Se o seu arquivo conexão.php usa $conexao em vez de $conn,
+// criamos esse atalho abaixo para você não ter que mudar o código todo:
+if (!isset($conn) && isset($conexao)) {
+    $conn = $conexao;
+}
+
+session_start();
+
+header('Content-Type: application/json'); // Mostra que essa página serve para entregar dados
+$acao = $_GET['acao'] ?? ''; // Recebe qual ação vai realizar
+
+// VALIDAÇÃO: Bloqueia o "adicionar_carrinho" e "remover" se não estiver logado
+if (($acao === 'adicionar_carrinho' || $acao === 'remover' || $acao === 'listar') && !isset($_SESSION['cliente_id'])) {
+    http_response_code(401); // Código HTTP de Não Autorizado
+    echo json_encode(["status" => "erro", "mensagem" => "Usuário não logado."]);
+    exit;
+}
+
+$id_cliente = $_SESSION['cliente_id'] ?? null; // Qual cliente está favoritando
 
     switch ($acao) {
         

@@ -1,8 +1,67 @@
-// --- CONTROLE DE ESTADO DO CARRINHO (MEMÓRIA LOCAL DA INTERFACE) ---
+// =========================================================================
+// 1. INTERCEPTADOR DE ALERTA GLOBAL (COM SUPORTE A CALLBACK)
+// =========================================================================
+window.alert = function(mensagem, callback) {
+    // Remove algum alerta antigo que tenha ficado aberto
+    const alertaAntigo = document.getElementById('custom-alert-modal');
+    if (alertaAntigo) alertaAntigo.remove();
+
+    // Cria a estrutura do modal
+    const overlay = document.createElement('div');
+    overlay.id = 'custom-alert-modal';
+    overlay.className = 'custom-alert-overlay';
+    
+    // Identifica o tipo de mensagem para aplicar as cores do CSS
+    let tipo = 'sucesso'; 
+    let icone = '✓';
+    let titulo = 'Sucesso!';
+
+    if (mensagem.toLowerCase().includes('erro') || mensagem.toLowerCase().includes('falhe')) {
+        tipo = 'erro';
+        icone = '✕';
+        titulo = 'Erro no Sistema';
+    } else if (mensagem.toLowerCase().includes('atenção') || mensagem.toLowerCase().includes('precisa estar logado') || mensagem.toLowerCase().includes('ops')) {
+        tipo = 'aviso';
+        icone = '!';
+        titulo = 'Atenção!';
+    } else if (mensagem.toLowerCase().includes('adicionado')) {
+        tipo = 'sucesso';
+        icone = '✓';
+        titulo = 'Adicionado!';
+    }
+
+    overlay.innerHTML = `
+        <div class="custom-alert-box ${tipo}">
+            <div class="custom-alert-icon">${icone}</div>
+            <h2 class="custom-alert-title">${titulo}</h2>
+            <p class="custom-alert-message">${mensagem}</p>
+            <button class="custom-alert-btn">OK</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    
+    // Pequeno delay para disparar a animação de entrada do CSS
+    setTimeout(() => overlay.classList.add('active'), 10);
+
+    // Fecha o modal ao clicar no botão OK e executa a próxima ação (se houver)
+    overlay.querySelector('.custom-alert-btn').addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            overlay.remove();
+            // Executa o callback (como abrir o login) apenas DEPOIS que o alerta sumir
+            if (typeof callback === 'function') {
+                callback();
+            }
+        }, 300); // 300ms é o tempo de transição do CSS
+    });
+};
+
+// =========================================================================
+// 2. CONTROLE DE ESTADO E FUNÇÕES DO CARRINHO
+// =========================================================================
 let totalCarrinho = 0;
 let quantidadeItens = 0;
-
-// --- FUNÇÕES DO CARRINHO ---
 
 /**
  * Adiciona um produto ao carrinho no Banco de Dados e atualiza a interface de usuário
@@ -10,7 +69,6 @@ let quantidadeItens = 0;
  * @param {string} nome - Nome do produto
  * @param {number|string} preco - Preço do produto
  */
-
 async function adicionarAoCarrinho(idProduto, nome, preco) {
     const lista = document.getElementById('cart-items-list');
     if (!lista) return;
@@ -24,17 +82,27 @@ async function adicionarAoCarrinho(idProduto, nome, preco) {
             method: 'POST',
             body: formData
         });
+
+        if (response.status === 401) {
+            // Enviamos a abertura do modal de login dentro do callback do alert
+            alert("Atenção: Você precisa estar logado para adicionar itens ao carrinho!", function() {
+                if (typeof openModal === 'function') {
+                    openModal('login');
+                }
+            });
+            return;
+        }
         
         const dados = await response.json();
 
         if (dados.status !== 'sucesso') {
             alert("Erro ao adicionar produto ao carrinho no banco de dados.");
-            return; // Interrompe a execução caso o banco retorne erro
+            return; 
         }
     } catch (erro) {
         console.error("Erro na requisição:", erro);
         alert("Ops! Certifique-se de estar logado para adicionar itens ao carrinho.");
-        return; // Interrompe a execução caso a requisição falhe (ex: sem sessão)
+        return; 
     }
 
     // 2. ATUALIZAR A INTERFACE VISUAL (Caso tenha inserido no banco com sucesso)
@@ -60,10 +128,12 @@ async function adicionarAoCarrinho(idProduto, nome, preco) {
     quantidadeItens++;
     atualizarInterface();
 
-    // Abre a barra lateral do carrinho automaticamente para dar feedback ao usuário
+    // Dispara o aviso estilizado de sucesso
+    alert(`O produto "${nome}" foi adicionado com sucesso!`);
+
     const carrinho = document.getElementById('x');
     if (carrinho && carrinho.style.right !== '0px') {
-        toggleCart();
+        interacaoCart(); // Abre a barra lateral do carrinho
     }
 }
 
@@ -97,19 +167,16 @@ function interacaoCart() {
     const overlay = document.getElementById('overlay');
     
     if (carrinho) {
-        // Verifica se o carrinho já está aberto na tela (right igual a 0px)
         if (carrinho.style.right === '0px') {
-            carrinho.style.right = '-450px'; // Esconde de volta
+            carrinho.style.right = '-450px'; 
         } else {
-            carrinho.style.right = '0px';    // Puxa para a tela!
+            carrinho.style.right = '0px';    
         }
     }
     
     if (overlay) {
         overlay.classList.toggle('active');
     }
-
-    
 }
 
 // --- FUNÇÃO PARA FECHAR TUDO ---
@@ -119,12 +186,12 @@ function fecharAll() {
     const favoritos = document.getElementById('favoritos-container');
 
     if (carrinho) {
-        carrinho.style.right = '-450px'; // Esconde o carrinho
+        carrinho.style.right = '-450px'; 
     }
     if (favoritos) {
-        favoritos.style.right = '-450px'; // Esconde os favoritos lateral se estiver aberto
+        favoritos.style.right = '-450px'; 
     }
     if (overlay) {
-        overlay.classList.remove('active'); // Desativa o fundo escuro
+        overlay.classList.remove('active'); 
     }
 }

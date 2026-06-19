@@ -9,7 +9,8 @@ function toggleFavoritos() {
 
   const estaAberto = favoritos.style.right === "0px" || favoritos.classList.contains("open");
   if (estaAberto) {
-    fecharTudo();
+    // CORREÇÃO: Chama a função local que remove o fundo escuro com certeza
+    fecharFavoritosEFundo();
   } else {
     abrirFavoritos();
   }
@@ -23,10 +24,9 @@ function abrirFavoritos() {
 
   if (!favoritos) return;
 
-  // CORREÇÃO: Ajustado o ID para "x" para fechar o carrinho corretamente ao abrir os favoritos
   const carrinho = document.getElementById("x");
   if (carrinho) {
-    carrinho.style.right = "-420px";
+    carrinho.style.right = "-450px";
     carrinho.classList.remove("open");
   }
 
@@ -36,6 +36,24 @@ function abrirFavoritos() {
   if (conteudo) conteudo.classList.add("blur-active");
 
   carregarFavoritos();
+}
+
+// ---- NOVA FUNÇÃO LOCAL PARA FORÇAR O FECHAMENTO E TIRAR O FUNDO ESCURO ----
+function fecharFavoritosEFundo() {
+  const favoritos = document.getElementById("favoritos-container");
+  const overlay = document.getElementById("overlay");
+  const conteudo = document.querySelector(".conteudo-principal");
+
+  if (favoritos) {
+    favoritos.style.right = "-450px";
+    favoritos.classList.remove("open");
+  }
+  if (overlay) {
+    overlay.classList.remove("active"); // Remove o fundo escuro!
+  }
+  if (conteudo) {
+    conteudo.classList.remove("blur-active"); // Tira o efeito embaçado do fundo
+  }
 }
 
 // ---- CARREGAR FAVORITOS DO SERVIDOR ----
@@ -122,3 +140,4 @@ async function adicionarFavoritosAoCarrinho() {
   alert("Itens selecionados adicionados ao carrinho!");
   fecharTudo();
 }
+

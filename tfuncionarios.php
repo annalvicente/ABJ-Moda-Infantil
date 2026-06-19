@@ -40,7 +40,7 @@ if ($resultado_categorias) {
         <img src="img/logoabj.webp" alt="Balão Logo">
     </a>
     <div class="header-right">
-        <a href="index.html" class="btn-visualizar">
+        <a href="index.php" class="btn-visualizar">
             <i class="fa-solid fa-shop"></i> Ver loja
         </a>
     </div>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 // 1. Conexão com o banco de dados (Exemplo básico)
 include 'conexão.php';
 
@@ -38,10 +39,47 @@ $vitrines = [
                 <img src="img/logoabj.webp" alt="Balão Logo">
             </a>
 
+
             <div class="user-actions">
+                <?php if (isset($_SESSION['usuario_nome'])): 
+        // Pega a primeira letra do nome e coloca em maiúscula
+        $inicial = strtoupper(substr($_SESSION['usuario_nome'], 0, 1)); 
+        ?>
+
+        <script>
+            function toggleDropdown() {
+                const dropdown = document.querySelector('.dropdown-menu');
+                if (dropdown) {
+                    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+                }
+            }
+        </script>
+        
+        <div class="user-dropdown">
+            <div class="user-avatar" title="Minha Conta" onclick="toggleDropdown()">
+                <?php echo $inicial; ?>
+            </div>
+            <div class="dropdown-menu">
+                <span class="welcome-text">Olá, <?php echo explode(' ', $_SESSION['usuario_nome'])[0]; ?>!</span>
+                <span class="user-type-badge <?php echo $_SESSION['tipo']; ?>">
+                    <?php echo ($_SESSION['tipo'] === 'vendedor') ? 'Vendedor' : 'Cliente'; ?>
+                </span>
+                <hr class="dropdown-divider">
+                <a href="logout.php" class="logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </a>
+            </div>
+        </div>
+
+        <?php else: ?>
+        <a href="javascript:void(0)" onclick="openModal('login')" title="Entrar ou Cadastrar">
+            <i class="fa-regular fa-user"></i>
+        </a>
+    <?php endif; ?>
+            <!-- <div class="user-actions">
                 <a href="javascript:void(0)" onclick="openModal('login')" title="Entrar ou Cadastrar">
                     <i class="fa-regular fa-user"></i>
-                </a>
+                </a> -->
 
             <a href="javascript:void(0);" onclick="interacaoCart()">
                 <i class="fa-solid fa-basket-shopping"></i>
@@ -100,7 +138,7 @@ $vitrines = [
             <?php 
             $id_cat = 1; // ID das Meninas no seu banco
             $info = $vitrines[$id_cat];
-            $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
+            $sql = "SELECT id, nome, preco, imagem, imagem_corpo FROM produtos 
                     WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
                     LIMIT 4";
             $resultado = $conn->query($sql);
@@ -119,9 +157,9 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho('<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
-                                    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-                                </button>
+                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
+    <i class="fa-solid fa-cart-shopping"></i> Adicionar
+</button>
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -156,7 +194,7 @@ $vitrines = [
             <?php 
             $id_cat = 2; // ID os Meninos no seu banco
             $info = $vitrines[$id_cat];
-            $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
+            $sql = "SELECT id, nome, preco, imagem, imagem_corpo FROM produtos 
                     WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
                     LIMIT 4";
             $resultado = $conn->query($sql);
@@ -175,7 +213,9 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
+                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
+    <i class="fa-solid fa-cart-shopping"></i> Adicionar
+</button>
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -209,7 +249,7 @@ $vitrines = [
             <?php 
             $id_cat = 3; // ID dos Bebês no seu banco
             $info = $vitrines[$id_cat];
-            $sql = "SELECT nome, preco, imagem, imagem_corpo FROM produtos 
+            $sql = "SELECT id, nome, preco, imagem, imagem_corpo FROM produtos 
                     WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
                     LIMIT 4";
             $resultado = $conn->query($sql);
@@ -228,7 +268,9 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho()"><i class="fa-solid fa-cart-shopping"></i> Adicionar</button>
+<button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
+    <i class="fa-solid fa-cart-shopping"></i> Adicionar
+</button>
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -426,7 +468,7 @@ $vitrines = [
             <div class="fav-header-title">
                 <h3>Favoritos</h3>
             </div>
-            <button class="close-btn" onclick="fecharTudo()">&times;</button>
+           <button class="close-btn" onclick="fecharFavoritosEFundo()">&times;</button>
         </div>
         <div class="fav-content">
             <div id="lista-favoritos" class="fav-items">
@@ -442,9 +484,9 @@ $vitrines = [
 
     <div id="overlay" onclick="fecharTudo()"></div>
 
-    <script src="Carrinho.js"></script>
-    <script src="favoritos.js"></script>
+    <script src="carrinho.js"></script>
     <script src="loja.js"></script>
+    <script src="favoritos.js"></script>
     <script src="login.js"></script>
 
 
