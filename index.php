@@ -87,10 +87,10 @@ $vitrines = [
                 <div class="card"><img src="img/quatrocriancas-geral.webp" alt="Geral"></div>
                 <div class="card"><img src="img/duascriancas-pijama.webp" alt="Pijamas"></div>
                 <div class="card"><img src="img/duascriancas-fantasia.webp" alt="Fantasias"></div>
-                <div class="card"><img src="img/fant_batman.webp" alt="Meninas"></div>
-                <div class="card"><img src="img/fant_wood.webp" alt="Meninos"></div>
-                <div class="card"><img src="img/fant_wood.webp" alt="Bebês"></div>
-            </div>
+                <div class="card"><img src="img/duasmeninas-geral.webp" alt="Meninas"></div>
+                <div class="card"><img src="img/doismeninos-geral.webp" alt="Meninos"></div>
+                <div class="card"><img src="img/doisbebes-geral.webp" alt="Bebês"></div>
+             </div>
             <button class="nav-arrow next" onclick="moverCarrossel(1)"><i class="fa-solid fa-arrow-right"></i></button>
         </section>
 
@@ -126,21 +126,31 @@ $vitrines = [
                             </div>
                         <?php endwhile; ?>
                     </div>
+
+                    <div class="ver-mais-container">
+        <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
+    </div>
+
                 </section>
             <?php endif; ?>
 
 
             <section class="pijama-banner">
-                <div class="pijama-content">
-                    <div class="pijama-image">
-                        <img src="img/banner-meninos.webp" alt="Coleção Meninos"> </div>
-                    <div class="pijama-text">
-                        <h2>Prontos para a aventura!</h2>
-                        <p>Roupas confortáveis e estilosas para os meninos explorarem o mundo.</p>
-                        <a href="#" class="btn-banner">Ver Moda Masculina</a>
-                    </div>
-                </div>
-            </section>
+    <div class="pijama-image">
+        <img src="img/banner-pijama.webp" alt="Pijamas Infantis"> 
+    </div>
+    <div class="pijama-text">
+        <h2>Hora de Sonhar Brincando!</h2>
+        <p>Pijamas lúdicos e ultra confortáveis para noites cheias de imaginação e um sono tranquilo.</p>
+        
+        <a href="#" class="btn-banner">Ver pijamas</a>
+
+        <div class="banner-benefits">
+            <span>Até 6x sem juros</span>
+            <span>Frete grátis em compras acima de <u>R$199,99</u></span>
+        </div>
+    </div>
+</section>
 
 
             <?php 
@@ -170,21 +180,30 @@ $vitrines = [
                             </div>
                         <?php endwhile; ?>
                     </div>
+
+                    <div class="ver-mais-container">
+        <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
+
                 </section>
             <?php endif; ?>
 
 
             <section class="fantasia-banner">
-                <div class="fantasia-content">
-                    <div class="fantasia-image">
-                        <img src="img/banner-bebes.web" alt="Coleção Bebês"> </div>
-                    <div class="fantasia-text">
-                        <h2>O aconchego que eles merecem</h2>
-                        <p>Algodão premium e proteção para a pele sensível do seu bebê.</p>
-                        <a href="#" class="btn-banner">Ver Linha Baby</a>
-                    </div>
-                </div>
-            </section>
+    <div class="fantasia-image">
+        <img src="img/banner-fantasia.webp" alt="Fantasias Infantis"> 
+    </div>
+    <div class="fantasia-text">
+        <h2>Dê Asas à Imaginação!</h2>
+        <p>Fantasias leves e confortáveis para transformar qualquer dia em uma grande aventura.</p>
+        
+        <a href="#" class="btn-banner">Ver fantasias</a>
+
+        <div class="banner-benefits">
+            <span>Até 6x sem juros</span>
+            <span>Frete grátis em compras acima de <u>R$199,99</u></span>
+        </div>
+    </div>
+</section>
 
 
             <?php 
@@ -214,6 +233,10 @@ $vitrines = [
                             </div>
                         <?php endwhile; ?>
                     </div>
+
+                    <div class="ver-mais-container">
+        <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
+
                 </section>
             <?php endif; ?>
 
@@ -223,7 +246,7 @@ $vitrines = [
         </section>
     </main>
 
-    <footer id="contato" class="footer-container-jactech">
+    <footer id="contato" class="footer-container">
         
         <div class="footer-ecommerce-body">
             <div class="ecommerce-wrapper">
@@ -281,7 +304,7 @@ $vitrines = [
 
         <div class="footer-dark-bar">
             <div class="dark-bar-wrapper">
-                <p>&copy; <?php echo date('Y'); ?> <a href="#">ABJ MODA INFANTIL</a>. Todos os Direitos Reservados.</p>
+                <p>&copy; <?php echo date('Y'); ?> <a>ABJ MODA INFANTIL</a>. Todos os Direitos Reservados.</p>
                 <p class="dev-by">Desenvolvido por <strong>Anna Lívia Rodrigues | Bryan Oliveira | J. Pedro Dario | J. Pedro Felix</strong></p>
             </div>
         </div>

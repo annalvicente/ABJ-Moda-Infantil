@@ -245,182 +245,271 @@
         font-weight: 600;
     }
 
-    /* ======= BANNER 2 - PIJAMAS ======= */
 
-    main {
-        max-width: 1200px;
-        margin: 35px auto;
-        padding: 0 20px;
-    }
+/* ======= BANNER 2 - PIJAMAS ======= */
 
-    .pijama-banner {
-        background-color:#f3e4fd;
-        border-radius: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        overflow: hidden;
-        height: 300px;
-        margin-bottom: 60px;
-    }
 
-    .pijama-image {
-        flex: 1;
-        height: 100%;
-        display: flex;
-        align-items: flex-end;
-    }
+main {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
 
-    .pijama-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: top center;
-    }
+.pijama-banner {
+    background-color: rgb(226, 199, 251);
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 300px;
+    margin-bottom: 60px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra leve para dar profundidade e profissionalismo */
+}
 
-    .pijama-text {
-        flex: 1;
-        padding: 40px;
-        text-align: center;
-        color: #333;
-    }
+.pijama-image {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
 
-    .pijama-text h2 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
+.pijama-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
 
-    /* ======= BANNER 2 - PIJAMAS ======= */
+/* Alterado para Flexbox vertical para controlar perfeitamente os espaços */
+.pijama-text {
+    flex: 1;
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente (cima/baixo) */
+    align-items: center;     /* Centraliza horizontalmente (esquerda/direita) */
+    text-align: center;
+    color: #333;
+    box-sizing: border-box; /* Garante que o padding não quebre o tamanho */
+}
 
-    main {
-        max-width: 1200px;
-        margin: 35px auto;
-        padding: 0 20px;
-    }
+.pijama-text h2 {
+    font-size: 2.2rem; /* Aumentado ligeiramente para dar mais destaque */
+    margin-bottom: 25px; /* Espaço abaixo do título */
+    font-weight: 700;
+    color: #222;
+}
 
-    .fantasia-banner {
-        background-color:#fae1c0;
-        border-radius: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        overflow: hidden;
-        height: 300px;
-        margin-bottom: 60px;
-    }
+.pijama-text p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 30px; 
+    max-width: 450px; /* Isso evita que o texto fique gigante para os lados */
+    color: #555;
+}
 
-    .fantasia-image {
-        flex: 1;
-        height: 100%;
-        display: flex;
-        align-items: flex-end;
-    }
+/* Estilização do Botão (Caso não tivesse uma global) */
+.btn-banner {
+    display: inline-block;
+    background-color: #ff69b4; /* O rosa chamativo do seu layout */
+    color: #fff;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+}
 
-    .fantasia-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: top center;
-    }
+/* Efeito sutil ao passar o mouse, essencial para e-commerce profissional */
+.btn-banner:hover {
+    transform: translateY(-2px);
+    background-color: #ff4da6;
+}
 
-    .fantasia-text {
-        flex: 1;
-        padding: 40px;
-        text-align: center;
-        color: #333;
-    }
+/* Bloco extra de benefícios para preencher o fundo vazio inferior */
+.banner-benefits {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px; /* Empurra os benefícios bem para baixo do botão */
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #666;
+}
 
-    .fantasia-text h2 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
+    /* ======= BANNER 3 - FANTASIAS (OTIMIZADO) ======= */
 
-    /* ============================================================
-    6. CARROSSEL E CARDS DE PRODUTOS (Efeito Brilho Rosa)
-    ============================================================ */
-    .carousel-section {
-        position: relative;
-        padding: 10px 0;
-    }
+main {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
 
-    .carousel-track {
-        display: flex;
-        gap: 30px;
-        overflow-x: auto;
-        padding: 40px 20px;
-        scrollbar-width: none;
-        scroll-behavior: smooth;
-    }
+.fantasia-banner {
+    background-color: rgba(255, 153, 0, 0.484);
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 300px;
+    margin-bottom: 60px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra leve para dar profundidade e profissionalismo */
+}
 
-    .carousel-track::-webkit-scrollbar {
-        display: none;
-    }
+.fantasia-image {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
 
-    .card {
-        min-width: 260px;
-        height: 190px;
-        border-radius: 16px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
-        background: #eee;
-        border: 3px solid transparent;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
+.fantasia-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
 
-    .card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-    }
+/* Alterado para Flexbox vertical para controlar perfeitamente os espaços */
+.fantasia-text {
+    flex: 1;
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza verticalmente (cima/baixo) */
+    align-items: center;     /* Centraliza horizontalmente (esquerda/direita) */
+    text-align: center;
+    color: #333;
+    box-sizing: border-box; /* Garante que o padding não quebre o tamanho */
+}
 
-    .card:hover {
-        transform: translateY(-8px);
-        border-color: #ffb6c1;
-        box-shadow: 0 15px 35px var(--rosa-glow),
-            inset 0 0 15px rgba(255, 105, 180, 0.2);
-    }
+.fantasia-text h2 {
+    font-size: 2.2rem; /* Aumentado ligeiramente para dar mais destaque */
+    margin-bottom: 25px; /* Espaço abaixo do título */
+    font-weight: 700;
+    color: #222;
+}
 
-    .card:hover img {
-        transform: scale(1.1);
-    }
+.fantasia-text p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 30px; 
+    max-width: 450px; /* Isso evita que o texto fique gigante para os lados */
+    color: #555;
+}
 
-    .nav-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 45px;
-        height: 45px;
-        background: white;
-        border: 2px solid var(--cor-seta);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--cor-seta);
-        font-size: 1.2rem;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        z-index: 5;
-        transition: all 0.3s;
-    }
+/* Estilização do Botão (Caso não tivesse uma global) */
+.btn-banner {
+    display: inline-block;
+    background-color: #ff69b4; /* O rosa chamativo do seu layout */
+    color: #fff;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+}
 
-    .nav-arrow:hover {
-        background: var(--cor-seta);
-        color: white;
-    }
+/* Efeito sutil ao passar o mouse, essencial para e-commerce profissional */
+.btn-banner:hover {
+    transform: translateY(-2px);
+    background-color: #ff4da6;
+}
 
-    .nav-arrow.prev {
-        left: -20px;
-    }
+/* Bloco extra de benefícios para preencher o fundo vazio inferior */
+.banner-benefits {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px; /* Empurra os benefícios bem para baixo do botão */
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #666;
+}
+/* ============================================================
+   6. CARROSSEL E CARDS DE PRODUTOS (Efeito Brilho Rosa)
+   ============================================================ */
+.carousel-section {
+    position: relative;
+    padding: 10px 0;
+    overflow: hidden; /* CRUCIAL para o loop: esconde os cards que saem da tela */
+    width: 100%;
+}
 
-    .nav-arrow.next {
-        right: -20px;
-    }
+.carousel-track {
+    display: flex;
+    gap: 30px;
+    padding: 40px 20px;
+    width: max-content; /* Garante que a track alinhe os cards em linha */
+}
+
+.card {
+    min-width: 260px;
+    height: 190px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background: #eee;
+    border: 3px solid transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border-color: #ffb6c1;
+    box-shadow: 0 15px 35px var(--rosa-glow),
+        inset 0 0 15px rgba(255, 105, 180, 0.2);
+}
+
+.card:hover img {
+    transform: scale(1.1);
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: white;
+    border: 2px solid var(--cor-seta);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cor-seta);
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+    transition: all 0.3s;
+}
+
+.nav-arrow:hover {
+    background: var(--cor-seta);
+    color: white;
+}
+
+.nav-arrow.prev {
+    left: 10px; /* Ajustado para dentro da área visível por causa do overflow: hidden */
+}
+
+.nav-arrow.next {
+    right: 10px; /* Ajustado para dentro da área visível */
+}
 
 /* ============================================================
    MODAL DE AUTH (Mantendo suas classes originais)
@@ -622,149 +711,213 @@
     cursor: pointer;
     margin-top: 20px;
 }
-/* ============================================================
-       8. CARRINHO LATERAL (Side Cart) - CORRIGIDO
-    ============================================================ */
-    @keyframes fadeInItem {
-        from {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    } /* <-- Essa chave estava faltando e travava o CSS todo! */
 
-    .cart-container {
-    position: fixed; /* ADICIONADO: Mantém o carrinho fixo na tela */
-    top: 0;          /* ADICIONADO: Alinha ele no topo da tela */
-    right: -450px;
-    width: 450px;
-    height: 100%;
-    background-color: #fff;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    z-index: 2000;   /* ADICIONADO: Garante que ele fique NA FRENTE do overlay escuro */
+/* ===================================================
+      CARRINHO
+   ======================================================== */
+   @keyframes fadeInItem {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} /* <-- Essa chave estava faltando e travava o CSS todo! */
+
+.cart-container {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: 380px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 2000 !important;
+  display: flex;
+  flex-direction: column;
 }
 
-    /* Força a abertura quando a classe open for ativada pelo JS */
-    .cart-container.open, #x.open {
-        right: 0 ;
-    }
+/* Força a abertura quando a classe open for ativada pelo JS */
+.cart-container.open,
+#x.open {
+  right: 0 !important;
+}
 
-    .cart-header {
-        padding: 25px;
-        background-color: var(--azul-banner);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: #333;
-    }
+.cart-header {
+  padding: 25px;
+  background-color: var(--azul-banner);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+}
 
-    .cart-header h3 {
-        font-weight: 700;
-        font-size: 1.2rem;
-    }
+.cart-header h3 {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
 
-    .close-btn {
-        background: none;
-        border: none;
-        font-size: 1.8rem;
-        color: #333;
-        cursor: pointer;
-        line-height: 1;
-    }
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #333;
+  cursor: pointer;
+  line-height: 1;
+}
 
-    .cart-items {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-    }
+.cart-items {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-    .cart-item-single {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-        animation: fadeInItem 0.3s ease;
-    }
+.cart-item-single {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  animation: fadeInItem 0.3s ease;
+}
 
-    .cart-footer {
-        padding: 25px;
-        border-top: 1px solid #eee;
-        background: #fdfdfd;
-    }
+.cart-footer {
+  padding: 25px;
+  border-top: 1px solid #eee;
+  background: #fdfdfd;
+}
 
-    .cart-total {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        font-weight: 700;
-        font-size: 1.1rem;
-    }
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
 
-    .checkout-btn {
-        width: 100%;
-        padding: 15px;
-        background-color: var(--amarelo-header);
-        border: none;
-        border-radius: 50px;
-        font-weight: bold;
-        color: var(--texto-marrom);
-        cursor: pointer;
-        font-size: 1rem;
-        transition: 0.2s;
-    }
+.checkout-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--amarelo-header);
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  color: var(--texto-marrom);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s;
+}
 
-    .checkout-btn:hover {
-        filter: brightness(0.9);
-        transform: scale(1.02);
-    }
+.checkout-btn:hover {
+  filter: brightness(0.9);
+  transform: scale(1.02);
+}
 
-    #overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1999;
-        backdrop-filter: blur(2px);
-    }
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1999 ;
+  backdrop-filter: blur(2px);
+}
 
-    #overlay.active {
-        display: block !important;
-    }
+#overlay.active {
+  display: block !important;
+}
 
-    .cart-badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background-color: #ff69b4;
-        color: white;
-        font-size: 0.7rem;
-        font-weight: bold;
-        border-radius: 50%;
-        padding: 2px 6px;
-        border: 2px solid white;
-        display: none;
-    }
+.cart-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #ff69b4;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  border: 2px solid white;
+  display: none;
+}
+
+/* /* Configuração isolada do painel de favoritos lateral */
+.fav-container {
+  position: fixed;
+  top: 0;
+  right: -450px; /* Começa totalmente escondido */
+  width: 380px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 2001; /* Fica acima do overlay */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Força a abertura do Favoritos quando a classe .open for aplicada */
+.fav-container.open {
+  right: 0 !important;
+}
+
+/* Configuração do Overlay (Fundo Embaçado) */
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1999; /* Fica atrás dos painéis de carrinho e favoritos */
+  backdrop-filter: blur(2px);
+}
+
+/* Ativa o overlay exibindo-o na tela */
+#overlay.active {
+  display: block !important;
+}
+
+/* Estilização interna do painel de favoritos */
+.fav-header {
+  padding: 25px;
+  background-color: var(--amarelo-header, #ffeebb);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+}
+
+.fav-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.fav-footer {
+  padding: 25px;
+  border-top: 1px solid #eee;
+  background: #fdfdfd;
+}
 
 /* ========================================================
    ESTILIZAÇÃO DO FOOTER - ABJ MODA INFANTIL
 ========================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
 
-.footer-container-jactech {
+.footer-container {
     width: 100%;
     margin-top: 60px;
     font-family: 'Quicksand', sans-serif;
@@ -1078,7 +1231,7 @@
 }
 
 
-
+/* CARROSSEL */
 .carousel-track {
     display: flex;
     gap: 20px;
@@ -1150,7 +1303,7 @@
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 25px;
-    color: #035c78;
+    color: #4a3b32;
     text-transform: lowercase; /* Mantendo o estilo clean do seu menu */
 }
 
@@ -1278,7 +1431,40 @@
     padding: 20px;
 }
 
+/* Container para garantir a centralização */
+.ver-mais-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px; /* Espaço entre os cards e o botão */
+    margin-bottom: 10px;
+    width: 100%;
+}
 
+/* Estilo do botão "Ver mais" */
+.btn-ver-mais {
+    display: inline-block;
+    background-color: #ffffff; /* Fundo branco para contrastar com o rosa */
+    color: #e7883b; /* Cor do texto (usei o azul dos seus botões atuais, ajuste se quiser) */
+    border: 2px solid #e7883b; /* Borda azul */
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px; /* Bordas arredondadas combinando com o layout */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Efeito de passar o mouse (Hover) */
+.btn-ver-mais:hover {
+    background-color: #e7883b; /* Inverte as cores */
+    color: #ffffff;
+    transform: translateY(-2px); /* Leve efeito de flutuar */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+
+/* nao sei mais oq é aqui em baixo */
 
 /* Abas de Entrar / Cadastrar */
 .auth-tabs {

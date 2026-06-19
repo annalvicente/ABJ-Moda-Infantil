@@ -1,3 +1,21 @@
+// --- CONTROLE DO CARROSSEL --- // 
+
+function moverCarrossel(direcao) {
+    const track = document.getElementById('track');
+    if (!track) return;
+    
+    const cards = track.querySelectorAll('.card');
+    if (cards.length === 0) return;
+
+    if (direcao === 1) {
+        // Avançar: Aplica uma transição rápida e joga o primeiro card para o final
+        track.appendChild(cards[0]);
+    } else if (direcao === -1) {
+        // Voltar: Pega o último card e joga para o início da fila
+        track.insertBefore(cards[cards.length - 1], cards[0]);
+    }
+}
+
 // --- CONTROLE DA VITRINE ---
 
 function renderizarLoja() {

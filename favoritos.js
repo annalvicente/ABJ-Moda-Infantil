@@ -1,81 +1,124 @@
-// Função para carregar os dados do banco assim que a página abre
+// ============================================================
+// FAVORITOS — favoritos.js
+// ============================================================
+
+// ---- TOGGLE FAVORITOS ----
+function toggleFavoritos() {
+  const favoritos = document.getElementById("favoritos-container");
+  if (!favoritos) return;
+
+  const estaAberto = favoritos.style.right === "0px" || favoritos.classList.contains("open");
+  if (estaAberto) {
+    fecharTudo();
+  } else {
+    abrirFavoritos();
+  }
+}
+
+// ---- ABRIR FAVORITOS ----
+function abrirFavoritos() {
+  const favoritos = document.getElementById("favoritos-container");
+  const overlay = document.getElementById("overlay");
+  const conteudo = document.querySelector(".conteudo-principal");
+
+  if (!favoritos) return;
+
+  // CORREÇÃO: Ajustado o ID para "x" para fechar o carrinho corretamente ao abrir os favoritos
+  const carrinho = document.getElementById("x");
+  if (carrinho) {
+    carrinho.style.right = "-420px";
+    carrinho.classList.remove("open");
+  }
+
+  favoritos.style.right = "0px";
+  favoritos.classList.add("open");
+  if (overlay) overlay.classList.add("active");
+  if (conteudo) conteudo.classList.add("blur-active");
+
+  carregarFavoritos();
+}
+
+// ---- CARREGAR FAVORITOS DO SERVIDOR ----
 async function carregarFavoritos() {
-    const lista = document.getElementById('lista-favoritos');
+  const lista = document.getElementById("lista-favoritos");
+  if (!lista) return;
 
-    try {
-        // Busca os dados do arquivo PHP centralizador
-        const response = await fetch('acoesfav.php?acao=listar');
-        const favoritos = await response.json();
+  lista.innerHTML = `
+    <div class="gaveta-vazia">
+      <i class="fa-solid fa-circle-notch fa-spin"></i>
+      <p>Carregando favoritos...</p>
+    </div>`;
 
-        lista.innerHTML = '';
+  try {
+    const resposta = await fetch("acoesfav.php?acao=listar");
+    if (!resposta.ok) throw new Error("Erro na requisição");
 
-        if (favoritos.length === 0) {
-            lista.innerHTML = '<p>Você ainda não favoritou nada.</p>';
-            return;
-        }
+    const dados = await resposta.json();
+    lista.innerHTML = "";
 
-        favoritos.forEach(p => {
-            lista.innerHTML += `
-                <div class="fav-item" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px;">
-                    <div class="fav-info" style="display: flex; align-items: center; gap: 15px;">
-                        <input type="checkbox" class="fav-checkbox" value="${p.id_produto}">
-                        <img src="${p.imagem}" alt="${p.nome}" style="width: 80px; border-radius: 8px;">
-                        <div>
-                            <h3 style="margin:0;">${p.nome}</h3>
-                            <p style="color: #ff69b4; font-weight: bold;">R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
-                        </div>
-                    </div>
-                    <div class="fav-actions">
-                        <i class="fa-solid fa-trash-can btn-remover" 
-                           onclick="removerFavorito(${p.id_favorito})" 
-                           style="cursor:pointer; color:#ff6b6b; font-size: 1.2rem;"></i>
-                    </div>
-                </div>
-            `;
-        });
-    } catch (error) {
-        lista.innerHTML = '<p>Erro ao carregar dados do servidor.</p>';
-        console.error("Erro:", error);
+    if (!dados.sucesso || !dados.itens || dados.itens.length === 0) {
+      lista.innerHTML = `
+        <div class="gaveta-vazia">
+          <i class="fa-regular fa-heart"></i>
+          <p>Sua lista de favoritos está vazia.</p>
+        </div>`;
+      return;
     }
-}
 
-// Função para remover um item do banco
-async function removerFavorito(idFavorito) {
-    if (!confirm("Deseja remover este item dos favoritos?")) return;
-
-    const formData = new FormData();
-    formData.append('id_favorito', idFavorito);
-
-    await fetch('acoesfav.php?acao=remover', {
-        method: 'POST',
-        body: formData
+    dados.itens.forEach((p) => {
+      const div = document.createElement("div");
+      div.className = "fav-item-single";
+      div.innerHTML = `
+        <div class="fav-item-info">
+          <input type="checkbox" class="fav-checkbox" value="${p.id_favorito}" data-nome="${p.nome}" data-preco="${p.preco}">
+          <img src="img/${p.imagem}" alt="${p.nome}">
+          <div>
+            <h4>${p.nome}</h4>
+            <p>R$ ${parseFloat(p.preco).toFixed(2).replace(".", ",")}</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-trash-can btn-remover"
+           onclick="removerFavorito(${p.id_favorito})"
+           title="Remover favorito"></i>
+      `;
+      lista.appendChild(div);
     });
-
-    carregarFavoritos(); // Atualiza a tela após remover
+  } catch (error) {
+    lista.innerHTML = `
+      <div class="gaveta-vazia">
+        <i class="fa-regular fa-heart"></i>
+        <p>Faça login para ver seus favoritos.</p>
+      </div>`;
+    console.warn("Favoritos:", error.message);
+  }
 }
 
-// Função para enviar os selecionados para a tabela carrinho no banco
+// ---- REMOVER FAVORITO ----
+async function removerFavorito(idFavorito) {
+  if (!confirm("Deseja remover este item dos favoritos?")) return;
+
+  const formData = new FormData();
+  formData.append("id_favorito", idFavorito);
+
+  await fetch("acoesfav.php?acao=remover", { method: "POST", body: formData });
+  carregarFavoritos();
+}
+
+// ---- MOVER SELECIONADOS PARA O CARRINHO ----
 async function adicionarFavoritosAoCarrinho() {
-    const selecionados = document.querySelectorAll('.fav-checkbox:checked');
+  const selecionados = document.querySelectorAll(".fav-checkbox:checked");
 
-    if (selecionados.length === 0) {
-        alert("Selecione pelo menos um item!");
-        return;
-    }
+  if (selecionados.length === 0) {
+    alert("Selecione pelo menos um item!");
+    return;
+  }
 
-    for (let checkbox of selecionados) {
-        const formData = new FormData();
-        formData.append('produto_id', checkbox.value);
+  for (let checkbox of selecionados) {
+    const nome = checkbox.getAttribute("data-nome");
+    const preco = checkbox.getAttribute("data-preco");
+    adicionarAoCarrinho(nome, preco);
+  }
 
-        await fetch('acoesfav.php?acao=adicionar_carrinho', {
-            method: 'POST',
-            body: formData
-        });
-    }
-
-    alert("Itens adicionados ao carrinho!");
-    window.location.href = 'index.html';
+  alert("Itens selecionados adicionados ao carrinho!");
+  fecharTudo();
 }
-
-// Inicializa a lista
-document.addEventListener('DOMContentLoaded', carregarFavoritos);
