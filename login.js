@@ -82,6 +82,23 @@ function setUserType(type) {
         input.value = type;
     });
 
+    // 🔑 EXIBIÇÃO DINÂMICA DA CHAVE DE ACESSO DA LOJA
+    const grpChave = document.getElementById('grp-cad-chave');
+    const inputChave = document.getElementById('cad-chave');
+
+    if (grpChave) {
+        if (!isCliente) {
+            grpChave.style.display = 'block'; // Mostra o campo se for vendedor
+            if (inputChave) inputChave.required = true;
+        } else {
+            grpChave.style.display = 'none';  // Oculta se for cliente
+            if (inputChave) {
+                inputChave.required = false;
+                inputChave.value = '';        // Limpa o valor digitado
+            }
+        }
+    }
+
     const btnLogin = document.getElementById('btn-submit-login');
     const btnCad = document.getElementById('btn-submit-cadastro');
 

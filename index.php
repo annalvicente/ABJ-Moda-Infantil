@@ -426,6 +426,13 @@ $vitrines = [
                         minlength="6">
                     <span class="erro-campo">A senha deve ter ao menos 6 caracteres.</span>
                 </div>
+                <!-- 🔑 ADICIONE ESTE BLOCO DA CHAVE AQUI -->
+                <div class="input-group" id="grp-cad-chave" style="display: none;">
+                    <label>Código de Autorização da Loja</label>
+                    <input type="password" name="chave_loja" id="cad-chave" placeholder="Digite a chave da loja">
+                    <span class="erro-campo">Código de acesso obrigatório para vendedores.</span>
+                </div>
+                
                 <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR
                     CLIENTE</button>
             </form>

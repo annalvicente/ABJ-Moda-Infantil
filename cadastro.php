@@ -8,6 +8,9 @@ require_once 'conexão.php';
 
 header('Content-Type: application/json');
 
+// Define a chave de segurança para novos vendedores
+define('CHAVE_SEGURANCA_LOJA', 'VENDEDOR-SISTEMA');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome            = trim($_POST['nome']            ?? '');
     $email           = trim($_POST['email']           ?? '');
@@ -16,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data_nascimento = $_POST['data_nascimento']      ?? '';
     $telefone        = trim($_POST['telefone']        ?? '');
     $tipo_usuario    = $_POST['tipo_form']            ?? 'cliente';
+    $chave_loja      = trim($_POST['chave_loja']      ?? ''); // Campo enviado no formulário
 
     // Validações básicas
     if (empty($nome) || empty($email) || empty($senha)) {
@@ -26,6 +30,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail inválido.']);
         exit;
+    }
+
+    // 🔒 VALIDAÇÃO DE SEGURANÇA PARA VENDEDORES
+    if ($tipo_usuario === 'vendedor') {
+        if (empty($chave_loja)) {
+            echo json_encode(['status' => 'erro', 'mensagem' => 'Informe o código de autorização da loja para cadastrar vendedor.']);
+            exit;
+        }
+
+        if ($chave_loja !== CHAVE_SEGURANCA_LOJA) {
+            echo json_encode(['status' => 'erro', 'mensagem' => 'Código de autorização da loja incorreto!']);
+            exit;
+        }
     }
 
     $tabela = ($tipo_usuario === 'vendedor') ? 'vendedores' : 'clientes';
