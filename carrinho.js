@@ -164,34 +164,49 @@ function atualizarInterface() {
 // --- FUNÇÃO PARA ABRIR / FECHAR O CARRINHO ---
 function interacaoCart() {
     const carrinho = document.getElementById('x'); 
+    const favoritos = document.getElementById('favoritos-container');
     const overlay = document.getElementById('overlay');
     
-    if (carrinho) {
-        if (carrinho.style.right === '0px') {
-            carrinho.style.right = '-450px'; 
-        } else {
-            carrinho.style.right = '0px';    
-        }
-    }
-    
-    if (overlay) {
-        overlay.classList.toggle('active');
+    if (!carrinho) return;
+
+    // Se o carrinho já estiver aberto, fecha ele com calma
+    if (carrinho.style.right === '0px') {
+        fecharAll();
+    } else {
+        // Se o favoritos estiver aberto, fecha ele primeiro
+        if (favoritos) favoritos.style.right = '-450px';
+
+        // Abre o carrinho e ativa a transparência do fundo
+        carrinho.style.right = '0px'; 
+        if (overlay) overlay.classList.add('active');
     }
 }
 
-// --- FUNÇÃO PARA FECHAR TUDO ---
-function fecharAll() {
-    const carrinho = document.getElementById('x');
-    const overlay = document.getElementById('overlay');
-    const favoritos = document.getElementById('favoritos-container');
+// --- FUNÇÃO PARA FECHAR TUDO (COM CORREÇÃO DE ANIMAÇÃO E SCROLL) ---
+function fecharAll(event) {
+    // 1. Evita que links com '#' façam a tela pular para o topo
+    if (event && event.preventDefault) {
+        event.preventDefault();
+    }
 
-    if (carrinho) {
-        carrinho.style.right = '-450px'; 
-    }
-    if (favoritos) {
-        favoritos.style.right = '-450px'; 
-    }
+    const carrinho = document.getElementById('x');
+    const favoritos = document.getElementById('favoritos-container');
+    const overlay = document.getElementById('overlay');
+
+    // 2. Recolhe o Carrinho e os Favoritos primeiro
+    if (carrinho) carrinho.style.right = '-450px';
+    if (favoritos) favoritos.style.right = '-450px';
+
+    // 3. Espera a animação da gaveta fechar para SÓ ENTÃO remover a transparência
     if (overlay) {
-        overlay.classList.remove('active'); 
+        setTimeout(() => {
+            // Garante que só remove o escuro se NENHUMA gaveta tiver sido reaberta nesse meio tempo
+            const cartAberto = carrinho && carrinho.style.right === '0px';
+            const favAberto = favoritos && favoritos.style.right === '0px';
+            
+            if (!cartAberto && !favAberto) {
+                overlay.classList.remove('active');
+            }
+        }, 300); // 300ms é o tempo da transição do deslize no CSS
     }
 }
