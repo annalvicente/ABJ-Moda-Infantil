@@ -36,8 +36,11 @@ $vitrines = [
             </nav>
 
             <a href="index.php" class="logo">
-                <img src="img/logoabj.webp" alt="Balão Logo">
+                <img src="img/logoabj.webp" alt="Balão Logo" class="logo-normal">
+                <img src="img/logo-deitada.webp" alt="Logo deitada" class="logo-deitada"> 
             </a>
+
+            
 
 
             <div class="user-actions">
@@ -96,13 +99,13 @@ $vitrines = [
         </div>
     </header>
 
-    <div class="search-container">
+    <!-- <div class="search-container">
         <form class="search-box" id="searchForm">
             <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()"></i>
             <input type="text" id="searchInput" placeholder="O que você procura?">
             <i class="fa-solid fa-xmark" onclick="limparBusca()"></i>
         </form>
-    </div>
+    </div> -->
 
     <main>
         <section class="hero-banner">
@@ -426,7 +429,6 @@ $vitrines = [
                         minlength="6">
                     <span class="erro-campo">A senha deve ter ao menos 6 caracteres.</span>
                 </div>
-                <!-- 🔑 ADICIONE ESTE BLOCO DA CHAVE AQUI -->
                 <div class="input-group" id="grp-cad-chave" style="display: none;">
                     <label>Código de Autorização da Loja</label>
                     <input type="password" name="chave_loja" id="cad-chave" placeholder="Digite a chave da loja">
@@ -513,6 +515,18 @@ $vitrines = [
     });
     </script>
 
+    <script>
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    
+    // Se rolar mais de 20px da tela, fica reto
+    if (window.scrollY > 20) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+</script>
 
 </body>
 

@@ -35,7 +35,7 @@
     /* ============================================================
     2. CABEÇALHO (Header, Menu e Logo)
     ============================================================ */
-    header {
+    /* header {
         background-color: var(--amarelo-header);
         padding: 05px 50px 40px 50px;
         border-bottom-left-radius: 50% 30px;
@@ -50,7 +50,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
+    } */
+
+
+    
 
     .menu-links {
         display: flex;

@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // 🔒 VALIDAÇÃO DE SEGURANÇA PARA VENDEDORES
+    // VALIDAÇÃO DE SEGURANÇA PARA VENDEDORES
     if ($tipo_usuario === 'vendedor') {
         if (empty($chave_loja)) {
             echo json_encode(['status' => 'erro', 'mensagem' => 'Informe o código de autorização da loja para cadastrar vendedor.']);

@@ -1,108 +1,247 @@
 /* ============================================================
     1. RESET, FONTES E VARIÁVEIS BASE
     ============================================================ */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Quicksand', sans-serif;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
 
-    html {
-        scroll-behavior: smoosh;
-    }
- 
-    :root {
-        --amarelo-header: #ffeebb;
-        --azul-banner: #b0dce8;
-        --texto-marrom: #4a3b32;
-        --rosa-glow: rgba(255, 105, 180, 0.7);
-        --cor-seta: #e3cfa5;
-    }
+html {
+    scroll-behavior: smoosh;
+}
+
+:root {
+    --amarelo-header: #ffeebb;
+    --azul-banner: #b0dce8;
+    --texto-marrom: #4a3b32;
+    --rosa-glow: rgba(255, 105, 180, 0.7);
+    --cor-seta: #e3cfa5;
+}
 
 
 
-    body {
-        font-family: 'Quicksand', sans-serif;
-        background-color: #f8ffd685; /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
-        color: var(--texto-marrom);
-        overflow-x: hidden;
-    }
-    p {
-        text-decoration: none;
-    }
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #f8ffd685;
+    /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
+    color: var(--texto-marrom);
+    overflow-x: hidden;
+}
 
-    /* ============================================================
-    2. CABEÇALHO (Header, Menu e Logo)
-    ============================================================ */
-    header {
-        background-color: var(--amarelo-header);
-        padding: 05px 50px 40px 50px;
-        border-bottom-left-radius: 50% 30px;
-        border-bottom-right-radius: 50% 30px;
-        position:relative;
-        z-index: 10;
-    }
+p {
+    text-decoration: none;
+}
 
-    .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 
-    .menu-links {
-        display: flex;
-        gap: 20px;
-        font-weight: bold; 
-        font-size: 18px;
-    }
+/* ============================================================
+   2. CABEÇALHO (Header, Menu, Logos e Ações)
+   ============================================================ */
+header {
+    background-color: var(--amarelo-header);
+    padding: 10px 50px 30px 50px;
+    border-bottom-left-radius: 50% 30px;
+    border-bottom-right-radius: 50% 30px;
+    border-bottom: 2px solid #e6d367;
 
-    .menu-links-meninas{
-        color: #dc059b;
-    }
+    /* Fixo e alinhado ao topo */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
 
-      .menu-links-meninos{
-        color: #07ada5;
-    }
+    transition: all 0.3s ease-in-out;
+}
 
-      .menu-links-bebes{
-        color: #1ab44d;
-    }
+/* Quando rolar a página: fica reto, fino e muda a cor para fixar */
+header.scrolled {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 8px 50px;
+    /* Reduz a altura */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-    a {
-    transition: opacity 0.3s; /* Deixa a mudança suave */
-    }
+    border-bottom: 2px solid #e6d367;
+}
 
-    a:hover {
-    opacity: 0.5; /* O link fica levemente transparente, dando o efeito de feedback */
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Alinha tudo horizontalmente no centro */
+    gap: 20px;
+    /* Espaço entre os blocos */
+}
+
+/* ============================================================
+   3. LOGO (Dinâmica)
+   ============================================================ */
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    /* Garante que a logo não amasse */
+    transition: 0.2s;
+}
+
+
+
+/* Logo deitada (quando a página rola) */
+header.scrolled .logo .logo-deitada {
+    display: block !important;
+    width: 100px;
+    /* Subimos para 280px */
+    max-width: none !important;
+    /* Desativa limitações de tamanho */
+    height: auto;
+
+    /* Aumenta a escala sem empurrar o padding do header */
+    transform: scale(1.6);
+    transform-origin: center;
+    transition: 0.2s;
+}
+
+/* Mantém o header bem fino e retinho ao rolar */
+header.scrolled {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 35px 50px;
+    /* Mantém a barra fina */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Estilo para a logo em pé (normal) */
+.logo .logo-normal {
+    width: 100px;
+}
+
+/* Estilo para a logo deitada (oculta por padrão) */
+.logo .logo-deitada {
+    display: none;
+    width: 180px;
+    /* Ajuste a largura ideal para a logo deitada */
+}
+
+/* Troca das logos quando rolar (scrolled) */
+header.scrolled .logo .logo-normal {
+    display: none;
+}
+
+header.scrolled .logo .logo-deitada {
+    display: block;
+}
+
+/* ============================================================
+   4. BARRA DE PESQUISA (Dentro do Header)
+   ============================================================ */
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    /* Faz a busca ocupar o espaço disponível entre a logo e as ações */
+    max-width: 400px;
+    /* Largura máxima da barra */
+}
+
+.search-box {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 10px 20px;
+    width: 100%;
+    /* Ocupa todo o espaço do container */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 90%;
+    font-size: 1rem;
+}
+
+/* ============================================================
+   5. AJUSTES GERAIS
+   ============================================================ */
+/* Espaço para o banner não subir sob o header fixo */
+body {
+    padding-top: 130px;
+    /* Altura original do header para não quebrar o layout */
+}
+
+.menu-links {
+    display: flex;
+    gap: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.menu-links-meninas {
+    color: #dc059b;
+    transition: 0.3s;
+}
+
+.menu-links-meninos {
+    color: #07ada5;
+    transition: 0.3s;
+}
+
+.menu-links-bebes {
+    color: #1ab44d;
+    transition: 0.3s;
+}
+
+a {
+    transition: opacity 0.3s;
+    /* Deixa a mudança suave */
+}
+
+a:hover {
+    opacity: 0.5;
+    /* O link fica levemente transparente, dando o efeito de feedback */
     transform: scale(1.1);
-    }
+}
 
-    .logo {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-    }
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
 
-    .logo img {
-        width: 100px;
-        height: auto;
-        margin-bottom: -5px;
-        object-fit: contain;
-        display: block;    
-    }
+.logo img {
+    width: 100px;
+    height: auto;
+    margin-bottom: -5px;
+    object-fit: contain;
+    display: block;
+}
 
-    .logo span {
-        font-size: 0.8rem;
-        font-weight: bold;
-        color: #ff69b4;
-    }
+.logo span {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #ff69b4;
+}
 
 
-    /* ============================================================
+/* ============================================================
      LOGIN E CADASTRO
      =========================================================== */
 /* Container que envolve o círculo rosa 'S' */
@@ -114,7 +253,7 @@
     width: 36px;
     height: 36px;
     /* ESTA É A MÁGICA: Uma área física invisível para baixo que mantém o mouse conectado */
-    padding-bottom: 25px; 
+    padding-bottom: 25px;
     margin-bottom: -25px;
 }
 
@@ -122,7 +261,7 @@
 .user-avatar {
     width: 36px;
     height: 36px;
-    background-color: #0b827a; 
+    background-color: #0b827a;
     color: #ffffff;
     border-radius: 50%;
     display: flex;
@@ -131,36 +270,33 @@
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
 }
 
 /* Caixa Branca do Menu Flutuante */
 .dropdown-menu {
-    display: none; 
+    display: none;
     position: absolute;
     /* Posiciona perfeitamente encostado embaixo do círculo rosa */
-    top: 26px; 
+    top: 26px;
     right: -10px;
     background-color: #ffffff;
     min-width: 165px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     border-radius: 16px;
     padding: 15px;
-    z-index: 999999 !important; /* Passa por cima de qualquer elemento do banner */
+    z-index: 999999 !important;
+    /* Passa por cima de qualquer elemento do banner */
     border: 1px solid #f3f3f3;
 }
 
-/* Exibe o menu quando o mouse entra na área do .user-dropdown */
-/* .user-dropdown:hover .dropdown-menu {
-    display: block !important;
-} */
-
-/* Texto interno: "Olá, Suelen!" */
+/* Texto interno:  */
 .dropdown-menu .welcome-text {
     display: block;
     font-size: 14px;
-    color: #4a3b32; /* var(--texto-marrom) */
+    color: #4a3b32;
+    /* var(--texto-marrom) */
     font-weight: 700;
     text-align: center;
     margin-bottom: 4px;
@@ -177,7 +313,7 @@
     border-radius: 6px;
     width: fit-content;
     margin: 0 auto 10px auto;
-    background-color: #e3f2fd; 
+    background-color: #e3f2fd;
     color: #1e88e5;
 }
 
@@ -203,8 +339,8 @@
     border-radius: 8px;
     transition: background 0.2s !important;
     /* IMPORTANTE: Neutraliza o efeito global que quebrava o foco do mouse */
-    transform: none !important; 
-    opacity: 1 !important; 
+    transform: none !important;
+    opacity: 1 !important;
 }
 
 /* Efeito sutil ao passar o mouse no botão Sair */
@@ -215,149 +351,139 @@
 }
 
 
-    /* ============================================================
+/* ============================================================
     3. ÍCONES E AÇÕES DO USUÁRIO (Topo Direita)
     ============================================================ */
-    .user-actions {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-        font-size: 1.3rem;
-    }
+.user-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 1.3rem;
+}
 
-    .user-actions a {
-        color: #0b827a ;
-        text-decoration: none;
-        transition: transform 0.2s;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        display: inline-flex;
-        align-items: center;
-    }
+.user-actions a {
+    color: #0b827a;
+    text-decoration: none;
+    transition: transform 0.2s;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+}
 
-    .user-actions a:hover {
-        transform: scale(1.1);
-    }
+.user-actions a:hover {
+    transform: scale(1.1);
+}
 
-    .user-actions i:not(a i) {
-        color: #0b827a;
-        cursor: pointer;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s;
-    }
+.user-actions i:not(a i) {
+    color: #0b827a;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
 
-    .user-actions i:hover {
-        transform: scale(1.1);
-    }
-            
-            .fav-item {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 15px;
-                border-bottom: 1px solid #eee;
-            }
+.user-actions i:hover {
+    transform: scale(1.1);
+}
 
-            .fav-info { display: flex; align-items: center; gap: 15px; }
-            .fav-info img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; }
-            
-            .btn-carrinho {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                padding: 10px 15px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-weight: bold;
-                transition: 0.3s;
-            }
-            .btn-carrinho:hover { background-color: #218838; }
+.fav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
 
-            .btn-remover { color: #ff4d4d; cursor: pointer; font-size: 1.2rem; margin-left: 15px; }
-            
-            .voltar { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #888; }
-    /* ============================================================
-    4. BARRA DE PESQUISA (Search Box)
-    ============================================================ */
-    .search-container {
-        display: flex;
-        justify-content: center;
-        margin-top: -25px;
-        z-index: 30;
-        position: relative;
-    }
+.fav-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-    .search-box {
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 50px;
-        padding: 10px 20px;
-        width: 400px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
-    }
+.fav-info img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
 
-    .search-box input {
-        border: none;
-        outline: none;
-        width: 90%;
-        font-size: 1rem;
-    }
+.btn-carrinho {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
 
-    .search-box i {
-        color: #555;
-        cursor: pointer;
-    }
+.btn-carrinho:hover {
+    background-color: #218838;
+}
 
-    /* ============================================================
+.btn-remover {
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: 15px;
+}
+
+.voltar {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #888;
+}
+
+/* ============================================================
     5. BANNERs  
     ============================================================ */
 
-    /* ======= BANNER 1 - PRINCIPAL ======= */
-    main {
-        max-width: 1200px;
-        margin: 35px auto;
-        padding: 0 20px;
-    }
+/* ======= BANNER 1 - PRINCIPAL ======= */
+main {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
 
-    .hero-banner {
-        background-color: var(--azul-banner);
-        border-radius: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        overflow: hidden;
-        height: 300px;
-        margin-bottom: 60px;
-    }
+.hero-banner {
+    background-color: var(--azul-banner);
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 300px;
+    margin-bottom: 60px;
+}
 
-    .hero-image {
-        flex: 1;
-        height: 100%;
-        display: flex;
-        align-items: flex-end;
-    }
+.hero-image {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
 
-    .hero-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: top center;
-    }
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
 
-    .hero-text {
-        flex: 1;
-        padding: 40px;
-        text-align: center;
-        color: #333;
-    }
+.hero-text {
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+    color: #333;
+}
 
-    .hero-text h2 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-        font-weight: 600;
-    }
+.hero-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
 
 
 /* ======= BANNER 2 - PIJAMAS ======= */
@@ -378,7 +504,8 @@ main {
     overflow: hidden;
     height: 300px;
     margin-bottom: 60px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra leve para dar profundidade e profissionalismo */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    /* Sombra leve para dar profundidade e profissionalismo */
 }
 
 .pijama-image {
@@ -402,16 +529,21 @@ main {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente (cima/baixo) */
-    align-items: center;     /* Centraliza horizontalmente (esquerda/direita) */
+    justify-content: center;
+    /* Centraliza verticalmente (cima/baixo) */
+    align-items: center;
+    /* Centraliza horizontalmente (esquerda/direita) */
     text-align: center;
     color: #333;
-    box-sizing: border-box; /* Garante que o padding não quebre o tamanho */
+    box-sizing: border-box;
+    /* Garante que o padding não quebre o tamanho */
 }
 
 .pijama-text h2 {
-    font-size: 2.2rem; /* Aumentado ligeiramente para dar mais destaque */
-    margin-bottom: 25px; /* Espaço abaixo do título */
+    font-size: 2.2rem;
+    /* Aumentado ligeiramente para dar mais destaque */
+    margin-bottom: 25px;
+    /* Espaço abaixo do título */
     font-weight: 700;
     color: #222;
 }
@@ -419,15 +551,17 @@ main {
 .pijama-text p {
     font-size: 1.05rem;
     line-height: 1.5;
-    margin-bottom: 30px; 
-    max-width: 450px; /* Isso evita que o texto fique gigante para os lados */
+    margin-bottom: 30px;
+    max-width: 450px;
+    /* Isso evita que o texto fique gigante para os lados */
     color: #555;
 }
 
 /* Estilização do Botão (Caso não tivesse uma global) */
 .btn-banner {
     display: inline-block;
-    background-color: #ff69b4; /* O rosa chamativo do seu layout */
+    background-color: #ff69b4;
+    /* O rosa chamativo do seu layout */
     color: #fff;
     padding: 12px 35px;
     border-radius: 50px;
@@ -447,13 +581,14 @@ main {
 .banner-benefits {
     display: flex;
     gap: 20px;
-    margin-top: 25px; /* Empurra os benefícios bem para baixo do botão */
+    margin-top: 25px;
+    /* Empurra os benefícios bem para baixo do botão */
     font-size: 0.85rem;
     font-weight: 500;
     color: #666;
 }
 
-    /* ======= BANNER 3 - FANTASIAS (OTIMIZADO) ======= */
+/* ======= BANNER 3 - FANTASIAS (OTIMIZADO) ======= */
 
 main {
     max-width: 1200px;
@@ -470,7 +605,8 @@ main {
     overflow: hidden;
     height: 300px;
     margin-bottom: 60px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra leve para dar profundidade e profissionalismo */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    /* Sombra leve para dar profundidade e profissionalismo */
 }
 
 .fantasia-image {
@@ -494,16 +630,21 @@ main {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente (cima/baixo) */
-    align-items: center;     /* Centraliza horizontalmente (esquerda/direita) */
+    justify-content: center;
+    /* Centraliza verticalmente (cima/baixo) */
+    align-items: center;
+    /* Centraliza horizontalmente (esquerda/direita) */
     text-align: center;
     color: #333;
-    box-sizing: border-box; /* Garante que o padding não quebre o tamanho */
+    box-sizing: border-box;
+    /* Garante que o padding não quebre o tamanho */
 }
 
 .fantasia-text h2 {
-    font-size: 2.2rem; /* Aumentado ligeiramente para dar mais destaque */
-    margin-bottom: 25px; /* Espaço abaixo do título */
+    font-size: 2.2rem;
+    /* Aumentado ligeiramente para dar mais destaque */
+    margin-bottom: 25px;
+    /* Espaço abaixo do título */
     font-weight: 700;
     color: #222;
 }
@@ -511,15 +652,17 @@ main {
 .fantasia-text p {
     font-size: 1.05rem;
     line-height: 1.5;
-    margin-bottom: 30px; 
-    max-width: 450px; /* Isso evita que o texto fique gigante para os lados */
+    margin-bottom: 30px;
+    max-width: 450px;
+    /* Isso evita que o texto fique gigante para os lados */
     color: #555;
 }
 
 /* Estilização do Botão (Caso não tivesse uma global) */
 .btn-banner {
     display: inline-block;
-    background-color: #ff69b4; /* O rosa chamativo do seu layout */
+    background-color: #ff69b4;
+    /* O rosa chamativo do seu layout */
     color: #fff;
     padding: 12px 35px;
     border-radius: 50px;
@@ -539,18 +682,21 @@ main {
 .banner-benefits {
     display: flex;
     gap: 20px;
-    margin-top: 25px; /* Empurra os benefícios bem para baixo do botão */
+    margin-top: 25px;
+    /* Empurra os benefícios bem para baixo do botão */
     font-size: 0.85rem;
     font-weight: 500;
     color: #666;
 }
+
 /* ============================================================
    6. CARROSSEL E CARDS DE PRODUTOS (Efeito Brilho Rosa)
    ============================================================ */
 .carousel-section {
     position: relative;
     padding: 10px 0;
-    overflow: hidden; /* CRUCIAL para o loop: esconde os cards que saem da tela */
+    overflow: hidden;
+    /* CRUCIAL para o loop: esconde os cards que saem da tela */
     width: 100%;
 }
 
@@ -558,7 +704,8 @@ main {
     display: flex;
     gap: 30px;
     padding: 40px 20px;
-    width: max-content; /* Garante que a track alinhe os cards em linha */
+    width: max-content;
+    /* Garante que a track alinhe os cards em linha */
 }
 
 .card {
@@ -618,11 +765,13 @@ main {
 }
 
 .nav-arrow.prev {
-    left: 10px; /* Ajustado para dentro da área visível por causa do overflow: hidden */
+    left: 10px;
+    /* Ajustado para dentro da área visível por causa do overflow: hidden */
 }
 
 .nav-arrow.next {
-    right: 10px; /* Ajustado para dentro da área visível */
+    right: 10px;
+    /* Ajustado para dentro da área visível */
 }
 
 /* ============================================================
@@ -631,10 +780,14 @@ main {
 
 .modal-overlay {
     position: fixed !important;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5) !important; /* Escurecimento suave */
-    display: none; /* Controlado pelo JS */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5) !important;
+    /* Escurecimento suave */
+    display: none;
+    /* Controlado pelo JS */
     justify-content: center;
     align-items: center;
     z-index: 10000;
@@ -654,16 +807,20 @@ main {
 
 .modal-box {
     /* ... suas outras propriedades ... */
-    
-    max-height: 90vh;    /* Não deixa o modal ser maior que 90% da altura da tela */
-    overflow-y: auto;    /* Ativa o scroll vertical se o conteúdo passar do limite */
-    scrollbar-width: thin; /* Deixa a barrinha de scroll mais elegante (Firefox) */
+
+    max-height: 90vh;
+    /* Não deixa o modal ser maior que 90% da altura da tela */
+    overflow-y: auto;
+    /* Ativa o scroll vertical se o conteúdo passar do limite */
+    scrollbar-width: thin;
+    /* Deixa a barrinha de scroll mais elegante (Firefox) */
 }
 
 /* Opcional: Estilizar a barra de scroll para ficar bonitinha no Chrome/Edge */
 .modal-box::-webkit-scrollbar {
     width: 6px;
 }
+
 .modal-box::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 10px;
@@ -701,7 +858,8 @@ main {
 }
 
 .tab-btn.active {
-    color: #074a46; /* Cor do texto ativo */
+    color: #074a46;
+    /* Cor do texto ativo */
 }
 
 .tab-btn.active::after {
@@ -711,7 +869,8 @@ main {
     left: 0;
     width: 100%;
     height: 3px;
-    background: #1b6d91; /* Linha azul de destaque */
+    background: #1b6d91;
+    /* Linha azul de destaque */
     border-radius: 10px;
 }
 
@@ -738,7 +897,8 @@ main {
 }
 
 .type-btn.active {
-    background: #005a7d; /* Azul escuro do botão selecionado */
+    background: #005a7d;
+    /* Azul escuro do botão selecionado */
     color: #fff;
 }
 
@@ -772,9 +932,11 @@ main {
 
 /* Mensagem de erro embaixo do input */
 .erro-campo {
-    display: block; /* Mude para none no JS se quiser esconder */
+    display: block;
+    /* Mude para none no JS se quiser esconder */
     font-size: 0.85rem;
-    color: #999; /* Cinza claro como na foto */
+    color: #999;
+    /* Cinza claro como na foto */
     margin-top: 5px;
 }
 
@@ -783,7 +945,8 @@ main {
     width: 100%;
     padding: 18px;
     border: none;
-    border-radius: 50px; /* Estilo pílula */
+    border-radius: 50px;
+    /* Estilo pílula */
     font-weight: 700;
     font-size: 1rem;
     color: #fff;
@@ -799,11 +962,13 @@ main {
 
 /* Cores dinâmicas mantendo suas classes */
 .btn-cliente-color {
-    background-color: #f4628a !important; /* Rosa da foto */
+    background-color: #f4628a !important;
+    /* Rosa da foto */
 }
 
 .btn-vendedor-color {
-    background-color: #2cb672 !important; /* Verde da foto */
+    background-color: #2cb672 !important;
+    /* Verde da foto */
 }
 
 /* Feedback Modal (seguindo o mesmo estilo) */
@@ -829,201 +994,207 @@ main {
 /* ===================================================
       CARRINHO e seu aviso de sucesso
    ======================================================== */
-   @keyframes fadeInItem {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-} /* <-- Essa chave estava faltando e travava o CSS todo! */
+@keyframes fadeInItem {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* <-- Essa chave estava faltando e travava o CSS todo! */
 
 .cart-container {
-  position: fixed;
-  top: 0;
-  right: -450px;
-  width: 380px;
-  height: 100%;
-  background: #fff;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-  transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 2000 !important;
-  display: flex;
-  flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 380px;
+    height: 100%;
+    background: #fff;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 2000 !important;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Força a abertura quando a classe open for ativada pelo JS */
 .cart-container.open,
 #x.open {
-  right: 0 !important;
+    right: 0 !important;
 }
 
 .cart-header {
-  padding: 25px;
-  background-color: var(--azul-banner);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #333;
+    padding: 25px;
+    background-color: var(--azul-banner);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
 }
 
 .cart-header h3 {
-  font-weight: 700;
-  font-size: 1.2rem;
+    font-weight: 700;
+    font-size: 1.2rem;
 }
 
 .close-btn {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  color: #333;
-  cursor: pointer;
-  line-height: 1;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
 }
 
 .cart-items {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .cart-item-single {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  animation: fadeInItem 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    animation: fadeInItem 0.3s ease;
 }
 
 .cart-footer {
-  padding: 25px;
-  border-top: 1px solid #eee;
-  background: #fdfdfd;
+    padding: 25px;
+    border-top: 1px solid #eee;
+    background: #fdfdfd;
 }
 
 .cart-total {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  font-weight: 700;
-  font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
 .checkout-btn {
-  width: 100%;
-  padding: 15px;
-  background-color: var(--amarelo-header);
-  border: none;
-  border-radius: 50px;
-  font-weight: bold;
-  color: var(--texto-marrom);
-  cursor: pointer;
-  font-size: 1rem;
-  transition: 0.2s;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--amarelo-header);
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    color: var(--texto-marrom);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
 }
 
 .checkout-btn:hover {
-  filter: brightness(0.9);
-  transform: scale(1.02);
+    filter: brightness(0.9);
+    transform: scale(1.02);
 }
 
 #overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1999 ;
-  backdrop-filter: blur(2px);
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1999;
+    backdrop-filter: blur(2px);
 }
 
 #overlay.active {
-  display: block !important;
+    display: block !important;
 }
 
 .cart-badge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: #ff69b4;
-  color: white;
-  font-size: 0.7rem;
-  font-weight: bold;
-  border-radius: 50%;
-  padding: 2px 6px;
-  border: 2px solid white;
-  display: none;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff69b4;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+    border: 2px solid white;
+    display: none;
 }
 
 /* /* Configuração isolada do painel de favoritos lateral */
 .fav-container {
-  position: fixed;
-  top: 0;
-  right: -450px; /* Começa totalmente escondido */
-  width: 380px;
-  height: 100%;
-  background: #fff;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-  transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 2001; /* Fica acima do overlay */
-  display: flex;
-  flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -450px;
+    /* Começa totalmente escondido */
+    width: 380px;
+    height: 100%;
+    background: #fff;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 2001;
+    /* Fica acima do overlay */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Força a abertura do Favoritos quando a classe .open for aplicada */
 .fav-container.open {
-  right: 0 !important;
+    right: 0 !important;
 }
 
 /* Configuração do Overlay (Fundo Embaçado) */
 #overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1999; /* Fica atrás dos painéis de carrinho e favoritos */
-  backdrop-filter: blur(2px);
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1999;
+    /* Fica atrás dos painéis de carrinho e favoritos */
+    backdrop-filter: blur(2px);
 }
 
 /* Ativa o overlay exibindo-o na tela */
 #overlay.active {
-  display: block !important;
+    display: block !important;
 }
 
 /* Estilização interna do painel de favoritos */
 .fav-header {
-  padding: 25px;
-  background-color: var(--amarelo-header, #ffeebb);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #333;
+    padding: 25px;
+    background-color: var(--amarelo-header, #ffeebb);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
 }
 
 .fav-content {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .fav-footer {
-  padding: 25px;
-  border-top: 1px solid #eee;
-  background: #fdfdfd;
+    padding: 25px;
+    border-top: 1px solid #eee;
+    background: #fdfdfd;
 }
 
 /* AVISO DE SUCESSO AO ADICIONAR AO CARRINHO */
@@ -1034,11 +1205,13 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Fundo escurecido suave */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Fundo escurecido suave */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 11000; /* Garante que fica acima de tudo, inclusive do carrinho */
+    z-index: 11000;
+    /* Garante que fica acima de tudo, inclusive do carrinho */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
@@ -1080,9 +1253,17 @@ main {
 }
 
 /* Cores por tipo */
-.custom-alert-box.sucesso::before { background-color: #25c06d; }
-.custom-alert-box.aviso::before { background-color: #f39c12; }
-.custom-alert-box.erro::before { background-color: #e74c3c; }
+.custom-alert-box.sucesso::before {
+    background-color: #25c06d;
+}
+
+.custom-alert-box.aviso::before {
+    background-color: #f39c12;
+}
+
+.custom-alert-box.erro::before {
+    background-color: #e74c3c;
+}
 
 /* --- ÍCONE EM CÍRCULO --- */
 .custom-alert-icon {
@@ -1098,9 +1279,17 @@ main {
     font-weight: bold;
 }
 
-.custom-alert-box.sucesso .custom-alert-icon { background-color: #25c06d; }
-.custom-alert-box.aviso .custom-alert-icon { background-color: #f39c12; }
-.custom-alert-box.erro .custom-alert-icon { background-color: #e74c3c; }
+.custom-alert-box.sucesso .custom-alert-icon {
+    background-color: #25c06d;
+}
+
+.custom-alert-box.aviso .custom-alert-icon {
+    background-color: #f39c12;
+}
+
+.custom-alert-box.erro .custom-alert-icon {
+    background-color: #e74c3c;
+}
 
 /* --- TEXTOS --- */
 .custom-alert-title {
@@ -1108,7 +1297,8 @@ main {
     font-weight: 700;
     color: #333333;
     margin-bottom: 8px;
-    font-family: 'Inter', sans-serif; /* Substitua pela fonte do seu tema */
+    font-family: 'Inter', sans-serif;
+    /* Substitua pela fonte do seu tema */
 }
 
 .custom-alert-message {
@@ -1131,21 +1321,36 @@ main {
     transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.custom-alert-box.sucesso .custom-alert-btn { background-color: #25c06d; }
-.custom-alert-box.sucesso .custom-alert-btn:hover { background-color: #1ea35a; }
+.custom-alert-box.sucesso .custom-alert-btn {
+    background-color: #25c06d;
+}
 
-.custom-alert-box.aviso .custom-alert-btn { background-color: #ffc466; }
-.custom-alert-box.aviso .custom-alert-btn:hover { background-color: #fcc466; }
+.custom-alert-box.sucesso .custom-alert-btn:hover {
+    background-color: #1ea35a;
+}
 
-.custom-alert-box.erro .custom-alert-btn { background-color: #e74c3c; }
-.custom-alert-box.erro .custom-alert-btn:hover { background-color: #c0392b; }
+.custom-alert-box.aviso .custom-alert-btn {
+    background-color: #ffc466;
+}
+
+.custom-alert-box.aviso .custom-alert-btn:hover {
+    background-color: #fcc466;
+}
+
+.custom-alert-box.erro .custom-alert-btn {
+    background-color: #e74c3c;
+}
+
+.custom-alert-box.erro .custom-alert-btn:hover {
+    background-color: #c0392b;
+}
 
 .custom-alert-btn:active {
     transform: scale(0.98);
 }
 
 /* ========================================================
-   ESTILIZAÇÃO DO FOOTER - ABJ MODA INFANTIL
+ FOOTER
 ========================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
 
@@ -1153,33 +1358,36 @@ main {
     width: 100%;
     margin-top: 60px;
     font-family: 'Quicksand', sans-serif;
-    background-color:var(--amarelo-header) /* Creme suave como o topo do site */
+    background-color: var(--amarelo-header)
+        /* Creme suave como o topo do site */
 }
 
 /* --- PARTE 1: ÁREA DE E-COMMERCE --- */
 .footer-ecommerce-body {
-    background-color: #fff3d0; 
+    background-color: #fff3d0;
     padding: 60px 20px;
     width: 100%;
     /* Substituindo a borda reta por uma curva suave no topo (opcional) */
-    border-top: 2px solid #f7e895; 
+    border-top: 2px solid #f7e895;
 }
 
 .ecommerce-wrapper {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1.2fr; 
+    grid-template-columns: 1fr 1fr 1.2fr;
     gap: 50px;
 }
 
 /* Títulos coloridos seguindo a logo */
 .ecom-col h4 {
     font-size: 1.2rem;
-    color: #4DBBB4; /* Verde menta do menu */
+    color: #4DBBB4;
+    /* Verde menta do menu */
     font-weight: 700;
     margin-bottom: 5px;
-    text-transform: lowercase; /* Estilo lúdico do site */
+    text-transform: lowercase;
+    /* Estilo lúdico do site */
 }
 
 /* Linha decorativa em rosa (cor do botão principal) */
@@ -1187,7 +1395,7 @@ main {
     border: 0;
     height: 3px;
     width: 40px;
-    background-color: #EE81B4; 
+    background-color: #EE81B4;
     margin-bottom: 25px;
     border-radius: 10px;
 }
@@ -1208,11 +1416,12 @@ main {
     gap: 10px;
     background-color: #ffffff;
     padding: 10px 22px;
-    border-radius: 25px; /* Super arredondado */
+    border-radius: 25px;
+    /* Super arredondado */
     font-size: 0.9rem;
     color: #555;
     border: 1px solid #eee;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* Selos de Segurança com estilo "cloud" */
@@ -1228,10 +1437,14 @@ main {
     background: #ffffff;
     padding: 10px 15px;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
-.badge-item strong { color: #EE81B4; } /* Título do selo em rosa */
+.badge-item strong {
+    color: #EE81B4;
+}
+
+/* Título do selo em rosa */
 
 /* Atendimento */
 .info-list li {
@@ -1242,12 +1455,14 @@ main {
 }
 
 .info-list i {
-    color: #EE81B4; /* Ícones em rosa para destacar */
+    color: #EE81B4;
+    /* Ícones em rosa para destacar */
 }
 
 /* --- PARTE 2: BARRA INFERIOR (DARK BAR) --- */
 .footer-dark-bar {
-    background-color: #2D2D2D; /* Cinza grafite, menos agressivo que o preto total */
+    background-color: #2D2D2D;
+    /* Cinza grafite, menos agressivo que o preto total */
     color: #ffffff;
     padding: 25px 0;
     font-size: 0.85rem;
@@ -1264,20 +1479,25 @@ main {
 }
 
 .dark-bar-wrapper a {
-    color: #EE81B4; /* Links em rosa para destaque */
+    color: #EE81B4;
+    /* Links em rosa para destaque */
     text-decoration: none;
     transition: 0.3s;
 }
 
 .dark-bar-wrapper a:hover {
-    color: #4DBBB4; /* Muda para verde menta no hover */
+    color: #4DBBB4;
+    /* Muda para verde menta no hover */
 }
-    /* ============================================================
+
+/* ============================================================
     12. FAVORITOS LATERAL (Side Favorites)
     ============================================================ */
-    .fav-container {
-    position: fixed; /* ADICIONADO: Mantém os favoritos fixos na tela */
-    top: 0;          /* ADICIONADO: Alinha ele no topo da tela */
+.fav-container {
+    position: fixed;
+    /* ADICIONADO: Mantém os favoritos fixos na tela */
+    top: 0;
+    /* ADICIONADO: Alinha ele no topo da tela */
     right: -450px;
     width: 450px;
     height: 100%;
@@ -1286,118 +1506,122 @@ main {
     transition: right 0.3s ease;
     display: flex;
     flex-direction: column;
-    z-index: 2000;   /* ADICIONADO: Garante que ele fique NA FRENTE do overlay escuro */
+    z-index: 2000;
+    /* ADICIONADO: Garante que ele fique NA FRENTE do overlay escuro */
 }
 
-    .fav-header {
-        padding: 25px;
-        background-color: var(--amarelo-header);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top-left-radius: 30px;
-    }
+.fav-header {
+    padding: 25px;
+    background-color: var(--amarelo-header);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 30px;
+}
 
-    .fav-header-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-grow: 1;
-        justify-content: center;
-    }
+.fav-header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    justify-content: center;
+}
 
-    .fav-header h3 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #333;
-    }
+.fav-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+}
 
-    .fav-content {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-    }
+.fav-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
 
-    .fav-select-all {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
+.fav-select-all {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
 
-    .fav-item-single {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-        align-items: center;
-    }
+.fav-item-single {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
 
-    .fav-item-img {
-        width: 80px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
+.fav-item-img {
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
 
-    .fav-item-info h4 {
-        font-size: 0.9rem;
-        margin-bottom: 5px;
-    }
+.fav-item-info h4 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
 
-    .fav-item-info p {
-        font-size: 0.8rem;
-        color: #666;
-    }
+.fav-item-info p {
+    font-size: 0.8rem;
+    color: #666;
+}
 
-    .fav-item-price {
-        font-weight: bold;
-        margin-left: auto;
-    }
+.fav-item-price {
+    font-weight: bold;
+    margin-left: auto;
+}
 
-    .fav-footer {
-        padding: 20px;
-        text-align: center;
-    }
+.fav-footer {
+    padding: 20px;
+    text-align: center;
+}
 
-    .btn-fav-carrinho {
-        width: 100%;
-        padding: 15px;
-        background-color: var(--amarelo-header);
-        border: none;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: 0.3s;
-    }
+.btn-fav-carrinho {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--amarelo-header);
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+}
 
-    .btn-fav-carrinho:hover {
-        filter: brightness(0.9);
-    }
+.btn-fav-carrinho:hover {
+    filter: brightness(0.9);
+}
 
-    #overlay-favoritos {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 2999;
-        backdrop-filter: blur(2px);
-    }
+#overlay-favoritos {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2999;
+    backdrop-filter: blur(2px);
+}
 
-    #overlay-favoritos.active {
-        display: block;
-    }
+#overlay-favoritos.active {
+    display: block;
+}
+
 /* Importando uma fonte mais delicada */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500&display=swap');
 
 .hero-banner {
-    background-color: #9cd6de; /* O azul claro do fundo */
-    border-radius: 40px; /* Bordas bem arredondadas como na imagem */
+    background-color: #9cd6de;
+    /* O azul claro do fundo */
+    border-radius: 40px;
+    /* Bordas bem arredondadas como na imagem */
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -1413,7 +1637,8 @@ main {
 
 .hero-image {
     flex: 1;
-    line-height: 0; /* Remove espaços indesejados embaixo da foto */
+    line-height: 0;
+    /* Remove espaços indesejados embaixo da foto */
 }
 
 .hero-image img {
@@ -1425,12 +1650,15 @@ main {
 .hero-text {
     flex: 1;
     padding: 40px;
-    text-align: center; /* Centralizado como na imagem */
-    color: #444; /* Cinza suave */
+    text-align: center;
+    /* Centralizado como na imagem */
+    color: #444;
+    /* Cinza suave */
 }
 
 .hero-text h2 {
-    font-size: 2.2rem; /* Tamanho equilibrado */
+    font-size: 2.2rem;
+    /* Tamanho equilibrado */
     font-weight: 500;
     line-height: 1.2;
     margin-bottom: 20px;
@@ -1441,7 +1669,8 @@ main {
     font-weight: 300;
     line-height: 1.5;
     margin-bottom: 30px;
-    max-width: 80%; /* Para o texto não espalhar muito */
+    max-width: 80%;
+    /* Para o texto não espalhar muito */
     margin-left: auto;
     margin-right: auto;
 }
@@ -1459,7 +1688,8 @@ main {
 }
 
 .btn-banner:hover {
-    background-color: rgba(255, 105, 180, 0.7);;
+    background-color: rgba(255, 105, 180, 0.7);
+    ;
     transform: scale(1.05);
 }
 
@@ -1468,21 +1698,27 @@ main {
 .carousel-track {
     display: flex;
     gap: 20px;
-    align-items: center; /* Garante que os itens se alinhem ao centro */
+    align-items: center;
+    /* Garante que os itens se alinhem ao centro */
 }
 
 .card {
-    min-width: 300px; /* Defina uma largura mínima para o card aparecer */
-    height: 400px;    /* Defina uma altura para o card */
-    flex-shrink: 0;   /* ISSO É IMPORTANTE: impede que o carrossel esmague a imagem */
+    min-width: 300px;
+    /* Defina uma largura mínima para o card aparecer */
+    height: 400px;
+    /* Defina uma altura para o card */
+    flex-shrink: 0;
+    /* ISSO É IMPORTANTE: impede que o carrossel esmague a imagem */
     position: relative;
 }
 
 .card img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a imagem preencher o card sem distorcer */
-    display: block;    /* Remove espaços fantasmas embaixo da imagem */
+    object-fit: cover;
+    /* Faz a imagem preencher o card sem distorcer */
+    display: block;
+    /* Remove espaços fantasmas embaixo da imagem */
     border-radius: 20px;
 }
 
@@ -1508,7 +1744,8 @@ main {
 
 /* 1. Cores de fundo personalizadas que você pediu */
 .vitrine-meninas {
-    background-color: #fde0ea; /* Rosa bem clarinho */
+    background-color: #fde0ea;
+    /* Rosa bem clarinho */
     margin-bottom: 50px;
     padding: 35px;
     border-radius: 24px;
@@ -1516,7 +1753,8 @@ main {
 }
 
 .vitrine-meninos {
-    background-color: #d8e9fc; /* Azul bem clarinho */
+    background-color: #d8e9fc;
+    /* Azul bem clarinho */
     margin-bottom: 50px;
     padding: 35px;
     border-radius: 24px;
@@ -1524,7 +1762,8 @@ main {
 }
 
 .vitrine-bebes {
-    background-color: #d0f1d0; /* Verde bem clarinho */
+    background-color: #d0f1d0;
+    /* Verde bem clarinho */
     margin-bottom: 50px;
     padding: 35px;
     border-radius: 24px;
@@ -1537,7 +1776,8 @@ main {
     font-weight: 700;
     margin-bottom: 25px;
     color: #4a3b32;
-    text-transform: lowercase; /* Mantendo o estilo clean do seu menu */
+    text-transform: lowercase;
+    /* Mantendo o estilo clean do seu menu */
 }
 
 /* Grid que organiza os produtos em 4 colunas */
@@ -1549,10 +1789,15 @@ main {
 
 /* Responsividade: se a tela for pequena, ajusta para 2 colunas ou 1 coluna */
 @media (max-width: 992px) {
-    .produtos-grid { grid-template-columns: repeat(2, 1fr); }
+    .produtos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
+
 @media (max-width: 576px) {
-    .produtos-grid { grid-template-columns: 1fr; }
+    .produtos-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* O Card de cada roupa */
@@ -1574,7 +1819,8 @@ main {
 .produto-imagem-box {
     position: relative;
     width: 100%;
-    height: 280px; /* Altura ideal para fotos de roupas */
+    height: 280px;
+    /* Altura ideal para fotos de roupas */
     overflow: hidden;
     border-radius: 14px;
     background-color: #fafafa;
@@ -1592,23 +1838,28 @@ main {
 
 /* Configuração inicial das imagens */
 .img-corpo {
-    opacity: 1; /* Foto no corpo aparece primeiro */
+    opacity: 1;
+    /* Foto no corpo aparece primeiro */
     z-index: 2;
 }
 
 .img-peca {
-    opacity: 0; /* Foto da peça pura começa escondida */
+    opacity: 0;
+    /* Foto da peça pura começa escondida */
     z-index: 1;
 }
 
 /* Quando passa o mouse no CARD, inverte as opacidades */
 .produto-card:hover .img-corpo {
-    opacity: 0; /* Esconde a foto no corpo */
+    opacity: 0;
+    /* Esconde a foto no corpo */
 }
 
 .produto-card:hover .img-peca {
-    opacity: 1; /* Revela a foto da peça pura */
-    transform: scale(1.02); /* Dá um zoom bem sutil e elegante */
+    opacity: 1;
+    /* Revela a foto da peça pura */
+    transform: scale(1.02);
+    /* Dá um zoom bem sutil e elegante */
 }
 
 /* Textos e Botão dentro do Card */
@@ -1668,7 +1919,8 @@ main {
 .ver-mais-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px; /* Espaço entre os cards e o botão */
+    margin-top: 30px;
+    /* Espaço entre os cards e o botão */
     margin-bottom: 10px;
     width: 100%;
 }
@@ -1676,23 +1928,29 @@ main {
 /* Estilo do botão "Ver mais" */
 .btn-ver-mais {
     display: inline-block;
-    background-color: #ffffff; /* Fundo branco para contrastar com o rosa */
-    color: #e7883b; /* Cor do texto (usei o azul dos seus botões atuais, ajuste se quiser) */
-    border: 2px solid #e7883b; /* Borda azul */
+    background-color: #ffffff;
+    /* Fundo branco para contrastar com o rosa */
+    color: #e7883b;
+    /* Cor do texto (usei o azul dos seus botões atuais, ajuste se quiser) */
+    border: 2px solid #e7883b;
+    /* Borda azul */
     padding: 10px 30px;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 25px; /* Bordas arredondadas combinando com o layout */
+    border-radius: 25px;
+    /* Bordas arredondadas combinando com o layout */
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 /* Efeito de passar o mouse (Hover) */
 .btn-ver-mais:hover {
-    background-color: #e7883b; /* Inverte as cores */
+    background-color: #e7883b;
+    /* Inverte as cores */
     color: #ffffff;
-    transform: translateY(-2px); /* Leve efeito de flutuar */
+    transform: translateY(-2px);
+    /* Leve efeito de flutuar */
     /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
@@ -1837,48 +2095,58 @@ main {
    ======================================================== */
 
 /* Container que cobre a tela inteira */
-.modal-overlay, #feedbackModal {
+.modal-overlay,
+#feedbackModal {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.8) !important; /* Fundo mais escuro para foco */
-    
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    /* Fundo mais escuro para foco */
+
     /* Começa escondido, o JS vai mudar para flex */
-    display: none; 
-    
+    display: none;
+
     /* Centralização perfeita */
     justify-content: center !important;
     align-items: center !important;
-    
+
     /* Camada máxima para ficar na frente de tudo */
     z-index: 999999 !important;
 }
 
 /* Classe que o JS adiciona para mostrar */
-.modal-overlay.aberto, 
+.modal-overlay.aberto,
 #feedbackModal.aberto {
     display: flex !important;
 }
 
 /* A caixa branca interna */
-.modal-box, .feedback-box {
+.modal-box,
+.feedback-box {
     background: #ffffff !important;
     padding: 30px !important;
     border-radius: 15px !important;
     width: 90% !important;
     max-width: 420px !important;
     position: relative !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
-    
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+
     /* Animação suave ao aparecer */
     animation: modalSurge 0.3s ease-out;
 }
 
 @keyframes modalSurge {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ========================================================
@@ -1919,14 +2187,30 @@ main {
 }
 
 /* Cores dinâmicas para Sucesso e Erro */
-.feedback-box.sucesso { border-top: 6px solid #27ae60; }
-.feedback-box.erro { border-top: 6px solid #e74c3c; }
+.feedback-box.sucesso {
+    border-top: 6px solid #27ae60;
+}
 
-.btn-feedback-ok.sucesso { background-color: #27ae60; }
-.btn-feedback-ok.sucesso:hover { background-color: #219150; }
+.feedback-box.erro {
+    border-top: 6px solid #e74c3c;
+}
 
-.btn-feedback-ok.erro { background-color: #e74c3c; }
-.btn-feedback-ok.erro:hover { background-color: #c0392b; }
+.btn-feedback-ok.sucesso {
+    background-color: #27ae60;
+}
+
+.btn-feedback-ok.sucesso:hover {
+    background-color: #219150;
+}
+
+.btn-feedback-ok.erro {
+    background-color: #e74c3c;
+}
+
+.btn-feedback-ok.erro:hover {
+    background-color: #c0392b;
+}
+
 /* ========================================================
    ESTILIZAÇÃO INTERNA (Abas e Botões)
    ======================================================== */
@@ -1950,7 +2234,8 @@ main {
 }
 
 .tab-btn.active {
-    color: #ff6b6b; /* Cor de destaque */
+    color: #ff6b6b;
+    /* Cor de destaque */
     border-bottom: 3px solid #ff6b6b;
 }
 
@@ -2010,8 +2295,13 @@ main {
 }
 
 /* Estilos específicos para o Feedback (Sucesso/Erro) */
-.feedback-box.sucesso { border-top: 8px solid #27ae60; }
-.feedback-box.erro { border-top: 8px solid #e74c3c; }
+.feedback-box.sucesso {
+    border-top: 8px solid #27ae60;
+}
+
+.feedback-box.erro {
+    border-top: 8px solid #e74c3c;
+}
 
 .feedback-icone {
     font-size: 50px;
@@ -2043,5 +2333,10 @@ main {
     color: white;
 }
 
-.btn-feedback-ok.sucesso { background: #27ae60; }
-.btn-feedback-ok.erro { background: #e74c3c; }
+.btn-feedback-ok.sucesso {
+    background: #27ae60;
+}
+
+.btn-feedback-ok.erro {
+    background: #e74c3c;
+}
