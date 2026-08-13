@@ -160,13 +160,21 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
-    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-</button>
+    <div class="produto-botoes">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho()">
+            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+        </button>
+        
+        <button class="btn-favorito" onclick="adicionarAoFavorito(<?php echo $produto['id']; ?>)">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+    </div>
+
                                 </div>
                             </div>
                         <?php endwhile; ?>
                     </div>
+
 
                     <div class="ver-mais-container">
         <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
@@ -216,9 +224,17 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-                                    <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
-    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-</button>
+                                    
+    <div class="produto-botoes">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho()">
+            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+        </button>
+        
+        <button class="btn-favorito" onclick="adicionarAoFavorito(<?php echo $produto['id']; ?>)">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+    </div>
+
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -271,9 +287,15 @@ $vitrines = [
                                 <div class="produto-info">
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-<button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', '<?php echo $produto['preco']; ?>')">
-    <i class="fa-solid fa-cart-shopping"></i> Adicionar
-</button>
+    <div class="produto-botoes">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho()">
+            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+        </button>
+        
+        <button class="btn-favorito" onclick="adicionarAoFavorito(<?php echo $produto['id']; ?>)">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+    </div>
                                 </div>
                             </div>
                         <?php endwhile; ?>

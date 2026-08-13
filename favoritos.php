@@ -26,11 +26,11 @@ include 'conexão.php';
             </button>
         </div>
 
-        <br>
+   <br>
         <a href="index.php" class="voltar">← Voltar para a Loja</a>
     </div>
 
+    <!-- Mantenha apenas o favoritos.js -->
     <script src="favoritos.js"></script>
-    <script src="acoesfav.php"></script>
 </body>
 </html>

@@ -2,6 +2,13 @@
 // FAVORITOS — favoritos.js
 // ============================================================
 
+// ---- CARREGAR AUTOMATICAMENTE AO ABRIR A PÁGINA ----
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("lista-favoritos")) {
+    carregarFavoritos();
+  }
+});
+
 // ---- TOGGLE FAVORITOS ----
 function toggleFavoritos() {
   const favoritos = document.getElementById("favoritos-container");
@@ -9,7 +16,6 @@ function toggleFavoritos() {
 
   const estaAberto = favoritos.style.right === "0px" || favoritos.classList.contains("open");
   if (estaAberto) {
-    // CORREÇÃO: Chama a função local que remove o fundo escuro com certeza
     fecharFavoritosEFundo();
   } else {
     abrirFavoritos();
@@ -38,7 +44,7 @@ function abrirFavoritos() {
   carregarFavoritos();
 }
 
-// ---- NOVA FUNÇÃO LOCAL PARA FORÇAR O FECHAMENTO E TIRAR O FUNDO ESCURO ----
+// ---- FECHAR FAVORITOS E LIMPAR OVERLAY ----
 function fecharFavoritosEFundo() {
   const favoritos = document.getElementById("favoritos-container");
   const overlay = document.getElementById("overlay");
@@ -49,10 +55,35 @@ function fecharFavoritosEFundo() {
     favoritos.classList.remove("open");
   }
   if (overlay) {
-    overlay.classList.remove("active"); // Remove o fundo escuro!
+    overlay.classList.remove("active");
   }
   if (conteudo) {
-    conteudo.classList.remove("blur-active"); // Tira o efeito embaçado do fundo
+    conteudo.classList.remove("blur-active");
+  }
+}
+
+// ---- ADICIONAR UM PRODUTO AOS FAVORITOS (VIA BANCO) ----
+async function adicionarAoFavorito(idProduto) {
+  const formData = new FormData();
+  formData.append("id_produto", idProduto);
+
+  try {
+    const resposta = await fetch("acoesfav.php?acao=adicionar", {
+      method: "POST",
+      body: formData
+    });
+    
+    const resultado = await resposta.json();
+    
+    if (resultado.sucesso) {
+      alert("Produto adicionado aos favoritos!");
+      carregarFavoritos();
+    } else {
+      alert(resultado.mensagem || "Faça login para favoritar produtos!");
+    }
+  } catch (erro) {
+    console.error("Erro ao favoritar:", erro);
+    alert("Erro ao salvar nos favoritos.");
   }
 }
 
@@ -134,10 +165,12 @@ async function adicionarFavoritosAoCarrinho() {
   for (let checkbox of selecionados) {
     const nome = checkbox.getAttribute("data-nome");
     const preco = checkbox.getAttribute("data-preco");
-    adicionarAoCarrinho(nome, preco);
+    
+    if (typeof adicionarAoCarrinho === "function") {
+      adicionarAoCarrinho(nome, preco);
+    }
   }
 
   alert("Itens selecionados adicionados ao carrinho!");
-  fecharTudo();
+  fecharFavoritosEFundo();
 }
-

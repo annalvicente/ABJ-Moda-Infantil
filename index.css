@@ -1492,12 +1492,10 @@ main {
 
 /* ============================================================
     12. FAVORITOS LATERAL (Side Favorites)
-    ============================================================ */
+   ============================================================ */
 .fav-container {
     position: fixed;
-    /* ADICIONADO: Mantém os favoritos fixos na tela */
     top: 0;
-    /* ADICIONADO: Alinha ele no topo da tela */
     right: -450px;
     width: 450px;
     height: 100%;
@@ -1507,7 +1505,7 @@ main {
     display: flex;
     flex-direction: column;
     z-index: 2000;
-    /* ADICIONADO: Garante que ele fique NA FRENTE do overlay escuro */
+    border-top-left-radius: 20px;
 }
 
 .fav-header {
@@ -1516,7 +1514,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top-left-radius: 30px;
+    border-top-left-radius: 20px;
 }
 
 .fav-header-title {
@@ -1548,33 +1546,67 @@ main {
     font-size: 1.1rem;
 }
 
+/* --- ITEM DA LISTA DE FAVORITOS --- */
 .fav-item-single {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
     align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
+.fav-item-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+/* O SEGREDO: Força qualquer imagem dentro do item a ter tamanho controlado */
+.fav-item-single img,
 .fav-item-img {
-    width: 80px;
-    height: 100px;
+    width: 70px !important;
+    height: 85px !important;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 10px;
+    flex-shrink: 0;
 }
 
 .fav-item-info h4 {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin-bottom: 5px;
+    color: #333;
 }
 
 .fav-item-info p {
-    font-size: 0.8rem;
-    color: #666;
+    font-size: 0.9rem;
+    color: #0088b2;
+    font-weight: bold;
 }
 
-.fav-item-price {
-    font-weight: bold;
-    margin-left: auto;
+/* Checkbox estilizado */
+.fav-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #81d8f7;
+    flex-shrink: 0;
+}
+
+/* Ícone de Deletar/Remover */
+.btn-remover {
+    color: #ff6b81;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 8px;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.btn-remover:hover {
+    color: #e63946;
+    transform: scale(1.15);
 }
 
 .fav-footer {
@@ -1787,6 +1819,36 @@ main {
     gap: 25px;
 }
 
+
+/* Container que junta o botão Adicionar + Coração */
+.produto-botoes {
+    display: flex !important;       /* Força a ficar na mesma linha */
+    align-items: center !important;  /* Alinha verticalmente */
+    justify-content: center;
+    gap: 8px;                       /* Espacinho entre eles */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* O botão de adicionar ganha flex: 1 para esticar e ocupar a maior parte */
+.produto-botoes .btn-adicionar {
+    flex: 1 !important;
+    margin: 0 !important;           /* Remove margens antigas que possam quebrar a linha */
+}
+
+/* O botão do coração fica fixo e redondinho */
+.produto-botoes .btn-favorito {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;     /* Evita que o flex esmague o círculo */
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 /* Responsividade: se a tela for pequena, ajusta para 2 colunas ou 1 coluna */
 @media (max-width: 992px) {
     .produtos-grid {
@@ -1900,6 +1962,29 @@ main {
     font-size: 0.9rem;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s;
+}
+.btn-favorito {
+    background-color: #ffffff;
+    border: 2px solid #81d8f7; /* Mesma cor base do seu botão adicionar */
+    color: #444;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%; /* Deixa o botão redondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+    padding: 0;
+}
+
+/* Efeito ao passar o mouse no coração */
+.btn-favorito:hover {
+    border-color: #ff6b81;
+    color: #ff6b81;
+    background-color: #fff0f2;
+    transform: scale(1.05);
 }
 
 .btn-adicionar:hover {
