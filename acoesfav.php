@@ -1,34 +1,39 @@
 <?php
-// 1. Conecta ao banco de dados
+// 1. Inicia a sessão na PRIMEIRA linha
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// 2. Define resposta em JSON
+header('Content-Type: application/json; charset=utf-8');
+
+// 3. Conexão com o Banco de Dados
 include 'conexão.php';
 
-// CORREÇÃO DA VARIÁVEL: Se o seu arquivo conexão.php usa $conexao em vez de $conn
 if (!isset($conn) && isset($conexao)) {
     $conn = $conexao;
 }
 
-session_start();
+$acao = $_GET['acao'] ?? '';
 
-header('Content-Type: application/json'); // Define que o arquivo vai retornar dados em JSON
-$acao = $_GET['acao'] ?? ''; // Recebe qual ação vai realizar
-
-// VALIDAÇÃO: Bloqueia o acesso se não estiver logado
+// 4. VERIFICAÇÃO DE LOGIN
 if (!isset($_SESSION['cliente_id'])) {
-    http_response_code(401);
-    echo json_encode(["sucesso" => false, "mensagem" => "Faça login para favoritar produtos!"]);
+    echo json_encode([
+        "sucesso" => false, 
+        "mensagem" => "Atenção: Você precisa estar logado para realizar esta ação!"
+    ]);
     exit;
 }
 
-$id_cliente = $_SESSION['cliente_id']; // ID do cliente logado
+$id_cliente = intval($_SESSION['cliente_id']);
 
 switch ($acao) {
 
-    // --- 1. ADICIONAR PRODUTO AOS FAVORITOS ---
+    // --- 1. ADICIONAR AOS FAVORITOS ---
     case 'adicionar':
-        $id_prod = intval($_POST['id_produto'] ?? 0);
+        $id_prod = intval($_POST['id_produto'] ?? $_POST['produto_id'] ?? 0);
 
         if ($id_prod > 0) {
-            // Verifica se este produto já não está favoritado para não duplicar
             $check = $conn->query("SELECT id FROM favoritos WHERE id_cliente = $id_cliente AND id_produto = $id_prod");
             
             if ($check && $check->num_rows === 0) {
@@ -36,7 +41,7 @@ switch ($acao) {
                 if ($conn->query($sql)) {
                     echo json_encode(["sucesso" => true, "mensagem" => "Adicionado aos favoritos!"]);
                 } else {
-                    echo json_encode(["sucesso" => false, "mensagem" => "Erro no banco de dados.", "detalhe" => $conn->error]);
+                    echo json_encode(["sucesso" => false, "mensagem" => "Erro no banco: " . $conn->error]);
                 }
             } else {
                 echo json_encode(["sucesso" => true, "mensagem" => "Produto já está nos favoritos!"]);
@@ -46,7 +51,7 @@ switch ($acao) {
         }
         break;
 
-    // --- 2. LISTAR OS FAVORITOS NA GAVETA/PÁGINA ---
+    // --- 2. LISTAR FAVORITOS ---
     case 'listar':
         $sql = "SELECT f.id as id_favorito, p.id as id_produto, p.nome, p.preco, p.imagem 
                 FROM favoritos f 
@@ -62,14 +67,13 @@ switch ($acao) {
             }
         }
 
-        // Retorna no formato exato que o seu favoritos.js espera carregar!
         echo json_encode([
             "sucesso" => true, 
             "itens" => $favoritos
         ]);
         break;
 
-    // --- 3. REMOVER UM FAVORITO ---
+    // --- 3. REMOVER DOS FAVORITOS ---
     case 'remover':
         $id_fav = intval($_POST['id_favorito'] ?? 0);   
 
@@ -78,22 +82,36 @@ switch ($acao) {
             if ($conn->query($sql)) {
                 echo json_encode(["sucesso" => true]);
             } else {
-                echo json_encode(["sucesso" => false, "detalhe" => $conn->error]);
+                echo json_encode(["sucesso" => false, "mensagem" => $conn->error]);
             }
         }
         break;
 
-    // --- 4. ADICIONAR PRODUTO DO FAVORITO AO CARRINHO ---
+    // --- 4. ADICIONAR AO CARRINHO (AJUSTADO PARA O SEU BANCO) ---
     case 'adicionar_carrinho':
-        $id_prod = intval($_POST['produto_id'] ?? 0);
+        // Aceita tanto 'produto_id' quanto 'id_produto'
+        $id_prod = intval($_POST['produto_id'] ?? $_POST['id_produto'] ?? 0);
 
-        if ($id_prod > 0) {
+        if ($id_prod <= 0) {
+            echo json_encode(["sucesso" => false, "mensagem" => "ID do produto não foi recebido."]);
+            break;
+        }
+
+        // Verifica se o item já existe no carrinho deste cliente
+        $check = $conn->query("SELECT id, quantidade FROM carrinho WHERE id_cliente = $id_cliente AND id_produto = $id_prod");
+
+        if ($check && $check->num_rows > 0) {
+            // Se já existe, só aumenta a quantidade
+            $sql = "UPDATE carrinho SET quantidade = quantidade + 1 WHERE id_cliente = $id_cliente AND id_produto = $id_prod";
+        } else {
+            // Se não existe, insere um novo
             $sql = "INSERT INTO carrinho (id_cliente, id_produto, quantidade) VALUES ($id_cliente, $id_prod, 1)";
-            if ($conn->query($sql)) {
-                echo json_encode(["sucesso" => true]);
-            } else {
-                echo json_encode(["sucesso" => false]);
-            }
+        }
+
+        if ($conn->query($sql)) {
+            echo json_encode(["sucesso" => true, "mensagem" => "Produto adicionado ao carrinho!"]);
+        } else {
+            echo json_encode(["sucesso" => false, "mensagem" => "Erro no MySQL: " . $conn->error]);
         }
         break;
 
@@ -102,6 +120,5 @@ switch ($acao) {
         break;
 }
 
-// Fecha a conexão
 $conn->close();
 ?>

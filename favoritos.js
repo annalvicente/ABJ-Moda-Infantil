@@ -1,7 +1,3 @@
-// ============================================================
-// FAVORITOS — favoritos.js
-// ============================================================
-
 // ---- CARREGAR AUTOMATICAMENTE AO ABRIR A PÁGINA ----
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("lista-favoritos")) {
@@ -75,15 +71,39 @@ async function adicionarAoFavorito(idProduto) {
     
     const resultado = await resposta.json();
     
-    if (resultado.sucesso) {
-      alert("Produto adicionado aos favoritos!");
-      carregarFavoritos();
-    } else {
-      alert(resultado.mensagem || "Faça login para favoritar produtos!");
+    // 1. SE NÃO ESTIVER LOGADO (OU DEU ERRO) -> Exibe o Modal Amarelo de Atenção!
+    if (!resultado.sucesso) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Atenção!',
+        text: resultado.mensagem || 'Você precisa estar logado para favoritar produtos!',
+        confirmButtonColor: '#f8c255',
+        borderRadius: '15px'
+      });
+      return;
     }
+
+    // 2. SE ESTIVER LOGADO E ADICIONOU -> Exibe o Modal Verde de Sucesso!
+    Swal.fire({
+      icon: 'success',
+      title: 'Sucesso!',
+      text: resultado.mensagem || 'Produto adicionado aos favoritos!',
+      confirmButtonColor: '#2ecc71',
+      timer: 2000,
+      borderRadius: '15px'
+    });
+
+    carregarFavoritos();
+
   } catch (erro) {
     console.error("Erro ao favoritar:", erro);
-    alert("Erro ao salvar nos favoritos.");
+    Swal.fire({
+      icon: 'error',
+      title: 'Ops!',
+      text: 'Erro ao conectar com o servidor.',
+      confirmButtonColor: '#ff6b81',
+      borderRadius: '15px'
+    });
   }
 }
 
@@ -142,15 +162,40 @@ async function carregarFavoritos() {
   }
 }
 
-// ---- REMOVER FAVORITO ----
+// ---- REMOVER FAVORITO COM ALERTA ESTILIZADO ----
 async function removerFavorito(idFavorito) {
-  if (!confirm("Deseja remover este item dos favoritos?")) return;
+  const confirmacao = await Swal.fire({
+    title: 'Remover favorito?',
+    text: "Este item será retirado da sua lista de favoritos.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ff6b81',
+    cancelButtonColor: '#ccc',
+    confirmButtonText: 'Sim, remover!',
+    cancelButtonText: 'Cancelar',
+    borderRadius: '20px',
+    customClass: {
+      popup: 'modal-fofo'
+    }
+  });
 
-  const formData = new FormData();
-  formData.append("id_favorito", idFavorito);
+  if (confirmacao.isConfirmed) {
+    const formData = new FormData();
+    formData.append("id_favorito", idFavorito);
 
-  await fetch("acoesfav.php?acao=remover", { method: "POST", body: formData });
-  carregarFavoritos();
+    await fetch("acoesfav.php?acao=remover", { method: "POST", body: formData });
+    
+    Swal.fire({
+      title: 'Removido!',
+      text: 'O item foi removido dos favoritos.',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false,
+      borderRadius: '15px'
+    });
+
+    carregarFavoritos();
+  }
 }
 
 // ---- MOVER SELECIONADOS PARA O CARRINHO ----
@@ -158,7 +203,13 @@ async function adicionarFavoritosAoCarrinho() {
   const selecionados = document.querySelectorAll(".fav-checkbox:checked");
 
   if (selecionados.length === 0) {
-    alert("Selecione pelo menos um item!");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Atenção!',
+      text: 'Selecione pelo menos um item para adicionar ao carrinho!',
+      confirmButtonColor: '#f8c255',
+      borderRadius: '15px'
+    });
     return;
   }
 
@@ -171,6 +222,14 @@ async function adicionarFavoritosAoCarrinho() {
     }
   }
 
-  alert("Itens selecionados adicionados ao carrinho!");
+  Swal.fire({
+    icon: 'success',
+    title: 'Sucesso!',
+    text: 'Itens selecionados foram para o carrinho!',
+    confirmButtonColor: '#2ecc71',
+    timer: 2000,
+    borderRadius: '15px'
+  });
+
   fecharFavoritosEFundo();
 }
