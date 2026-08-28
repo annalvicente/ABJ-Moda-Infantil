@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
-$user = "root"; // Altere se o seu usuário for diferente
-$pass = "Home@spSENAI2025!"; // Coloque a senha do seu MySQL80
+$user = "root"; 
+$pass = "Home@spSENAI2025!"; // senha do MySQL
 $db   = "loja_kids";
 
 $conn = new mysqli($host, $user, $pass, $db);
