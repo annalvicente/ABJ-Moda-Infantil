@@ -95,10 +95,12 @@ async function adicionarAoCarrinho(idProduto, nome, preco) {
         
         const dados = await response.json();
 
-        if (dados.status !== 'sucesso') {
-            alert("Erro ao adicionar produto ao carrinho no banco de dados.");
-            return; 
-        }
+if (dados.status !== 'sucesso') {
+    // Exibe a mensagem de erro detalhada do PHP se ela existir
+    const msgErro = dados.mensagem || "Erro ao adicionar produto ao carrinho no banco de dados.";
+    alert("Erro no Banco: " + msgErro);
+    return; 
+}
     } catch (erro) {
         console.error("Erro na requisição:", erro);
         alert("Ops! Certifique-se de estar logado para adicionar itens ao carrinho.");

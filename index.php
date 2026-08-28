@@ -162,7 +162,7 @@ $vitrines = [
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
     <div class="produto-botoes">
-        <button class="btn-adicionar" onclick="adicionarAoCarrinho()">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', <?php echo $produto['preco']; ?>)">
             <i class="fa-solid fa-cart-shopping"></i> Adicionar
         </button>
         
@@ -227,7 +227,7 @@ $vitrines = [
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
                                     
     <div class="produto-botoes">
-        <button class="btn-adicionar" onclick="adicionarAoCarrinho()">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', <?php echo $produto['preco']; ?>)">
             <i class="fa-solid fa-cart-shopping"></i> Adicionar
         </button>
         
@@ -289,7 +289,7 @@ $vitrines = [
                                     <h3 class="produto-nome"><?php echo $produto['nome']; ?></h3>
                                     <p class="produto-preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
     <div class="produto-botoes">
-        <button class="btn-adicionar" onclick="adicionarAoCarrinho()">
+        <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', <?php echo $produto['preco']; ?>)">
             <i class="fa-solid fa-cart-shopping"></i> Adicionar
         </button>
         
