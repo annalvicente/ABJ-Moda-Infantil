@@ -514,7 +514,7 @@ $vitrines = [
         </div>
     </div>
 
-    <div id="overlay" onclick="fecharTudo()"></div>
+    <div id="overlay" ></div>
 
     <script src="carrinho.js"></script>
     <script src="loja.js"></script>
