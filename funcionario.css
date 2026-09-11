@@ -1,53 +1,58 @@
 /* ============================================================
-    1. RESET, FONTES E VARIÁVEIS BASE
-============================================================ */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Quicksand', sans-serif;
-    }
+   1. RESET, FONTES E VARIÁVEIS BASE
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
 
-    html {
-        scroll-behavior: smoosh;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
 
-    :root {
-        --amarelo-header: #ffeebb;
-        --azul-banner: #b0dce8;
-        --texto-marrom: #4a3b32;
-        --rosa-glow: rgba(255, 105, 180, 0.7);
-        --cor-seta: #e3cfa5;
-    }
+html {
+    scroll-behavior: smoosh;
+}
 
-    body {
-        font-family: 'Quicksand', sans-serif;
-        background-color: #f8ffd685; /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
-        color: var(--texto-marrom);
-        overflow-x: hidden;
-    }
-    p {
-        text-decoration: none;
-    }
+:root {
+    --amarelo-header: #ffeebb;
+    --azul-banner: #b0dce8;
+    --texto-marrom: #4a3b32;
+    --rosa-glow: rgba(255, 105, 180, 0.7);
+    --cor-seta: #e3cfa5;
+}
 
-    main {
-        max-width: 1200px;
-        margin: 35px auto;
-        padding: 0 20px;
-    }
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #f8ffd685; /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
+    color: var(--texto-marrom);
+    overflow-x: hidden;
+}
+
+p {
+    text-decoration: none;
+}
+
+main {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
 
 /* ============================================================
-    2. CABEÇALHO (Header, Menu e Logo)
-============================================================ */
-    .header-admin {
+   2. CABEÇALHO (Header, Menu e Logo)
+   ============================================================ */
+.header-admin {
     display: flex;
     justify-content: space-between; 
     align-items: center;
     padding: 20px 40px;
     background-color: var(--amarelo-header); 
     border-bottom-left-radius: 50% 30px;
-        border-bottom-right-radius: 50% 30px;
+    border-bottom-right-radius: 50% 30px;
 }
+
 .header-admin .logo img {
     width: 100px;
     height: auto;
@@ -91,88 +96,11 @@
     display: flex;
     justify-content: flex-end; /* Joga o botão "Ver loja" para a direita */
 }
+
+
 /* ============================================================
-    3. RODAPÉ (Footer)
-============================================================ */
-.footer-custom {
-    background-color: var(--amarelo-header);
-    margin: 50px 20px 20px 20px;
-    border-radius: 50px;
-    padding: 30px 60px;
-    font-family: 'Quicksand', sans-serif;
-    scroll-margin-top: 30px;
-}
-
-.footer-container-custom {
-    max-width: 1200px;
-    margin: 0 auto;
-   display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.chat-icon {
-    font-size: 2.5rem;
-    color: #f28d8d;
-}
-
-.brand-info h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.brand-info p {
-    font-size: 0.95rem;
-    margin: 2px 0;
-    font-weight: 600;
-}
-
-.footer-links-social {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.social-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.social-item i {
-    font-size: 1.2rem;
-}
-
-.faq-link {
-    text-decoration: underline;
-    color: inherit;
-    font-weight: 700;
-    margin-top: 5px;
-    display: inline-block;
-}
-
-.product-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: contain;
-    margin-bottom: 15px;
-    border-radius: 15px;
-}
-  
-/* ============================================================
-    4. PAINEL DE ESTOQUE (Tabelas e Status)
-=========================================================== */
+   3. PAINEL DE ESTOQUE (Tabelas, Ações, Formulários e Modais)
+   ============================================================ */
 .estoque-container {
     background-color: white;
     max-width: 15px;
@@ -180,6 +108,37 @@
     padding: 30px;
     border-radius: 25px;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.header-tabela {
+    display: flex; 
+    justify-content: space-between; /* Empurra o título para esquerda e o botão para direita */
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.h1-tabela {
+    color: #443300;
+}
+
+.adicao {
+    background-color: #ffeebb;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color: rgb(39, 29, 1);
+    border: none;
+    cursor: pointer; 
+    font-size: 18px;
+    margin-left: auto; 
+    width: fit-content; 
+}
+
+.adicao :hover {
+    background-color: #e2d3a4;
+    transform: scale(1.1); 
+    transition: 0.2s;
 }
 
 table {
@@ -240,53 +199,31 @@ tbody {
     position: relative;
 }
 
-.excluir{
-    color: #b90e0e;
-    cursor: pointer;
-
+.product-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 15px;
 }
 
-.excluir:hover{
-    color: #5f0707;
-    transform: translateY(-2px);
-}
-
-.alterar{
+.alterar {
     color: #2a61b3;
     cursor: pointer;
     margin-right: 15px;
 }
 
-.header-tabela {
-    display: flex; 
-    justify-content: space-between; /* Empurra o título para esquerda e o botão para direita */
-    align-items: center;
-    margin-bottom: 20px;
+.excluir {
+    color: #b90e0e;
+    cursor: pointer;
 }
 
-.h1-tabela {
-    color: #443300;
+.excluir:hover {
+    color: #5f0707;
+    transform: translateY(-2px);
 }
 
-.adicao {
-    background-color: #ffeebb;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    color: rgb(39, 29, 1);
-    border: none;
-    cursor: pointer; 
-    font-size: 18   px;
-    margin-left: auto; 
-    width: fit-content; 
-}
-
-.adicao :hover{
-    background-color: #e2d3a4;
-    transform: scale(1.1); 
-    transition: 0.2s;}
-
+/* MODAL DE CADASTRO/EDIÇÃO */
 .modal {
     display: none; 
     position: fixed; 
@@ -310,7 +247,7 @@ tbody {
     position: relative;
 }
 
-.h2-modal{
+.h2-modal {
     margin-top: 10px;
     text-align: center;
     font-size: 23px;
@@ -360,7 +297,7 @@ tbody {
     transition: 0.1s ease-in-out;
 }
 
-.close{
+.close {
     position: absolute;
     right: 20px;
     top: 10px;
@@ -377,16 +314,84 @@ tbody {
 }
 
 
-/* * ========================================================
-   ESTILIZAÇÃO DO FOOTER - ABJ MODA INFANTIL */
+/* ============================================================
+   4. RODAPÉ (Footer Customizado e E-Commerce)
+   ============================================================ */
+/* FOOTER PERSONALIZADO */
+.footer-custom {
+    background-color: var(--amarelo-header);
+    margin: 50px 20px 20px 20px;
+    border-radius: 50px;
+    padding: 30px 60px;
+    font-family: 'Quicksand', sans-serif;
+    scroll-margin-top: 30px;
+}
 
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+.footer-container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.chat-icon {
+    font-size: 2.5rem;
+    color: #f28d8d;
+}
+
+.brand-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.brand-info p {
+    font-size: 0.95rem;
+    margin: 2px 0;
+    font-weight: 600;
+}
+
+.footer-links-social {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.social-item i {
+    font-size: 1.2rem;
+}
+
+.faq-link {
+    text-decoration: underline;
+    color: inherit;
+    font-weight: 700;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+/* FOOTER COMPLETO E-COMMERCE (ABJ MODA INFANTIL / JACTECH) */
 .footer-container-jactech {
     width: 100%;
     margin-top: 60px;
     font-family: 'Quicksand', sans-serif;
-    background-color:var(--amarelo-header) /* Creme suave como o topo do site */
+    background-color: var(--amarelo-header); /* Creme suave como o topo do site */
 }
 
 /* --- PARTE 1: ÁREA DE E-COMMERCE --- */

@@ -17,15 +17,17 @@ if (!isset($conn) && isset($conexao)) {
 $acao = $_GET['acao'] ?? '';
 
 // 4. VERIFICAÇÃO DE LOGIN
-if (!isset($_SESSION['cliente_id'])) {
+$id_cliente = intval($_SESSION['id_cliente'] ?? $_SESSION['cliente_id'] ?? 0);
+
+if ($id_cliente <= 0) {
+    http_response_code(401);
     echo json_encode([
         "sucesso" => false, 
+        "status" => "erro",
         "mensagem" => "Atenção: Você precisa estar logado para realizar esta ação!"
     ]);
     exit;
 }
-
-$id_cliente = intval($_SESSION['cliente_id']);
 
 switch ($acao) {
 
@@ -87,43 +89,65 @@ switch ($acao) {
         }
         break;
 
-    // --- 4. ADICIONAR AO CARRINHO (CORRIGIDO) ---
-case 'adicionar_carrinho':
-    // 1. Resgata a sessão do cliente logado
-    $id_cliente = $_SESSION['id_cliente'] ?? $_SESSION['cliente_id'] ?? 0;
+    // --- 4. ADICIONAR AO CARRINHO ---
+    case 'adicionar_carrinho':
+        $id_prod = intval($_POST['produto_id'] ?? $_POST['id_produto'] ?? 0);
 
-    if ($id_cliente <= 0) {
-        http_response_code(401);
-        echo json_encode(["status" => "erro", "mensagem" => "Você precisa estar logado para adicionar itens ao carrinho."]);
+        if ($id_prod <= 0) {
+            echo json_encode(["status" => "erro", "mensagem" => "ID do produto não foi recebido."]);
+            break;
+        }
+
+        $check = $conn->query("SELECT id, quantidade FROM carrinho WHERE id_cliente = $id_cliente AND id_produto = $id_prod");
+
+        if ($check && $check->num_rows > 0) {
+            $sql = "UPDATE carrinho SET quantidade = quantidade + 1 WHERE id_cliente = $id_cliente AND id_produto = $id_prod";
+        } else {
+            $sql = "INSERT INTO carrinho (id_cliente, id_produto, quantidade) VALUES ($id_cliente, $id_prod, 1)";
+        }
+
+        if ($conn->query($sql)) {
+            echo json_encode(["status" => "sucesso", "mensagem" => "Produto adicionado ao carrinho!"]);
+        } else {
+            echo json_encode(["status" => "erro", "mensagem" => "Erro no MySQL: " . $conn->error]);
+        }
         break;
-    }
 
-    // 2. Aceita tanto 'produto_id' quanto 'id_produto'
-    $id_prod = intval($_POST['produto_id'] ?? $_POST['id_produto'] ?? 0);
+    // --- 5. LISTAR ITENS DO CARRINHO (NOVO - ESSENCIAL PARA CTRL+F5) ---
+    case 'listar_carrinho':
+        $sql = "SELECT c.id_produto, p.nome, p.preco, p.imagem, c.quantidade 
+                FROM carrinho c 
+                INNER JOIN produtos p ON c.id_produto = p.id 
+                WHERE c.id_cliente = $id_cliente";
+        
+        $resultado = $conn->query($sql);
+        $itens = [];
 
-    if ($id_prod <= 0) {
-        echo json_encode(["status" => "erro", "mensagem" => "ID do produto não foi recebido."]);
+        if ($resultado) {
+            while ($linha = $resultado->fetch_assoc()) {
+                $itens[] = $linha;
+            }
+        }
+
+        echo json_encode([
+            "status" => "sucesso", 
+            "itens" => $itens
+        ]);
         break;
-    }
 
-    // 3. Verifica se o item já existe no carrinho deste cliente
-    $check = $conn->query("SELECT id, quantidade FROM carrinho WHERE id_cliente = $id_cliente AND id_produto = $id_prod");
+    // --- 6. REMOVER DO CARRINHO (NOVO) ---
+    case 'remover_carrinho':
+        $id_prod = intval($_POST['produto_id'] ?? $_POST['id_produto'] ?? 0);
 
-    if ($check && $check->num_rows > 0) {
-        // Se já existe, só aumenta a quantidade
-        $sql = "UPDATE carrinho SET quantidade = quantidade + 1 WHERE id_cliente = $id_cliente AND id_produto = $id_prod";
-    } else {
-        // Se não existe, insere um novo
-        $sql = "INSERT INTO carrinho (id_cliente, id_produto, quantidade) VALUES ($id_cliente, $id_prod, 1)";
-    }
-
-    // 4. Retorna a chave 'status' exatamente como o JS espera
-    if ($conn->query($sql)) {
-        echo json_encode(["status" => "sucesso", "mensagem" => "Produto adicionado ao carrinho!"]);
-    } else {
-        echo json_encode(["status" => "erro", "mensagem" => "Erro no MySQL: " . $conn->error]);
-    }
-    break;
+        if ($id_prod > 0) {
+            $sql = "DELETE FROM carrinho WHERE id_cliente = $id_cliente AND id_produto = $id_prod";
+            if ($conn->query($sql)) {
+                echo json_encode(["status" => "sucesso"]);
+            } else {
+                echo json_encode(["status" => "erro", "mensagem" => $conn->error]);
+            }
+        }
+        break;
 }
 
 $conn->close();

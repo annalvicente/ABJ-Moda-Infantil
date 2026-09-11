@@ -36,6 +36,8 @@ function abrirFavoritos() {
   favoritos.classList.add("open");
   if (overlay) overlay.classList.add("active");
   if (conteudo) conteudo.classList.add("blur-active");
+  
+  document.body.style.overflow = 'hidden';
 
   carregarFavoritos();
 }
@@ -56,6 +58,8 @@ function fecharFavoritosEFundo() {
   if (conteudo) {
     conteudo.classList.remove("blur-active");
   }
+  
+  document.body.style.overflow = '';
 }
 
 // ---- ADICIONAR UM PRODUTO AOS FAVORITOS (VIA BANCO) ----
@@ -71,26 +75,22 @@ async function adicionarAoFavorito(idProduto) {
     
     const resultado = await resposta.json();
     
-    // 1. SE NÃO ESTIVER LOGADO (OU DEU ERRO) -> Exibe o Modal Amarelo de Atenção!
     if (!resultado.sucesso) {
       Swal.fire({
         icon: 'warning',
         title: 'Atenção!',
         text: resultado.mensagem || 'Você precisa estar logado para favoritar produtos!',
-        confirmButtonColor: '#f8c255',
-        borderRadius: '15px'
+        confirmButtonColor: '#f8c255'
       });
       return;
     }
 
-    // 2. SE ESTIVER LOGADO E ADICIONOU -> Exibe o Modal Verde de Sucesso!
     Swal.fire({
       icon: 'success',
       title: 'Sucesso!',
       text: resultado.mensagem || 'Produto adicionado aos favoritos!',
       confirmButtonColor: '#2ecc71',
-      timer: 2000,
-      borderRadius: '15px'
+      timer: 2000
     });
 
     carregarFavoritos();
@@ -101,8 +101,7 @@ async function adicionarAoFavorito(idProduto) {
       icon: 'error',
       title: 'Ops!',
       text: 'Erro ao conectar com o servidor.',
-      confirmButtonColor: '#ff6b81',
-      borderRadius: '15px'
+      confirmButtonColor: '#ff6b81'
     });
   }
 }
@@ -139,7 +138,7 @@ async function carregarFavoritos() {
       div.className = "fav-item-single";
       div.innerHTML = `
         <div class="fav-item-info">
-          <input type="checkbox" class="fav-checkbox" value="${p.id_favorito}" data-nome="${p.nome}" data-preco="${p.preco}">
+          <input type="checkbox" class="fav-checkbox" value="${p.id_favorito}" data-id="${p.id_produto}" data-nome="${p.nome}" data-preco="${p.preco}" data-imagem="${p.imagem}">
           <img src="img/${p.imagem}" alt="${p.nome}">
           <div>
             <h4>${p.nome}</h4>
@@ -152,6 +151,7 @@ async function carregarFavoritos() {
       `;
       lista.appendChild(div);
     });
+
   } catch (error) {
     lista.innerHTML = `
       <div class="gaveta-vazia">
@@ -173,7 +173,6 @@ async function removerFavorito(idFavorito) {
     cancelButtonColor: '#ccc',
     confirmButtonText: 'Sim, remover!',
     cancelButtonText: 'Cancelar',
-    borderRadius: '20px',
     customClass: {
       popup: 'modal-fofo'
     }
@@ -190,8 +189,7 @@ async function removerFavorito(idFavorito) {
       text: 'O item foi removido dos favoritos.',
       icon: 'success',
       timer: 1500,
-      showConfirmButton: false,
-      borderRadius: '15px'
+      showConfirmButton: false
     });
 
     carregarFavoritos();
@@ -207,29 +205,39 @@ async function adicionarFavoritosAoCarrinho() {
       icon: 'warning',
       title: 'Atenção!',
       text: 'Selecione pelo menos um item para adicionar ao carrinho!',
-      confirmButtonColor: '#f8c255',
-      borderRadius: '15px'
+      confirmButtonColor: '#f8c255'
     });
     return;
   }
 
+  let adicionouAlgum = false;
+
   for (let checkbox of selecionados) {
+    const idProduto = checkbox.getAttribute("data-id");
     const nome = checkbox.getAttribute("data-nome");
     const preco = checkbox.getAttribute("data-preco");
+    const imagem = checkbox.getAttribute("data-imagem");
     
     if (typeof adicionarAoCarrinho === "function") {
-      adicionarAoCarrinho(nome, preco);
+      // Passa exibeAlerta = false para não disparar o alert() individual
+      const sucesso = await adicionarAoCarrinho(idProduto, nome, preco, imagem, false);
+      if (sucesso !== false) adicionouAlgum = true;
     }
   }
 
-  Swal.fire({
-    icon: 'success',
-    title: 'Sucesso!',
-    text: 'Itens selecionados foram para o carrinho!',
-    confirmButtonColor: '#2ecc71',
-    timer: 2000,
-    borderRadius: '15px'
-  });
+  if (adicionouAlgum) {
+    // Abre a gaveta do carrinho
+    if (typeof interacaoCart === "function") {
+      interacaoCart();
+    }
 
-  fecharFavoritosEFundo();
-}
+    // Exibe o alerta do SweetAlert2
+    Swal.fire({
+      icon: 'success',
+      title: 'Sucesso!',
+      text: 'Item(ns) adicionado(s) ao carrinho com sucesso!',
+      confirmButtonColor: '#2ecc71',
+      timer: 2000
+    });
+  }
+} 

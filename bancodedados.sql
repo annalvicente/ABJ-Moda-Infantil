@@ -97,7 +97,7 @@ INSERT INTO produtos (
     'P', 
     'Branco e Marrom', 
     10, 
-    'b-brancomarrom-peça.webp', 
+    'b-brancomarrom-peca.webp', 
     'b-brancomarrom-corpo.webp', 
     3, 
     1
@@ -109,7 +109,7 @@ INSERT INTO produtos (
     'P', 
     'Verde e Branco', 
     10, 
-    'b-macacaoverde-peça.webp', 
+    'b-macacaoverde-peca.webp', 
     'b-macacaoverde-corpo.webp', 
     3, 
     1
@@ -121,7 +121,7 @@ INSERT INTO produtos (
     'P', 
     'Azul e Branco', 
     10, 
-    'b-macacaoazul-peça.webp', 
+    'b-macacaoazul-peca.webp', 
     'b-macacaoazul-corpo.webp', 
     3, 
     1
@@ -133,7 +133,7 @@ INSERT INTO produtos (
     'P', 
     'Branco e Azul', 
     10, 
-    'b-brancoazul-peça.webp', 
+    'b-brancoazul-peca.webp', 
     'b-brancoazul-corpo.webp', 
     3, 
     1
@@ -279,20 +279,20 @@ INSERT INTO produtos (
     'P', 
     'Azul e Cinza', 
     10, 
-    'm-conjfrio-dino-peca.jpeg', 
-    'm-conjfrio-dino-corpo.jpeg', 
+    'm-conjfrio-dino-peca.webp', 
+    'm-conjfrio-dino-corpo.webp', 
     2, 
     1
 ),
 (
-    'Conjunto de Frio Moletom Urso Marrom', 
-    'Fato de treino infantil em moletom aconchegante, composto por casaco marrom com estampa frontal de ursinho e calça de moletom preta.', 
+    'Conjunto de Frio Moletom Marrom', 
+    'Fato de treino infantil em moletom aconchegante, composto por casaco marrom e calça de moletom preta.', 
     59.90, 
     'P', 
     'Marrom e Preto', 
     10, 
-    'm-conjfrio-marrom-peca.jpeg', 
-    'm-conjfrio-marrom-corpo.jpeg', 
+    'm-conjfrio-marrom-peca.webp', 
+    'm-conjfrio-marrom-corpo.webp', 
     2, 
     1
 );
@@ -512,7 +512,7 @@ INSERT INTO produtos (
     'Azul e Vermelho', 
     10, 
     'pijama-capitaoamerica-peca.webp', 
-    'pijama-capitaoamerica-corpo.jpeg', 
+    'pijama-capitaoamerica-corpo.webp', 
     5, 
     1
 );
