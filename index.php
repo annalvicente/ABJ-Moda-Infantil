@@ -86,7 +86,7 @@ $vitrines = [
                 </a> -->
 
             <a href="javascript:void(0);" onclick="interacaoCart()">
-                <i class="fa-solid fa-basket-shopping"></i>
+                <i class="fa-solid fa-cart-shopping"></i>
             </a>
 
                 <div onclick="toggleFavoritos()" title="Meus Favoritos">
@@ -484,7 +484,7 @@ $vitrines = [
     <!-- Carrinho Lateral -->
     <div id="x" class="cart-container">
         <div class="cart-header">
-            <h3>Meu Carrinho</h3>
+            <h3>Carrinho</h3>
             <button onclick="fecharAll()" class="close-btn">&times;</button>
         </div>
         <div class="cart-items" id="cart-items-list"></div>
