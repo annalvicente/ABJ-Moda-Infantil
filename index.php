@@ -64,15 +64,25 @@ $vitrines = [
                 <?php echo $inicial; ?>
             </div>
             <div class="dropdown-menu">
-                <span class="welcome-text">Olá, <?php echo explode(' ', $_SESSION['usuario_nome'])[0]; ?>!</span>
-                <span class="user-type-badge <?php echo $_SESSION['tipo']; ?>">
-                    <?php echo ($_SESSION['tipo'] === 'vendedor') ? 'Vendedor' : 'Cliente'; ?>
-                </span>
-                <hr class="dropdown-divider">
-                <a href="logout.php" class="logout-link">
-                    <i class="fa-solid fa-right-from-bracket"></i> Sair
-                </a>
-            </div>
+    <span class="welcome-text">Olá, <?php echo explode(' ', $_SESSION['usuario_nome'])[0]; ?>!</span>
+    
+    <span class="user-type-badge <?php echo $_SESSION['tipo']; ?>">
+        <?php echo ($_SESSION['tipo'] === 'vendedor') ? 'Vendedor' : 'Cliente'; ?>
+    </span>
+
+    <!-- Nova opção visível APENAS para vendedores/funcionários -->
+    <?php if ($_SESSION['tipo'] === 'vendedor'): ?>
+        <a href="tfuncionarios.php" class="dropdown-item btn-estoque">
+            <i class="fa-solid fa-boxes-stacked"></i> Voltar ao Estoque
+        </a>
+    <?php endif; ?>
+
+    <hr class="dropdown-divider">
+
+    <a href="logout.php" class="dropdown-item btn-sair">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair
+    </a>
+</div>
         </div>
 
         <?php else: ?>

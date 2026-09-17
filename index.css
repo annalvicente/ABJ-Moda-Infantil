@@ -237,7 +237,6 @@ header.scrolled .logo .logo-deitada {
     justify-content: center;
     width: 36px;
     height: 36px;
-    /* ESTA É A MÁGICA: Uma área física invisível para baixo que mantém o mouse conectado */
     padding-bottom: 25px;
     margin-bottom: -25px;
 }
@@ -261,7 +260,6 @@ header.scrolled .logo .logo-deitada {
 .dropdown-menu {
     display: none;
     position: absolute;
-    /* Posiciona perfeitamente encostado embaixo do círculo rosa */
     top: 26px;
     right: -10px;
     background-color: #ffffff;
@@ -270,7 +268,6 @@ header.scrolled .logo .logo-deitada {
     border-radius: 16px;
     padding: 15px;
     z-index: 999999 !important;
-    /* Passa por cima de qualquer elemento do banner */
     border: 1px solid #f3f3f3;
 }
 
@@ -278,7 +275,6 @@ header.scrolled .logo .logo-deitada {
     display: block;
     font-size: 14px;
     color: #4a3b32;
-    /* var(--texto-marrom) */
     font-weight: 700;
     text-align: center;
     margin-bottom: 4px;
@@ -305,8 +301,9 @@ header.scrolled .logo .logo-deitada {
     margin: 10px 0;
 }
 
+/* ESTILO BASE COMUM PARA OS LINKS DO MENU */
+.dropdown-menu .btn-estoque,
 .dropdown-menu .logout-link {
-    color: #e74c3c !important;
     font-size: 14px !important;
     font-weight: 700;
     text-decoration: none;
@@ -316,16 +313,35 @@ header.scrolled .logo .logo-deitada {
     justify-content: center;
     padding: 8px 0;
     border-radius: 8px;
-    transition: background 0.2s !important;
-    /* IMPORTANTE: Neutraliza o efeito global que quebrava o foco do mouse */
+    transition: background 0.2s, color 0.2s !important;
     transform: none !important;
     opacity: 1 !important;
+}
+
+/* 1. BOTÃO VOLTAR AO ESTOQUE (Estilo Padrão/Marrom da Marca) */
+.dropdown-menu .btn-estoque {
+    color: #4a3b32 !important;
+}
+
+.dropdown-menu .btn-estoque:hover {
+    background-color: #f7f5f3;
+    color: #2c221c !important;
+}
+
+/* 2. BOTÃO SAIR (Vermelho) */
+.dropdown-menu .logout-link {
+    color: #e74c3c !important;
 }
 
 .dropdown-menu .logout-link:hover {
     background-color: #fff5f5;
     color: #c0392b !important;
-    transform: none !important;
+}
+
+/* Tamanho e alinhamento dos ícones */
+.dropdown-menu .btn-estoque i,
+.dropdown-menu .logout-link i {
+    font-size: 15px;
 }
 
 /* ÍCONES E AÇÕES DO USUÁRIO */
