@@ -3,12 +3,23 @@ include 'conexão.php';
 
 // 1. Criamos uma simulação de vendedor logado (ID 1). 
 // No futuro, você vai pegar isso da $_SESSION['id_vendedor'] após o login do funcionário.
-$id_vendedor_logado = 1; 
+$id_vendedor_logado = 1;    
 
-// 2. Buscar os produtos do banco
+// Pega o termo digitado na busca (se houver)
+$busca = isset($_GET['busca']) ? $conn->real_escape_string($_GET['busca']) : '';
+
+// 2. Buscar os produtos filtrando pelo termo da busca
 $sql = "SELECT p.*, c.nome AS nome_categoria 
         FROM produtos p 
         LEFT JOIN categoria c ON p.id_categoria = c.id";
+
+if (!empty($busca)) {
+    $sql .= " WHERE p.nome LIKE '%$busca%' 
+               OR p.descricao LIKE '%$busca%' 
+               OR c.nome LIKE '%$busca%' 
+               OR p.cor LIKE '%$busca%'";
+}
+
 $resultado = $conn->query($sql);
 
 // 3. Buscar as categorias dinamicamente para listar no Modal de cadastro/edição
@@ -28,6 +39,7 @@ if ($resultado_categorias) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Funcionários</title>
+    <link rel="icon" href="img/logoabj.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="funcionario.css">   
@@ -49,6 +61,20 @@ if ($resultado_categorias) {
 <main class="container">
     <div class="header-tabela">
         <h1 class="h1-tabela"> Controle de Estoque</h1>
+
+        <form method="GET" action="" class="form-busca">
+            <input 
+                type="text" 
+                name="busca" 
+                placeholder="Pesquisar por roupa, cor ou categoria..." 
+                value="<?php echo isset($_GET['busca']) ? htmlspecialchars($_GET['busca']) : ''; ?>"
+            >
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <?php if (!empty($busca)) { ?>
+                <a href="tfuncionarios.php" class="btn-limpar-busca" title="Limpar busca"><i class="fa-solid fa-xmark"></i></a>
+            <?php } ?>
+        </form>
+
         <div class="adicao">  
             <button onclick="abrirModal()" class="adicao"> + Novo Produto </button>
         </div>

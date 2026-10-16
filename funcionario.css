@@ -509,3 +509,54 @@ tbody {
 .dark-bar-wrapper a:hover {
     color: #4DBBB4; /* Muda para verde menta no hover */
 }
+
+/* ============================================================
+   CAMPO DE PESQUISA / BUSCA
+   ============================================================ */
+.form-busca {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f8fadd;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin-left: 20px;
+    margin-right: auto;
+}
+
+.form-busca input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 8px 5px;
+    font-size: 14px;
+    width: 250px;
+    color: var(--texto-marrom);
+}
+
+.form-busca button {
+    background: none;
+    border: none;
+    color: #443300;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    transition: transform 0.2s;
+}
+
+.form-busca button:hover {
+    transform: scale(1.15);
+    color: #ee81b4;
+}
+
+.btn-limpar-busca {
+    color: #b90e0e;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0 4px;
+}
+
+.btn-limpar-busca:hover {
+    color: #5f0707;
+}
