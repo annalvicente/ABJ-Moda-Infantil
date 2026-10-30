@@ -73,36 +73,42 @@ async function adicionarAoFavorito(idProduto) {
       body: formData
     });
     
-    const resultado = await resposta.json();
-    
-    if (!resultado.sucesso) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Atenção!',
-        text: resultado.mensagem || 'Você precisa estar logado para favoritar produtos!',
-        confirmButtonColor: '#f8c255'
-      });
+    // Se o utilizador não estiver logado
+    if (resposta.status === 401) {
+      if (typeof mostrarFeedback === 'function') {
+        mostrarFeedback('erro', 'Atenção!', 'Você precisa estar logado para favoritar produtos!');
+      } else if (typeof exibirFeedback === 'function') {
+        exibirFeedback('Atenção!', 'Você precisa estar logado para favoritar produtos!', 'erro');
+      }
       return;
     }
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Sucesso!',
-      text: resultado.mensagem || 'Produto adicionado aos favoritos!',
-      confirmButtonColor: '#2ecc71',
-      timer: 2000
-    });
+    const resultado = await resposta.json();
+    
+    if (!resultado.sucesso) {
+      if (typeof mostrarFeedback === 'function') {
+        mostrarFeedback('erro', 'Ops!', resultado.mensagem || 'Não foi possível favoritar o produto.');
+      } else if (typeof exibirFeedback === 'function') {
+        exibirFeedback('Ops!', resultado.mensagem || 'Não foi possível favoritar o produto.', 'erro');
+      }
+      return;
+    }
+
+    if (typeof mostrarFeedback === 'function') {
+      mostrarFeedback('sucesso', 'Favoritado! ❤️', resultado.mensagem || 'Produto adicionado aos favoritos!');
+    } else if (typeof exibirFeedback === 'function') {
+      exibirFeedback('Favoritado! ❤️', resultado.mensagem || 'Produto adicionado aos favoritos!', 'sucesso');
+    }
 
     carregarFavoritos();
 
   } catch (erro) {
     console.error("Erro ao favoritar:", erro);
-    Swal.fire({
-      icon: 'error',
-      title: 'Ops!',
-      text: 'Erro ao conectar com o servidor.',
-      confirmButtonColor: '#ff6b81'
-    });
+    if (typeof mostrarFeedback === 'function') {
+      mostrarFeedback('erro', 'Ops!', 'Erro de conexão com o servidor.');
+    } else if (typeof exibirFeedback === 'function') {
+      exibirFeedback('Ops!', 'Erro de conexão com o servidor.', 'erro');
+    }
   }
 }
 
@@ -112,22 +118,30 @@ async function carregarFavoritos() {
   if (!lista) return;
 
   lista.innerHTML = `
-    <div class="gaveta-vazia">
-      <i class="fa-solid fa-circle-notch fa-spin"></i>
+    <div class="gaveta-vazia" style="text-align: center; padding: 40px 10px; color: #888;">
+      <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; margin-bottom: 10px;"></i>
       <p>Carregando favoritos...</p>
     </div>`;
 
   try {
     const resposta = await fetch("acoesfav.php?acao=listar");
-    if (!resposta.ok) throw new Error("Erro na requisição");
+    
+    if (resposta.status === 401) {
+      lista.innerHTML = `
+        <div class="gaveta-vazia" style="text-align: center; padding: 40px 10px; color: #888;">
+          <i class="fa-regular fa-heart" style="font-size: 2.5rem; color: #ff6b81; margin-bottom: 10px;"></i>
+          <p>Faça login para ver seus favoritos.</p>
+        </div>`;
+      return;
+    }
 
     const dados = await resposta.json();
     lista.innerHTML = "";
 
     if (!dados.sucesso || !dados.itens || dados.itens.length === 0) {
       lista.innerHTML = `
-        <div class="gaveta-vazia">
-          <i class="fa-regular fa-heart"></i>
+        <div class="gaveta-vazia" style="text-align: center; padding: 40px 10px; color: #888;">
+          <i class="fa-regular fa-heart" style="font-size: 2.5rem; color: #ff6b81; margin-bottom: 10px;"></i>
           <p>Sua lista de favoritos está vazia.</p>
         </div>`;
       return;
@@ -154,59 +168,74 @@ async function carregarFavoritos() {
 
   } catch (error) {
     lista.innerHTML = `
-      <div class="gaveta-vazia">
-        <i class="fa-regular fa-heart"></i>
-        <p>Faça login para ver seus favoritos.</p>
+      <div class="gaveta-vazia" style="text-align: center; padding: 40px 10px; color: #888;">
+        <i class="fa-regular fa-heart" style="font-size: 2.5rem; color: #ff6b81; margin-bottom: 10px;"></i>
+        <p>Sua lista de favoritos está vazia.</p>
       </div>`;
     console.warn("Favoritos:", error.message);
   }
 }
 
-// ---- REMOVER FAVORITO COM ALERTA ESTILIZADO ----
-async function removerFavorito(idFavorito) {
-  const confirmacao = await Swal.fire({
-    title: 'Remover favorito?',
-    text: "Este item será retirado da sua lista de favoritos.",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#ff6b81',
-    cancelButtonColor: '#ccc',
-    confirmButtonText: 'Sim, remover!',
-    cancelButtonText: 'Cancelar',
-    customClass: {
-      popup: 'modal-fofo'
+// ---- REMOVER FAVORITO COM O MODAL PADRONIZADO ----
+let favoritoParaRemoverId = null;
+
+function removerFavorito(idFavorito) {
+    favoritoParaRemoverId = idFavorito;
+    const modal = document.getElementById('modalRemoverFavorito');
+    if (modal) {
+        modal.style.display = 'flex';
+    } else {
+        if (confirm("Deseja remover este item dos seus favoritos?")) {
+            confirmarRemocaoFavorito();
+        }
     }
-  });
-
-  if (confirmacao.isConfirmed) {
-    const formData = new FormData();
-    formData.append("id_favorito", idFavorito);
-
-    await fetch("acoesfav.php?acao=remover", { method: "POST", body: formData });
-    
-    Swal.fire({
-      title: 'Removido!',
-      text: 'O item foi removido dos favoritos.',
-      icon: 'success',
-      timer: 1500,
-      showConfirmButton: false
-    });
-
-    carregarFavoritos();
-  }
 }
 
-// ---- MOVER SELECIONADOS PARA O CARRINHO ----
+function fecharModalRemoverFavorito() {
+    const modal = document.getElementById('modalRemoverFavorito');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    favoritoParaRemoverId = null;
+}
+
+async function confirmarRemocaoFavorito() {
+    if (!favoritoParaRemoverId) return;
+
+    const formData = new FormData();
+    formData.append("id_favorito", favoritoParaRemoverId);
+
+    try {
+        await fetch("acoesfav.php?acao=remover", { 
+            method: "POST", 
+            body: formData 
+        });
+
+        fecharModalRemoverFavorito();
+        
+        if (typeof mostrarFeedback === 'function') {
+            mostrarFeedback('sucesso', 'Removido!', 'O item foi removido dos favoritos.');
+        } else if (typeof exibirFeedback === 'function') {
+            exibirFeedback('Removido!', 'O item foi removido dos favoritos.', 'sucesso');
+        }
+
+        carregarFavoritos();
+    } catch (e) {
+        console.error("Erro ao remover favorito:", e);
+        fecharModalRemoverFavorito();
+    }
+}
+
+// ---- MOVER SELECIONADOS DOS FAVORITOS PARA O CARRINHO ----
 async function adicionarFavoritosAoCarrinho() {
   const selecionados = document.querySelectorAll(".fav-checkbox:checked");
 
   if (selecionados.length === 0) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Atenção!',
-      text: 'Selecione pelo menos um item para adicionar ao carrinho!',
-      confirmButtonColor: '#f8c255'
-    });
+    if (typeof mostrarFeedback === 'function') {
+      mostrarFeedback('erro', 'Atenção!', 'Selecione pelo menos um item para adicionar ao carrinho!');
+    } else if (typeof exibirFeedback === 'function') {
+      exibirFeedback('Atenção!', 'Selecione pelo menos um item para adicionar ao carrinho!', 'erro');
+    }
     return;
   }
 
@@ -219,25 +248,22 @@ async function adicionarFavoritosAoCarrinho() {
     const imagem = checkbox.getAttribute("data-imagem");
     
     if (typeof adicionarAoCarrinho === "function") {
-      // Passa exibeAlerta = false para não disparar o alert() individual
       const sucesso = await adicionarAoCarrinho(idProduto, nome, preco, imagem, false);
       if (sucesso !== false) adicionouAlgum = true;
     }
   }
 
   if (adicionouAlgum) {
-    // Abre a gaveta do carrinho
+    fecharFavoritosEFundo();
+
     if (typeof interacaoCart === "function") {
       interacaoCart();
     }
 
-    // Exibe o alerta do SweetAlert2
-    Swal.fire({
-      icon: 'success',
-      title: 'Sucesso!',
-      text: 'Item(ns) adicionado(s) ao carrinho com sucesso!',
-      confirmButtonColor: '#2ecc71',
-      timer: 2000
-    });
+    if (typeof mostrarFeedback === 'function') {
+      mostrarFeedback('sucesso', 'Sucesso!', 'Item(ns) adicionado(s) ao carrinho com sucesso!');
+    } else if (typeof exibirFeedback === 'function') {
+      exibirFeedback('Sucesso!', 'Item(ns) adicionado(s) ao carrinho com sucesso!', 'sucesso');
+    }
   }
-} 
+}

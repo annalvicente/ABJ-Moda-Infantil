@@ -41,31 +41,83 @@ main {
 
 
 /* ============================================================
-   2. CABEÇALHO (Header, Menu e Logo)
+   2. CABEÇALHO FIXO (Header, Logo e Troca no Scroll)
    ============================================================ */
 .header-admin {
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    padding: 20px 40px;
+    padding: 15px 40px;
     background-color: var(--amarelo-header); 
     border-bottom-left-radius: 50% 30px;
     border-bottom-right-radius: 50% 30px;
+    border-bottom: 2px solid #e6d367;
+
+    /* Torna o header FIXO no topo */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
 }
 
-.header-admin .logo img {
-    width: 100px;
-    height: auto;
-    margin-bottom: -5px;
-    object-fit: contain;
-    display: block;
+/* Espaçamento superior no body para o conteúdo não ficar coberto pelo header */
+body {
+    padding-top: 110px;
+}
+
+/* Estado retinho e fino quando rolar a página */
+.header-admin.scrolled {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 10px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* LOGO E REGRAS DE TROCA DE IMAGEM */
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
     transition: transform 0.3s;
 }
 
-.header-admin .logo img:hover {
-    transform: scale(1.05); 
+.logo img {
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 
+.logo .logo-normal {
+    width: 90px;
+}
+
+.logo .logo-deitada {
+    display: none;
+    width: 130px;
+}
+
+/* Alterna as logos no scroll */
+.header-admin.scrolled .logo .logo-normal {
+    display: none;
+}
+
+.header-admin.scrolled .logo .logo-deitada {
+    display: block;
+}
+
+.header-left, .header-right {
+    flex: 1;
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ESTILO DO BOTÃO VER LOJA */
 .btn-visualizar {
     text-decoration: none;
     color: #443300;
@@ -75,26 +127,18 @@ main {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
+    padding: 8px 16px;
+    border: 1px solid #e3cfa5;
     border-radius: 20px;
     background-color: #f8fadd;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
 }
 
 .btn-visualizar:hover {
     background-color: #ffdf7f;
     border-color: #fcebb6;
     color: #333;
-}
-
-.header-left, .header-right {
-    flex: 1;                    /* Ocupa o mesmo espaço para o logo ficar no meio */
-}
-
-.header-right {
-    display: flex;
-    justify-content: flex-end; /* Joga o botão "Ver loja" para a direita */
+    transform: translateY(-1px);
 }
 
 
@@ -121,24 +165,32 @@ main {
     color: #443300;
 }
 
-.adicao {
-    background-color: #ffeebb;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    color: rgb(39, 29, 1);
+/* BOTÃO NOVO PRODUTO */
+.btn-adicionar {
+    background-color: #8dc7d6;
+    color: #2b4c54;
     border: none;
-    cursor: pointer; 
-    font-size: 18px;
-    margin-left: auto; 
-    width: fit-content; 
+    padding: 10px 20px;
+    border-radius: 25px; /* Formato pílula/arredondado */
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(141, 199, 214, 0.35);
+    transition: all 0.25s ease;
 }
 
-.adicao :hover {
-    background-color: #e2d3a4;
-    transform: scale(1.1); 
-    transition: 0.2s;
+.btn-adicionar:hover {
+    background-color: #7ab8c7;
+    color: #1a3339;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(141, 199, 214, 0.45);
+}
+
+.btn-adicionar:active {
+    transform: translateY(0);
 }
 
 table {
@@ -223,7 +275,9 @@ tbody {
     transform: translateY(-2px);
 }
 
-/* MODAL DE CADASTRO/EDIÇÃO */
+/* ============================================================
+   MODAL DE CADASTRO/EDIÇÃO (Design Moderno & Compacto)
+   ============================================================ */
 .modal {
     display: none; 
     position: fixed; 
@@ -232,85 +286,156 @@ tbody {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(45, 45, 45, 0.55);
+    backdrop-filter: blur(4px); /* Suaviza o fundo quando o modal abre */
+    overflow-y: auto;
+    padding: 20px 10px;
 }
 
 .modal-content {
-    background-color: #fcf7ed;
-    margin: 5% auto; 
-    padding: 20px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
+    background-color: #ffffff;
+    margin: 3% auto; 
+    padding: 0;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 15px 35px rgba(74, 59, 50, 0.18);
+    overflow: hidden;
+    animation: modalEntrada 0.25s ease-out;
+}
+
+@keyframes modalEntrada {
+    from { opacity: 0; transform: translateY(-15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+    background-color: var(--amarelo-header);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #f2e3b3;
 }
 
 .h2-modal {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 23px;
-    color: #3a2406;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #4a3b32;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close {
+    font-size: 22px; 
+    cursor: pointer;
+    color: #8c786c;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transition: all 0.2s ease;
+}
+
+.close:hover {
+    color: #b90e0e; 
+    background: #ffffff;
+    transform: scale(1.08); 
+}
+
+.modal-body {
+    padding: 22px 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
 .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-    font-size: 20px;
+    margin-bottom: 14px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
 }
 
 .form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #5d3809;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #5d483b;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
-.form-group input, .form-group select, .form-group textarea {
+.form-group label i {
+    color: #ee81b4; /* Corzinha pastel de destaque para os ícones */
+    font-size: 14px;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #3d3d3d;
-    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1.5px solid #e8e2d8;
+    background-color: #faf8f5;
+    border-radius: 10px;
     box-sizing: border-box;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    border-color: #8dc7d6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(141, 199, 214, 0.25);
+}
+
+.file-input {
+    font-size: 12px !important;
+    padding: 6px 8px !important;
+    background: #ffffff !important;
 }
 
 .btn-salvar {
     background-color: #8dc7d6;
-    color: #443300;
+    color: #2b4c54;
     border: none;
-    padding: 12px;
+    padding: 13px;
     width: 100%;
-    border-radius: 8px;
-    font-weight: bold;
+    border-radius: 12px;
+    font-weight: 700;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     margin-top: 10px;
-    transition: 0.1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(141, 199, 214, 0.4);
+    transition: all 0.2s ease;
 }
 
 .btn-salvar:hover {
-    /* background-color: #73a2ae; */
-    background-color: #8dc7d6;
-    filter: brightness(0.9);
-    transform: scale(1.02); 
-    transition: 0.1s ease-in-out;
-}
-
-.close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 35px; 
-    cursor: pointer;
-    color: #666;
-    line-height: 1;
-}
-
-.close:hover {
-    color: #600000; 
-    transform: scale(1.1); 
-    transition: 0.2s;
+    background-color: #7ab8c7;
+    color: #1a3339;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(141, 199, 214, 0.5);
 }
 
 
@@ -559,4 +684,192 @@ tbody {
 
 .btn-limpar-busca:hover {
     color: #5f0707;
+}
+
+/* ============================================================
+   MODAL DE CONFIRMAÇÃO/SUCESSO DE ADIÇÃO DE PRODUTO
+   ============================================================ */
+.modal-aviso {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(45, 45, 45, 0.4);
+    backdrop-filter: blur(3px);
+    
+    /* Ativa Flexbox para centralizar exatamente no meio da tela */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-aviso-card {
+    background-color: #ffffff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    animation: avisoPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin: auto; /* Garante alinhamento automático */
+}
+
+.modal-aviso-content {
+    background: #ffffff;
+    padding: 35px 30px 25px 30px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    animation: popIn 0.25s ease-out;
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Círculo do ícone Verde Pastel */
+.icon-circle-success {
+    width: 80px;
+    height: 80px;
+    background-color: #e8f8f0;
+    border: 2px solid #b2f0cf;
+    color: #2ecc71;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    margin: 0 auto 20px auto;
+}
+
+.modal-aviso-content h2 {
+    color: #333333;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.modal-aviso-content p {
+    color: #666666;
+    font-size: 15px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* Botão OK Verde Pastel */
+.btn-modal-ok {
+    background-color: #2ecc71;
+    color: #ffffff;
+    border: none;
+    padding: 10px 45px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    transition: all 0.2s ease;
+}
+
+.btn-modal-ok:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+}
+
+/*  MODAL DE CONFIRMAÇÃO DE EDIÇÃO */
+/* Ícone e Botões do Modal de Confirmação */
+.icone-circulo-pergunta {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #e8f3f8;
+    border: 2px solid #bce1ec;
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px auto;
+}
+
+.modal-botoes-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn-cancelar-confirma {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar-confirma:hover {
+    background-color: #e9ecef;
+}
+
+.btn-confirmar-confirma {
+    background-color: #8dc7d6;
+    color: #1a3339;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(141, 199, 214, 0.4);
+}
+
+.btn-confirmar-confirma:hover {
+    background-color: #7ab8c7;
+    transform: translateY(-1px);
+}
+
+/* Estilos do Modal de Exclusão */
+.icone-circulo-excluir {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fde8e8;
+    border: 2px solid #f8b4b4;
+    color: #e53e3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px auto;
+}
+
+.btn-confirmar-excluir {
+    background-color: #e53e3e;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(229, 62, 62, 0.3);
+}
+
+.btn-confirmar-excluir:hover {
+    background-color: #c53030;
+    transform: translateY(-1px);
 }

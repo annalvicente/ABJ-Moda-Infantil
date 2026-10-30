@@ -376,6 +376,46 @@ header.scrolled .logo .logo-deitada {
     transform: scale(1.1);
 }
 
+/* ============================================================
+   SUPORTE PARA BOTAO DE MOSTRAR SENHA (OLHINHO)
+   ============================================================ */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 42px !important; /* Evita que o texto fique por baixo do ícone */
+}
+
+.btn-toggle-senha {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease, transform 0.2s ease;
+    z-index: 2;
+}
+
+.btn-toggle-senha:hover {
+    color: #333333;
+}
+
+/* Quando ativo (senha visível) destaca em rosa/pastel */
+.btn-toggle-senha.active {
+    color: #ff85a2;
+}
+
 
 /* ============================================================
    BANNERS DA PÁGINA PRINCIPAL (hero banner, pijamas e fantasias)
@@ -493,6 +533,109 @@ main {
     /* Para o texto não espalhar muito */
     margin-left: auto;
     margin-right: auto;
+}
+
+/* ============================================================
+   MODAL DE CONFIRMAÇÃO DE LOGOUT (INDEX.CSS)
+   ============================================================ */
+.modal-aviso {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(45, 45, 45, 0.4);
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-aviso-card {
+    background-color: #ffffff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    animation: avisoPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin: auto;
+}
+
+@keyframes avisoPop {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.icone-circulo-sair {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fff3cd;
+    border: 2px solid #ffeeba;
+    color: #e6a23c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px auto;
+}
+
+.modal-aviso-card h2 {
+    color: #333333;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.modal-aviso-card p {
+    color: #666666;
+    font-size: 15px;
+    margin-bottom: 22px;
+}
+
+.modal-botoes-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-cancelar-confirma {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar-confirma:hover {
+    background-color: #e9ecef;
+}
+
+.btn-confirmar-sair {
+    background-color: #e6a23c;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(230, 162, 60, 0.3);
+}
+
+.btn-confirmar-sair:hover {
+    background-color: #cf8e2e;
+    transform: translateY(-1px);
 }
 
 /* ======= BANNER 2 - PIJAMAS ======= */
@@ -1618,59 +1761,41 @@ main {
 
 
 /* ============================================================
-   MODAIS DE AUTENTICAÇÃO E FEEDBACK (auth, formulários, caixas e abas)
+   MODAIS DE AUTENTICAÇÃO E FEEDBACK (Clean & Padronizado)
    ============================================================ */
-.modal-overlay {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5) !important;
-    /* Escurecimento suave */
-    display: none;
-    /* Controlado pelo JS */
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    backdrop-filter: blur(2px);
-}
 
-.modal-overlay,
-#feedbackModal {
+/* CONTAINER OVERLAY DE FUNDO */
+.modal-overlay {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.8) !important;
-    /* Fundo mais escuro para foco */
-
-    /* Começa escondido, o JS vai mudar para flex */
+    background-color: rgba(45, 45, 45, 0.4) !important;
+    backdrop-filter: blur(3px);
     display: none;
-
-    /* Centralização perfeita */
     justify-content: center !important;
     align-items: center !important;
-
-    /* Camada máxima para ficar na frente de tudo */
     z-index: 999999 !important;
 }
 
-.modal-overlay.aberto,
-#feedbackModal.aberto {
+.modal-overlay.aberto {
     display: flex !important;
 }
 
+/* CAIXA DO FORMULÁRIO DE LOGIN (AUTH) */
 .modal-box {
-    /* ... suas outras propriedades ... */
-
+    background: #ffffff !important;
+    padding: 35px 30px !important;
+    border-radius: 20px !important;
+    width: 90% !important;
+    max-width: 420px !important;
+    position: relative !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     max-height: 90vh;
-    /* Não deixa o modal ser maior que 90% da altura da tela */
     overflow-y: auto;
-    /* Ativa o scroll vertical se o conteúdo passar do limite */
     scrollbar-width: thin;
-    /* Deixa a barrinha de scroll mais elegante (Firefox) */
+    animation: modalSurge 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modal-box::-webkit-scrollbar {
@@ -1682,83 +1807,32 @@ main {
     border-radius: 10px;
 }
 
-.modal-box,
-.feedback-box {
-    background: #ffffff !important;
-    padding: 30px !important;
-    border-radius: 15px !important;
-    width: 90% !important;
-    max-width: 420px !important;
-    position: relative !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
-
-    /* Animação suave ao aparecer */
-    animation: modalSurge 0.3s ease-out;
-}
-
 @keyframes modalSurge {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 24px;
-    color: #ccc;
-    cursor: pointer;
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .close-modal {
     position: absolute;
     top: 15px;
     right: 20px;
-    font-size: 28px;
+    font-size: 26px;
     cursor: pointer;
-    color: #333;
+    color: #888;
     line-height: 1;
+    transition: color 0.2s;
 }
 
-/* ABAS E TOGGLES */
-.auth-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #f2f2f2;
+.close-modal:hover {
+    color: #333;
 }
 
-.auth-tabs {
-    display: flex;
-    border-bottom: 2px solid #e1f5fa;
-    margin-bottom: 25px;
-}
-
+/* ABAS (LOGIN / CADASTRO) */
 .auth-tabs {
     display: flex;
     justify-content: space-around;
     margin-bottom: 25px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 10px 0;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #ccc;
-    cursor: pointer;
-    text-transform: uppercase;
-    position: relative;
+    border-bottom: 2px solid #f0f7f9;
 }
 
 .tab-btn {
@@ -1766,90 +1840,33 @@ main {
     background: none;
     border: none;
     padding: 12px;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
     color: #a0a0a0;
     font-family: 'Quicksand', sans-serif;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #999;
-    transition: 0.3s;
-}
-
-.tab-btn.active {
-    color: #074a46;
-    /* Cor do texto ativo */
-}
-
-.tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: #1b6d91;
-    /* Linha azul de destaque */
-    border-radius: 10px;
 }
 
 .tab-btn.active {
     color: #035c78;
-    border-bottom: 4px solid #035c78;
-    /* Barra marcante no azul do cabeçalho */
+    border-bottom: 3px solid #035c78;
 }
 
-.tab-btn.active {
-    color: #ff6b6b;
-    /* Cor de destaque */
-    border-bottom: 3px solid #ff6b6b;
-}
-
+/* TOGGLE (CLIENTE / VENDEDOR) */
 .user-type-toggle {
     display: flex;
-    background: #f0f7f9;
-    padding: 6px;
-    border-radius: 50px;
-    margin-bottom: 25px;
-    gap: 5px;
-}
-
-.user-type-toggle {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
+    gap: 8px;
+    margin-bottom: 22px;
     background: #f0f9fc;
-    /* Fundo azul bem clarinho acolhedor */
     padding: 6px;
     border-radius: 30px;
 }
 
 .type-btn {
     flex: 1;
-    border: none;
-    padding: 12px;
-    border-radius: 50px;
-    font-weight: 700;
-    cursor: pointer;
-    background: transparent;
-    color: #1b6d91;
-    transition: all 0.3s ease;
-}
-
-.type-btn {
-    flex: 1;
-    padding: 10px 15px;
+    padding: 10px;
     border: none;
     background: transparent;
     border-radius: 25px;
@@ -1857,14 +1874,8 @@ main {
     font-weight: 700;
     font-family: 'Quicksand', sans-serif;
     color: #035c78;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     transition: all 0.3s ease;
-}
-
-.type-btn.active {
-    background: #005a7d;
-    /* Azul escuro do botão selecionado */
-    color: #fff;
 }
 
 .type-btn.active {
@@ -1873,65 +1884,25 @@ main {
     box-shadow: 0 4px 10px rgba(3, 92, 120, 0.2);
 }
 
-/* INPUTS E FORMULÁRIOS */
+/* INPUTS */
 .input-group {
-    margin-bottom: 18px;
-    text-align: left;
-}
-
-.input-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
-}
-
-.input-group {
-    margin-bottom: 15px;
     text-align: left;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #444;
-}
-
-.input-group label {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     margin-bottom: 6px;
     font-weight: 700;
     color: #035c78;
-    /* Textos em azul escuro */
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    font-size: 14px;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #e0eef2;
-    border-radius: 12px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.input-group input:focus {
-    border-color: #1b6d91;
-}
-
-.input-group input {
-    padding: 14px;
+    padding: 12px 14px;
     border: 2px solid #e1f5fa;
     border-radius: 12px;
-    /* Inputs fofinhos e redondos */
     font-family: 'Quicksand', sans-serif;
     font-size: 0.95rem;
     color: #333;
@@ -1946,85 +1917,27 @@ main {
     background: #ffffff;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.input-group input:focus {
-    border-color: #ff6b6b;
-}
-
 .erro-campo {
-    display: block;
-    /* Mude para none no JS se quiser esconder */
-    font-size: 0.85rem;
-    color: #999;
-    /* Cinza claro como na foto */
-    margin-top: 5px;
+    font-size: 0.82rem;
+    color: #e53e3e;
+    margin-top: 4px;
 }
 
-/* BOTÕES DE SUBMIT */
-.btn-submit {
-    width: 100%;
-    padding: 18px;
-    border: none;
-    border-radius: 50px;
-    /* Estilo pílula */
-    font-weight: 700;
-    font-size: 1rem;
-    color: #fff;
-    cursor: pointer;
-    text-transform: uppercase;
-    margin-top: 10px;
-    transition: transform 0.2s, filter 0.2s;
-}
-
-.btn-submit:active {
-    transform: scale(0.98);
-}
-
-.btn-submit {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 25px;
-    /* Formato pílula */
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 10px;
-    font-family: 'Quicksand', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-}
-
+/* BOTÃO ENVIAR */
 .btn-submit {
     width: 100%;
     padding: 14px;
     border: none;
-    border-radius: 8px;
-    background: #ff6b6b;
+    border-radius: 25px;
     color: white;
     font-weight: 700;
+    font-size: 0.95rem;
     cursor: pointer;
     margin-top: 10px;
-    transition: background 0.3s;
-}
-
-.btn-submit:hover {
-    background: #ee5253;
-}
-
-.btn-cliente-color {
-    background-color: #f4628a !important;
-    /* Rosa da foto */
+    font-family: 'Quicksand', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
 }
 
 .btn-cliente-color {
@@ -2038,11 +1951,6 @@ main {
 }
 
 .btn-vendedor-color {
-    background-color: #2cb672 !important;
-    /* Verde da foto */
-}
-
-.btn-vendedor-color {
     background-color: #27ae60;
     box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
 }
@@ -2052,126 +1960,145 @@ main {
     transform: translateY(-1px);
 }
 
-/* CAIXA DE FEEDBACK */
-#feedbackModal .feedback-box {
-    background: #fff;
-    padding: 40px;
-    border-radius: 25px;
+
+/* ============================================================
+   MODAL DE FEEDBACK / SUCESSO / ERRO / EXCLUSÃO (Modelo 1)
+   ============================================================ */
+.modal-aviso {
+    display: none;
+    position: fixed;
+    z-index: 1000000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(45, 45, 45, 0.4);
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-aviso-card {
+    background-color: #ffffff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
     text-align: center;
-    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    animation: modalSurge 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin: auto;
 }
 
-.feedback-box.sucesso {
-    border-top: 6px solid #27ae60;
+/* ÍCONES CIRCULARES */
+.icone-circulo-sucesso {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #e8f8ee;
+    border: 2px solid #b7edc9;
+    color: #2ecc71;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px auto;
 }
 
-.feedback-box.erro {
-    border-top: 6px solid #e74c3c;
+.icone-circulo-erro,
+.icone-circulo-excluir {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fde8e8 !important;
+    border: 2px solid #f8b4b4 !important;
+    color: #e53e3e !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px auto;
 }
 
-.feedback-box.sucesso {
-    border-top: 8px solid #27ae60;
-}
-
-.feedback-box.erro {
-    border-top: 8px solid #e74c3c;
-}
-
-#feedback-icone {
-    display: block;
-    margin-bottom: 15px;
-    font-size: 50px;
-    text-align: center;
-}
-
-.feedback-icone {
-    font-size: 50px;
-    margin-bottom: 15px;
-    display: block;
-    text-align: center;
-}
-
+.modal-aviso-card h2, 
 #feedback-titulo {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
+    color: #333333;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
     text-align: center;
 }
 
-#feedback-titulo {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #333;
-}
-
+.modal-aviso-card p, 
 #feedback-msg {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 20px;
+    color: #666666;
+    font-size: 15px;
+    margin-bottom: 22px;
     text-align: center;
 }
 
-#feedback-msg {
-    text-align: center;
-    color: #666;
-    margin-bottom: 20px;
+/* BOTÕES DE CONFIRMAÇÃO E AÇÃO */
+.modal-botoes-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
 }
 
+.btn-ok-sucesso, 
 .btn-feedback-ok {
-    width: 100%;
-    padding: 15px;
-    border-radius: 50px;
+    background-color: #2ecc71;
+    color: #ffffff;
     border: none;
-    color: #fff;
+    padding: 10px 35px;
+    border-radius: 8px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+    display: inline-block;
 }
 
-.btn-feedback-ok {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-feedback-ok {
-    display: block;
-    width: 100px;
-    margin: 0 auto;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-}
-
-.btn-feedback-ok.sucesso {
+.btn-ok-sucesso:hover, 
+.btn-feedback-ok:hover {
     background-color: #27ae60;
+    transform: translateY(-1px);
 }
 
-.btn-feedback-ok.sucesso:hover {
-    background-color: #219150;
+.btn-feedback-ok.erro,
+.btn-confirmar-excluir {
+    background-color: #e53e3e;
+    color: #ffffff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(229, 62, 62, 0.3);
 }
 
-.btn-feedback-ok.sucesso {
-    background: #27ae60;
+.btn-feedback-ok.erro:hover,
+.btn-confirmar-excluir:hover {
+    background-color: #c53030;
+    transform: translateY(-1px);
 }
 
-.btn-feedback-ok.erro {
-    background-color: #e74c3c;
+.btn-cancelar-confirma {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.btn-feedback-ok.erro:hover {
-    background-color: #c0392b;
-}
-
-.btn-feedback-ok.erro {
-    background: #e74c3c;
+.btn-cancelar-confirma:hover {
+    background-color: #e9ecef;
 }
 
 
@@ -2304,4 +2231,92 @@ main {
 .dark-bar-wrapper a:hover {
     color: #4DBBB4;
     /* Muda para verde menta no hover */
+}
+
+/* ============================================================
+   BANNER DE COOKIES (Modelo 1 - Layout Horizontal Empilhado)
+   ============================================================ */
+.cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza na tela */
+    width: 90%;
+    max-width: 780px;           /* Largura elegante da barra */
+    background-color: #ffffff;
+    padding: 16px 24px;
+    border-radius: 16px;         /* Cantos suaves (menos arredondados) */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    z-index: 99999;
+    border: 1px solid #f2f2f2;
+    
+    /* Organização vertical conforme a ilustração */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    box-sizing: border-box;
+    animation: modalSurge 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Título no topo (Roxo/Lilás) */
+.cookie-titulo {
+    color: #4a3e3d;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Texto ocupando toda a largura no meio (Rosa) */
+.cookie-texto {
+    color: #666666;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+    width: 100%;
+}
+
+/* Botões centralizados na base (Verde / Laranja da legenda) */
+.cookie-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 4px;
+    width: 100%;
+}
+
+/* Botão Principal com a cor suave do Header */
+.btn-cookie-aceitar {
+    background-color: #fff3c4;  /* Amarelo pastel do header */
+    color: #4a3e3d;             /* Texto escuro para contraste */
+    border: 1px solid #fce8a6;
+    padding: 8px 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cookie-aceitar:hover {
+    background-color: #fde88a;
+    transform: translateY(-1px);
+}
+
+/* Botão Secundário neutro */
+.btn-cookie-recusar {
+    background-color: #f5f5f5;
+    color: #777777;
+    border: 1px solid #e5e5e5;
+    padding: 8px 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cookie-recusar:hover {
+    background-color: #ececec;
+    color: #333333;
 }

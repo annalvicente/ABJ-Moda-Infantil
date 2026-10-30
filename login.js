@@ -1,3 +1,5 @@
+// SENHA PARA VENDEDORES: VENDEDOR-SISTEMA
+
 // ============================================================
 //  ESTADO DO MODAL E VARIÁVEIS GLOBAIS
 // ============================================================
@@ -14,7 +16,6 @@ function openModal(mode = 'login') {
     
     const modal = document.getElementById('authModal');
     if (modal) {
-        // Força a exibição removendo bloqueios de CSS
         modal.style.display = 'flex';
         modal.classList.add('aberto'); 
         
@@ -82,7 +83,7 @@ function setUserType(type) {
         input.value = type;
     });
 
-    // 🔑 EXIBIÇÃO DINÂMICA DA CHAVE DE ACESSO DA LOJA
+    // EXIBIÇÃO DINÂMICA DA CHAVE DE ACESSO DA LOJA
     const grpChave = document.getElementById('grp-cad-chave');
     const inputChave = document.getElementById('cad-chave');
 
@@ -124,11 +125,11 @@ function setUserType(type) {
 }
 
 // ============================================================
-//  FEEDBACK CENTRALIZADO (SUCESSO / ERRO)
+//  FEEDBACK CENTRALIZADO (SUCESSO / ERRO) - PADRÃO MODELO 1
 // ============================================================
 function mostrarFeedback(tipo, titulo, mensagem, redirectUrl = null) {
     const modal = document.getElementById('feedbackModal');
-    const box = document.getElementById('feedback-box');
+    const containerIcone = document.getElementById('feedback-icone-container');
     const icone = document.getElementById('feedback-icone');
     const tituloEl = document.getElementById('feedback-titulo');
     const mensagemEl = document.getElementById('feedback-msg');
@@ -140,17 +141,18 @@ function mostrarFeedback(tipo, titulo, mensagem, redirectUrl = null) {
     mensagemEl.innerText = mensagem;
     pendingRedirect = redirectUrl;
 
-    // Ajusta cores e classes
-    box.className = 'feedback-box ' + tipo;
-    if (btnOk) btnOk.className = 'btn-feedback-ok ' + tipo;
-
-    if (icone) {
-        icone.innerHTML = tipo === 'sucesso'
-            ? '<i class="fa-solid fa-circle-check" style="color: #27ae60; font-size: 3rem;"></i>'
-            : '<i class="fa-solid fa-circle-xmark" style="color: #e74c3c; font-size: 3rem;"></i>';
+    // Configura ícone circular e cores conforme o tipo (Sucesso / Erro)
+    if (tipo === 'erro') {
+        if (containerIcone) containerIcone.className = 'icone-circulo-sucesso icone-circulo-erro';
+        if (icone) icone.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        if (btnOk) btnOk.className = 'btn-feedback-ok erro';
+    } else {
+        if (containerIcone) containerIcone.className = 'icone-circulo-sucesso';
+        if (icone) icone.innerHTML = '<i class="fa-solid fa-check"></i>';
+        if (btnOk) btnOk.className = 'btn-feedback-ok';
     }
 
-    // Exibe o modal
+    // Exibe o modal centralizado via Flexbox
     modal.style.display = 'flex';
     modal.classList.add('aberto');
     document.body.style.overflow = 'hidden';
@@ -195,7 +197,7 @@ async function enviarLogin(event) {
 
         if (data.status === 'sucesso') {
             closeModal();
-            mostrarFeedback('sucesso', 'Bem-vindo(a)! 🎉', data.mensagem, data.redirect || 'index.php');
+            mostrarFeedback('sucesso', 'Bem-vindo(a)!', data.mensagem, data.redirect || 'index.php');
         } else {
             mostrarFeedback('erro', 'Ops!', data.mensagem);
         }
@@ -231,7 +233,7 @@ async function enviarCadastro(event) {
 
         if (data.status === 'sucesso') {
             closeModal();
-            mostrarFeedback('sucesso', 'Conta Criada! 🎉', data.mensagem, 'index.php');
+            mostrarFeedback('sucesso', 'Conta Criada!', data.mensagem, 'index.php');
         } else {
             mostrarFeedback('erro', 'Erro no Cadastro', data.mensagem);
         }
@@ -261,4 +263,62 @@ function fecharTudo() {
     
     const overlay = document.getElementById('overlay');
     if(overlay) overlay.style.display = 'none';
+}
+
+// ---- GERENCIAMENTO DE COOKIES LGPD ----
+function setCookie(nome, valor, dias) {
+    let expires = "";
+    if (dias) {
+        const date = new Date();
+        date.setTime(date.getTime() + (dias * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = nome + "=" + (encodeURIComponent(valor) || "") + expires + "; path=/; SameSite=Lax";
+}
+
+function getCookie(nome) {
+    const nameEQ = nome + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) {
+            return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+    }
+    return null;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const statusCookie = getCookie('lgpd_aceite');
+    const banner = document.getElementById('cookie-banner');
+
+    // Se a pessoa ainda não escolheu, exibe o aviso flutuante
+    if (!statusCookie && banner) {
+        banner.style.display = 'block';
+    }
+});
+
+function aceitarCookies(escolha) {
+    // Guarda a resposta durante 365 dias
+    setCookie('lgpd_aceite', escolha, 365);
+    
+    const banner = document.getElementById('cookie-banner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
+}
+
+// ---- MUDAR VISIBILIDADE DA SENHA (OLHINHO) ----
+function toggleMostrarSenha(inputId, btn) {
+    const inputSenha = document.getElementById(inputId);
+    if (!inputSenha) return;
+
+    const estaOculto = inputSenha.type === 'password';
+    
+    // Alterna o tipo do campo
+    inputSenha.type = estaOculto ? 'text' : 'password';
+    
+    // Altera o estilo do ícone
+    btn.classList.toggle('active', estaOculto);
+    btn.setAttribute('aria-label', estaOculto ? 'Ocultar senha' : 'Mostrar senha');
 }

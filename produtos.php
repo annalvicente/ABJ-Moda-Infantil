@@ -56,7 +56,10 @@ if (empty($id)) {
 
 // 5. Execução e Redirecionamento
 if ($conn->query($sql)) {
-    header("Location: tfuncionarios.php");
+    // Se tinha ID era edição, senão era um produto novo
+    $acao = empty($id) ? 'cadastrado' : 'editado';
+    header("Location: tfuncionarios.php?sucesso=" . $acao);
+    exit();
 } else {
     echo "Erro ao salvar no banco de dados: " . $conn->error;
 }

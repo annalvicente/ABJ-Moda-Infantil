@@ -42,9 +42,6 @@ $vitrines = [
                 <img src="img/logo-deitada.webp" alt="Logo deitada" class="logo-deitada"> 
             </a>
 
-            
-
-
             <div class="user-actions">
                 <?php if (isset($_SESSION['usuario_nome'])): 
         // Pega a primeira letra do nome e coloca em maiúscula
@@ -79,8 +76,9 @@ $vitrines = [
     <?php endif; ?>
 
     <hr class="dropdown-divider">
+    
 
-    <a href="logout.php" class="dropdown-item btn-sair">
+    <a href="javascript:void(0)" onclick="confirmarSair('logout.php')" class="dropdown-item btn-sair">
         <i class="fa-solid fa-right-from-bracket"></i> Sair
     </a>
 </div>
@@ -91,10 +89,6 @@ $vitrines = [
             <i class="fa-regular fa-user"></i>
         </a>
     <?php endif; ?>
-            <!-- <div class="user-actions">
-                <a href="javascript:void(0)" onclick="openModal('login')" title="Entrar ou Cadastrar">
-                    <i class="fa-regular fa-user"></i>
-                </a> -->
 
             <a href="javascript:void(0);" onclick="interacaoCart()">
                 <i class="fa-solid fa-cart-shopping"></i>
@@ -110,14 +104,6 @@ $vitrines = [
             </div>
         </div>
     </header>
-
-    <!-- <div class="search-container">
-        <form class="search-box" id="searchForm">
-            <i class="fa-solid fa-magnifying-glass" onclick="executarBusca()"></i>
-            <input type="text" id="searchInput" placeholder="O que você procura?">
-            <i class="fa-solid fa-xmark" onclick="limparBusca()"></i>
-        </form>
-    </div> -->
 
     <main>
         <section class="hero-banner">
@@ -408,87 +394,113 @@ $vitrines = [
                 <button type="button" class="type-btn" id="btn-tipo-vendedor" onclick="setUserType('vendedor')">Sou
                     Vendedor</button>
             </div>
+<!-- FORM DE LOGIN -->
+<form id="form-login" class="auth-form" onsubmit="enviarLogin(event)">
+    <input type="hidden" name="tipo_usuario" class="input-tipo-usuario" value="cliente">
 
-            <!-- FORM DE LOGIN -->
-            <form id="form-login" class="auth-form" onsubmit="enviarLogin(event)">
-                <input type="hidden" name="tipo_usuario" class="input-tipo-usuario" value="cliente">
-
-                <div class="input-group" id="grp-login-email">
-                    <label>E-mail</label>
-                    <input type="email" name="email" id="login-email" placeholder="seu@email.com" required>
-                    <span class="erro-campo">Informe um e-mail válido.</span>
-                </div>
-                <div class="input-group" id="grp-login-senha">
-                    <label>Senha</label>
-                    <input type="password" name="senha" id="login-senha" placeholder="******" required>
-                    <span class="erro-campo">A senha é obrigatória.</span>
-                </div>
-                <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-login">ENTRAR COMO
-                    CLIENTE</button>
-            </form>
-
-            <!-- FORM DE CADASTRO -->
-            <form id="form-cadastro" class="auth-form" style="display: none;" onsubmit="enviarCadastro(event)">
-                <input type="hidden" name="tipo_form" class="input-tipo-usuario" value="cliente">
-
-                <div class="input-group" id="grp-cad-nome">
-                    <label>Nome Completo</label>
-                    <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" required>
-                    <span class="erro-campo">Nome é obrigatório.</span>
-                </div>
-                <div class="input-group" id="grp-cad-email">
-                    <label>E-mail</label>
-                    <input type="email" name="email" id="cad-email" placeholder="seu@email.com" required>
-                    <span class="erro-campo">Informe um e-mail válido.</span>
-                </div>
-                <div class="input-group" id="grp-cad-cpf">
-                    <label>CPF</label>
-                    <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14"
-                        inputmode="numeric">
-                    <span class="erro-campo">CPF inválido (formato: 000.000.000-00).</span>
-                </div>
-                <div class="input-group">
-                    <label>Data de Nascimento</label>
-                    <input type="date" name="data_nascimento" id="cad-nasc">
-                </div>
-                <div class="input-group" id="grp-cad-tel">
-                    <label>Telefone</label>
-                    <input type="text" name="telefone" id="cad-tel" placeholder="(00) 00000-0000" maxlength="15"
-                        inputmode="numeric">
-                    <span class="erro-campo">Telefone inválido.</span>
-                </div>
-                <div class="input-group" id="grp-cad-senha">
-                    <label>Senha</label>
-                    <input type="password" name="senha" id="cad-senha" placeholder="Mínimo 6 caracteres" required
-                        minlength="6">
-                    <span class="erro-campo">A senha deve ter ao menos 6 caracteres.</span>
-                </div>
-                <div class="input-group" id="grp-cad-chave" style="display: none;">
-                    <label>Código de Autorização da Loja</label>
-                    <input type="password" name="chave_loja" id="cad-chave" placeholder="Digite a chave da loja">
-                    <span class="erro-campo">Código de acesso obrigatório para vendedores.</span>
-                </div>
-                
-                <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR
-                    CLIENTE</button>
-            </form>
-        </div>
+    <div class="input-group" id="grp-login-email">
+        <label>E-mail</label>
+        <input type="email" name="email" id="login-email" placeholder="seu@email.com" required>
+        <span class="erro-campo">Informe um e-mail válido.</span>
     </div>
 
-    <!-- ========================================================
-         MODAL DE FEEDBACK (Sucesso / Erro)
-    ========================================================= -->
+    <div class="input-group" id="grp-login-senha">
+        <label>Senha</label>
+        <div class="password-wrapper">
+            <input type="password" name="senha" id="login-senha" placeholder="******" required>
+            <button type="button" class="btn-toggle-senha" onclick="toggleMostrarSenha('login-senha', this)" aria-label="Mostrar senha">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        <span class="erro-campo">A senha é obrigatória.</span>
+    </div>
+
+    <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-login">ENTRAR COMO CLIENTE</button>
+</form>
+
+<!-- FORM DE CADASTRO -->
+<form id="form-cadastro" class="auth-form" style="display: none;" onsubmit="enviarCadastro(event)">
+    <input type="hidden" name="tipo_form" class="input-tipo-usuario" value="cliente">
+
+    <div class="input-group" id="grp-cad-nome">
+        <label>Nome Completo</label>
+        <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" required>
+        <span class="erro-campo">Nome é obrigatório.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-email">
+        <label>E-mail</label>
+        <input type="email" name="email" id="cad-email" placeholder="seu@email.com" required>
+        <span class="erro-campo">Informe um e-mail válido.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-cpf">
+        <label>CPF</label>
+        <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+        <span class="erro-campo">CPF inválido (formato: 000.000.000-00).</span>
+    </div>
+
+    <div class="input-group">
+        <label>Data de Nascimento</label>
+        <input type="date" name="data_nascimento" id="cad-nasc">
+    </div>
+
+    <div class="input-group" id="grp-cad-tel">
+        <label>Telefone</label>
+        <input type="text" name="telefone" id="cad-tel" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric">
+        <span class="erro-campo">Telefone inválido.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-senha">
+        <label>Senha</label>
+        <div class="password-wrapper">
+            <input type="password" name="senha" id="cad-senha" placeholder="Mínimo 6 caracteres" required minlength="6">
+            <button type="button" class="btn-toggle-senha" onclick="toggleMostrarSenha('cad-senha', this)" aria-label="Mostrar senha">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        <span class="erro-campo">A senha deve ter ao menos 6 caracteres.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-chave" style="display: none;">
+        <label>Código de Autorização da Loja</label>
+        <div class="password-wrapper">
+            <input type="password" name="chave_loja" id="cad-chave" placeholder="Digite a chave da loja">
+            <button type="button" class="btn-toggle-senha" onclick="toggleMostrarSenha('cad-chave', this)" aria-label="Mostrar senha">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        <span class="erro-campo">Código de acesso obrigatório para vendedores.</span>
+    </div>
+
+    <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR CLIENTE</button>
+</form>
+
+<!-- ========================================================
+     MODAL DE FEEDBACK GENERALIZADO (ESTÁGIO PADRONIZADO)
+========================================================= -->
 <div id="authModal" class="modal-overlay">
     <div class="modal-box">
-        </div>
+    </div>
 </div>
 
-<div id="feedbackModal" class="modal-overlay">
-    <div class="feedback-box" id="feedback-box">
-        <span id="feedback-icone"></span>
-        <h3 id="feedback-titulo"></h3>
-        <p id="feedback-msg"></p>
-        <button class="btn-feedback-ok" id="btn-feedback-ok" onclick="fecharFeedback()">OK</button>
+<div id="feedbackModal" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-sucesso" id="feedback-icone-container">
+            <span id="feedback-icone"><i class="fa-solid fa-check"></i></span>
+        </div>
+        <h2 id="feedback-titulo">Sucesso!</h2>
+        <p id="feedback-msg">Operação realizada com sucesso.</p>
+        <button type="button" class="btn-ok-sucesso" id="btn-feedback-ok" onclick="fecharFeedback()">OK</button>
     </div>
 </div>
 
@@ -527,12 +539,68 @@ $vitrines = [
 
     <div id="overlay" ></div>
 
+    <!-- MODAL DE CONFIRMAÇÃO DE SAIR (INDEX.PHP) -->
+<div id="modalSair" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-sair">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+        <h2>Encerrar Sessão</h2>
+        <p>Tem certeza que deseja sair da sua conta?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalSair()">Cancelar</button>
+            <a id="btnConfirmarSair" href="logout.php" class="btn-confirmar-sair">Sim, sair</a>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE REMOÇÃO DO CARRINHO -->
+<div id="modalRemoverCarrinho" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-excluir">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h2>Remover Produto</h2>
+        <p>Você deseja mesmo tirar este produto do carrinho?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalRemoverCarrinho()">Cancelar</button>
+            <button type="button" id="btnConfirmarRemoverCarrinho" class="btn-confirmar-excluir">Sim, remover</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE REMOÇÃO DOS FAVORITOS -->
+<div id="modalRemoverFavorito" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-excluir">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h2>Remover Favorito</h2>
+        <p>Você deseja mesmo tirar este produto da sua lista de favoritos?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalRemoverFavorito()">Cancelar</button>
+            <button type="button" class="btn-confirmar-excluir" onclick="confirmarRemocaoFavorito()">Sim, remover</button>
+        </div>
+    </div>
+</div>
+
+<!-- BANNER DE COOKIES -->
+<div id="cookie-banner" class="cookie-banner" style="display: none;">
+    <strong class="cookie-titulo">Aviso sobre cookies!</strong>
+    <p class="cookie-texto">Usamos cookies para que o nosso site funcione melhor para você e para personalizar sua jornada por aqui. Tudo bem para você?</p>
+    <div class="cookie-buttons">
+        <button type="button" class="btn-cookie-aceitar" onclick="aceitarCookies('aceito')">Aceitar Todos</button>
+        <button type="button" class="btn-cookie-recusar" onclick="aceitarCookies('rejeitado')">Rejeitar Todos</button>
+    </div>
+</div>
+
     <script src="carrinho.js"></script>
     <script src="loja.js"></script>
     <script src="favoritos.js"></script>
     <script src="login.js"></script>
-
-
 
     <script>
     window.addEventListener('load', () => {

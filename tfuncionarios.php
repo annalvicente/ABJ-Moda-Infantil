@@ -46,12 +46,17 @@ if ($resultado_categorias) {
 </head>
 
 <body>
-<header class="header-admin">
+<header class="header-admin" id="headerAdmin">
     <div class="header-left"></div>
-    <a href="tfuncionarios.php" class="logo">
-        <img src="img/logoabj.webp" alt="Balão Logo">
+    
+    <!-- Clicar na logo recarrega o painel / vai para a página inicial do painel -->
+    <a href="tfuncionarios.php" class="logo" title="Início do Painel">
+        <img src="img/logoabj.webp" alt="Balão Logo" class="logo-normal">
+        <img src="img/logo-deitada.webp" alt="Logo deitada" class="logo-deitada"> 
     </a>
+
     <div class="header-right">
+        <!-- Clicar no botão vai para o site/loja dos clientes -->
         <a href="index.php" class="btn-visualizar">
             <i class="fa-solid fa-shop"></i> Ver loja
         </a>
@@ -75,9 +80,9 @@ if ($resultado_categorias) {
             <?php } ?>
         </form>
 
-        <div class="adicao">  
-            <button onclick="abrirModal()" class="adicao"> + Novo Produto </button>
-        </div>
+        <button onclick="abrirModal()" class="btn-adicionar">
+            <i class="fa-solid fa-plus"></i> Novo Produto
+        </button>
     </div>
         
     <table class="tabela-estilizada">   
@@ -139,9 +144,9 @@ if ($resultado_categorias) {
                            <i class="fa-solid fa-pen"></i>
                         </a>
                         
-                        <a class="excluir" href="excluir.php?id=<?php echo $dados['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir esta peça?')">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
+                        <a class="excluir" href="javascript:void(0)" onclick="confirmarExclusao('excluir.php?id=<?php echo $dados['id']; ?>')">
+    <i class="fa-solid fa-trash"></i>
+</a>
                     </td>
                 </tr>
             <?php } ?>
@@ -151,22 +156,25 @@ if ($resultado_categorias) {
 
 <div id="modalProduto" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="fecharModal()">&times;</span>
-        <h2 class="h2-modal" id="modalTitulo">Adicionar Nova Roupa</h2>
+        <div class="modal-header">
+            <h2 class="h2-modal" id="modalTitulo">Adicionar Nova Roupa</h2>
+            <span class="close" onclick="fecharModal()">&times;</span>
+        </div>
 
-        <form action="produtos.php" method="POST" enctype="multipart/form-data">
+        <form action="produtos.php" method="POST" enctype="multipart/form-data" class="modal-body">
             <input type="hidden" name="id" id="prod_id">
-            
             <input type="hidden" name="id_vendedor" value="<?php echo $id_vendedor_logado; ?>">
-            
-            <div class="form-group">
-                <label>Nome da Peça:</label>
-                <input type="text" name="nome" id="prod_nome" required>
+            <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
+            <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
+
+            <div class="form-group full-width">
+                <label><i class="fa-solid fa-tag"></i> Nome da Peça:</label>
+                <input type="text" name="nome" id="prod_nome" placeholder="Ex: Conjunto Jardineira Dinossauro" required>
             </div>
 
-            <div>
+            <div class="form-row">
                 <div class="form-group">
-                    <label>Categoria:</label>
+                    <label><i class="fa-solid fa-layer-group"></i> Categoria:</label>
                     <select name="id_categoria" id="prod_categoria">
                         <option value="">Selecione</option>
                         <?php foreach($categorias as $cat) { ?>
@@ -175,47 +183,46 @@ if ($resultado_categorias) {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Tamanho:</label>
-                    <input type="text" name="tamanho" id="prod_tamanho">
+                    <label><i class="fa-solid fa-ruler-combined"></i> Tamanho:</label>
+                    <input type="text" name="tamanho" id="prod_tamanho" placeholder="Ex: M, 2, 4">
                 </div>
             </div>
 
-            <div>
+            <div class="form-row">
                 <div class="form-group">
-                    <label>Cor:</label>
-                    <input type="text" name="cor" id="prod_cor">
-                </div>
-                <div class="form-group">
-                    <label>Preço (R$):</label>
-                    <input type="number" step="0.01" name="preco" id="prod_preco" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Quantidade em Estoque:</label>
-                <input type="number" name="quantidade_estoque" id="prod_qtd" required>
-            </div>
-
-            <div class="form-group">
-                <label>Descrição:</label>
-                <textarea name="descricao" id="prod_desc" rows="2"></textarea>
-            </div>
-
-            <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
-            <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
-            
-            <div>
-                <div class="form-group">
-                    <label>Foto da Peça (.webp):</label>
-                    <input type="file" name="imagem" accept="image/webp">
+                    <label><i class="fa-solid fa-palette"></i> Cor:</label>
+                    <input type="text" name="cor" id="prod_cor" placeholder="Ex: Verde/Branco">
                 </div>
                 <div class="form-group">
-                    <label>Foto no Corpo (.webp):</label>
-                    <input type="file" name="imagem_corpo" accept="image/webp">
+                    <label><i class="fa-solid fa-dollar-sign"></i> Preço (R$):</label>
+                    <input type="number" step="0.01" name="preco" id="preco" placeholder="0.00" required>
                 </div>
             </div>
 
-            <button type="submit" class="btn-salvar">Gravar Dados</button>
+            <div class="form-group full-width">
+                <label><i class="fa-solid fa-boxes-stacked"></i> Quantidade em Estoque:</label>
+                <input type="number" name="quantidade_estoque" id="prod_qtd" placeholder="Ex: 15" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label><i class="fa-solid fa-align-left"></i> Descrição do Produto:</label>
+                <textarea name="descricao" id="prod_desc" rows="2" placeholder="Detalhes do tecido, estampa, etc..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-image"></i> Foto Peça (.webp):</label>
+                    <input type="file" name="imagem" accept="image/*" class="file-input">
+                </div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-camera"></i> Foto Corpo (.webp):</label>
+                    <input type="file" name="imagem_corpo" accept="image/*" class="file-input">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-salvar">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Produto
+            </button>
         </form>
     </div>
 </div>
@@ -286,6 +293,62 @@ if ($resultado_categorias) {
     </footer>
 
 
+    <!-- MODAL DE SUCEESSO (ESTILO IMAGEM 1) -->
+<div id="modalSucesso" class="modal-aviso">
+    <div class="modal-aviso-content">
+        <div class="icon-circle-success">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        
+        <h2>Sucesso!</h2>
+        
+        <p id="mensagemSucesso">
+            <?php 
+                if (isset($_GET['sucesso'])) {
+                    if ($_GET['sucesso'] == 'cadastrado') { echo "Produto cadastrado com sucesso!"; } elseif ($_GET['sucesso'] == 'editado') {
+                        echo "Produto alterado com sucesso!";
+                    }
+                }
+            ?>
+        </p>
+
+        <button onclick="fecharModalSucesso()" class="btn-modal-ok">OK</button>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE ALTERAÇÃO -->
+<div id="modalConfirmacao" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-pergunta">
+            <i class="fa-solid fa-pen"></i>
+        </div>
+        <h2>Confirmar Alteração</h2>
+        <p>Deseja mesmo alterar as informações deste produto?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalConfirmacao()">Cancelar</button>
+            <button type="button" class="btn-confirmar-confirma" id="btnConfirmarAlteracao">Sim, alterar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
+<div id="modalExcluir" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-excluir">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h2>Excluir Produto</h2>
+        <p>Tem certeza que deseja excluir esta peça do estoque? Essa ação não pode ser desfeita.</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalExcluir()">Cancelar</button>
+            <a id="btnConfirmarExclusao" href="#" class="btn-confirmar-excluir">Sim, excluir</a>
+        </div>
+    </div>
+</div>
+
 <script src="funcionarios.js"></script>
+
 </body>
 </html>
