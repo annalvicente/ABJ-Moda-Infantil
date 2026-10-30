@@ -1,6 +1,3 @@
-<!-- API em PHP (JSON) para processar e registar novos utilizadores (clientes ou vendedores) no
-  banco de dados com a palavra-passe encriptada. -->
-
 <?php
 include 'conexão.php';
 header('Content-Type: application/json');

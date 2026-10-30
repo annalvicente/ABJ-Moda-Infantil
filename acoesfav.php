@@ -1,6 +1,3 @@
-<!-- API em PHP (JSON) para gerenciar as ações de favoritos e carrinho de compras do cliente logado 
-(adicionar, listar e remover) -->
-
 <?php
 // 1. Inicia a sessão na PRIMEIRA linha
 if (session_status() === PHP_SESSION_NONE) {

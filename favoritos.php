@@ -1,6 +1,3 @@
-<!-- Página HTML/PHP que exibe a estrutura da lista de produtos favoritos do utilizador e integra
- as ações de adicionar os itens selecionados ao carrinho através do favoritos.js. -->
-
 <?php 
 // Conecta ao banco logo no início da página
 include 'conexão.php'; 

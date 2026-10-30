@@ -1,6 +1,3 @@
-<!-- Script em PHP para encerrar a sessão do utilizador, apagar as suas variáveis e redirecioná-lo 
- deslogado para a página principal (index.php). -->
-
 <?php
 // 1. Inicia a sessão para que o PHP saiba qual é a sessão que deve ser encerrada
 session_start();

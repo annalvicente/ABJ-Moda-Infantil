@@ -1,7 +1,3 @@
-<!-- Página principal em PHP/HTML da loja virtual, responsável por estruturar o layout com 
- cabeçalho fixo, banners, carrossel, vitrines dinâmicas de produtos por categoria, modais de 
- autenticação, gavetas de carrinho e favoritos, e o rodapé. -->
-
 <?php
 session_start();
 // 1. Conexão com o banco de dados (Exemplo básico)
@@ -30,8 +26,6 @@ $vitrines = [
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
-
-<button id="topoBtn" title="Voltar ao Topo">↑</button>
 
 <body>  
 
@@ -115,25 +109,6 @@ $vitrines = [
                 </a>
             </div>
         </div>
-
-        <script>    //BOTAO DE VOLTAR PARA O TOPO
-             // Mostra o botão quando rolar 200px
-    window.onscroll = function() {
-      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-        topoBtn.style.display = "block";
-    } else {
-        topoBtn.style.display = "none";
-     }
-  };
-
-// Quando clicar, faz rolar para o topo
-    topoBtn.addEventListener("click", () => {
-      window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
-        </script>
     </header>
 
     <!-- <div class="search-container">

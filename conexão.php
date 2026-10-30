@@ -1,5 +1,3 @@
-<!-- conexão com o banco de dados MySQL (loja_kids). -->
-
 <?php
 $host = "localhost";
 $user = "root"; 

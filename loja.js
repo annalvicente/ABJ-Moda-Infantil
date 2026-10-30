@@ -1,6 +1,3 @@
-// Script em JavaScript para gerir a navegação do carrossel de imagens, a renderização dos produtos 
-// e o controlo de abertura e fecho dos painéis laterais (carrinho, favoritos e login).
-
 // --- CONTROLE DO CARROSSEL --- // 
 
 function moverCarrossel(direcao) {

@@ -1,9 +1,3 @@
-// Script em JavaScript para controlar o funcionamento do modal de adição e edição de produtos 
-// no painel dos funcionários, preenchendo automaticamente os campos do formulário.
-
-
-
-
 // Adicionei img1 e img2 no final da lista de parâmetros
 function abrirModal(id = '', nome = '', categoria = '', descricao = '', preco = '', tamanho = '', cor = '', qtd = '', img1 = '', img2 = '') {
     
