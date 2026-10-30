@@ -1,3 +1,6 @@
+<!-- Página PHP/HTML do painel administrativo dos funcionários para gestão e controlo de stock, 
+ permitindo pesquisar, listar, adicionar, editar e eliminar produtos. -->
+
 <?php
 include 'conexão.php';
 
@@ -45,6 +48,8 @@ if ($resultado_categorias) {
     <link rel="stylesheet" href="funcionario.css">   
 </head>
 
+<button id="topoBtn" title="Voltar ao Topo">↑</button>
+
 <body>
 <header class="header-admin">
     <div class="header-left"></div>
@@ -56,6 +61,25 @@ if ($resultado_categorias) {
             <i class="fa-solid fa-shop"></i> Ver loja
         </a>
     </div>
+
+    <script>    //BOTAO DE VOLTAR PARA O TOPO
+             // Mostra o botão quando rolar 200px
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        topoBtn.style.display = "block";
+    } else {
+        topoBtn.style.display = "none";
+     }
+  };
+
+// Quando clicar, faz rolar para o topo
+    topoBtn.addEventListener("click", () => {
+      window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+        </script>
 </header>
 
 <main class="container">

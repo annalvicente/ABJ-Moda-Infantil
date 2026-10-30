@@ -1,3 +1,6 @@
+<!-- Script PHP para processar o formulário de cadastro ou edição de produtos no banco de dados,
+  incluindo o upload das imagens da peça e no corpo. -->
+
 <?php
 include 'conexão.php';
 

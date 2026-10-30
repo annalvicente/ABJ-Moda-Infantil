@@ -1,3 +1,6 @@
+<!-- API em PHP (JSON) para adicionar ou atualizar a quantidade de um produto no carrinho do cliente 
+logado. -->
+
 <?php
 session_start();
 

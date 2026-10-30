@@ -1,3 +1,6 @@
+<!-- Script PHP para eliminar um produto do banco de dados e remover todas as suas conexões com as 
+ tabelas de favoritos e carrinho antes de redirecionar para o painel de funcionários. -->
+
 <?php
 include 'conexão.php';
 

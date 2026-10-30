@@ -1,3 +1,6 @@
+/* estilos CSS para estilizar a página principal do site, englobando o cabeçalho fixo, banners 
+promocionais, carrossel de produtos, vitrine por categorias, modais e rodapé. */
+
 /* ============================================================
    RESET, FONTES E VARIÁVEIS BASE
    ============================================================ */
@@ -50,7 +53,7 @@ a:hover {
 
 
 /* ============================================================
-   CABEÇALHO (header, menu, logo, e ações)
+   CABEÇALHO (header, menu, logo,   ações e voltar ao topo)
    ============================================================ */
 header {
     background-color: var(--amarelo-header);
@@ -374,6 +377,29 @@ header.scrolled .logo .logo-deitada {
 
 .user-actions i:hover {
     transform: scale(1.1);
+}
+
+/* VOLTAR AO TOPO */
+    #topoBtn {    /*botao*/
+  display: none; /* Inicialmente escondido */
+  position: fixed;
+  bottom: 30px;
+  right: 15px;
+  z-index: 1000;
+  font-size: 24px;
+  background-color: #e3cfa5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 12px 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#topoBtn:hover {
+  background-color: #c5b28a; 
+  transform: scale(1.1);
 }
 
 

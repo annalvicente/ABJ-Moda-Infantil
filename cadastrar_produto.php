@@ -1,3 +1,6 @@
+<!-- Script PHP para cadastrar um novo produto no banco de dados com preço, imagem, estoque e 
+tamanhos (P, M, G). -->
+
 <?php
 include 'conexão.php'; // Usa a conexão $conn que já funciona
 

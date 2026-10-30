@@ -1,3 +1,5 @@
+-- banco de dados
+
 CREATE DATABASE IF NOT EXISTS loja_kids;
 USE loja_kids;
 

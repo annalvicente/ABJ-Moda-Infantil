@@ -1,3 +1,8 @@
+// Script em JavaScript para gerir a gaveta e as interações de favoritos do utilizador, permitindo 
+// adicionar, remover, listar e mover produtos selecionados para o carrinho.
+
+
+
 // ---- CARREGAR AUTOMATICAMENTE AO ABRIR A PÁGINA ----
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("lista-favoritos")) {

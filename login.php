@@ -1,3 +1,6 @@
+<!-- API em PHP (JSON) para autenticar o login do utilizador (cliente ou vendedor), validar a 
+ palavra-passe encriptada e redirecionar conforme o tipo de conta. -->
+
 <?php
 session_start();
 

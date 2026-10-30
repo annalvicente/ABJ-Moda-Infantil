@@ -1,3 +1,6 @@
+<!-- API em PHP (JSON) para registar novos utilizadores (clientes ou vendedores) com
+  validação de dados, palavra-passe encriptada e chave de segurança. -->
+
 <?php
 session_start();
 

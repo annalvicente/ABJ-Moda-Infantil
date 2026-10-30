@@ -1,3 +1,7 @@
+// Script em JavaScript para gerir as janelas modais de autenticação (autenticação e registo) e 
+// os alertas de resposta, enviando dados via AJAX para o servidor.
+
+
 // ============================================================
 //  ESTADO DO MODAL E VARIÁVEIS GLOBAIS
 // ============================================================
