@@ -46,6 +46,10 @@ if ($resultado_categorias) {
 </head>
 
 <body>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="topoBtn" title="Voltar ao Topo">↑</button>
+
 <header class="header-admin" id="headerAdmin">
     <div class="header-left"></div>
     
@@ -62,6 +66,25 @@ if ($resultado_categorias) {
         </a>
     </div>
 </header>
+
+    <script>        //BOTÃO DE VOLTAR AO INICIO
+             // Mostra o botão quando rolar 200px
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        topoBtn.style.display = "block";
+    } else {
+        topoBtn.style.display = "none";
+     }
+  };
+
+// Quando clicar, faz rolar para o topo
+    topoBtn.addEventListener("click", () => {
+      window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+        </script>
 
 <main class="container">
     <div class="header-tabela">

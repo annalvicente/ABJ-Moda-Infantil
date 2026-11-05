@@ -29,6 +29,9 @@ $vitrines = [
 
 <body>  
 
+    <!-- Botão Voltar ao Topo -->
+    <button id="topoBtn" title="Voltar ao Topo">↑</button>
+
     <header>
         <div class="nav-container">
             <nav class="menu-links">
@@ -94,16 +97,35 @@ $vitrines = [
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>
 
-                <div onclick="toggleFavoritos()" title="Meus Favoritos">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
+            <a href="javascript:void(0);" onclick="toggleFavoritos()" title="Meus Favoritos" style="cursor: pointer;">
+                <i class="fa-regular fa-heart"></i>
+            </a>
 
-                <a href="#contato" title="Chat">
-                    <i class="fa-regular fa-comment"></i>
-                </a>
+            <a href="#contato" title="Chat">
+                <i class="fa-regular fa-comment"></i>
+            </a>
             </div>
         </div>
     </header>
+
+    <script>        //BOTÃO DE VOLTAR AO INICIO
+             // Mostra o botão quando rolar 200px
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        topoBtn.style.display = "block";
+    } else {
+        topoBtn.style.display = "none";
+     }
+  };
+
+// Quando clicar, faz rolar para o topo
+    topoBtn.addEventListener("click", () => {
+      window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+        </script>
 
     <main>
         <section class="hero-banner">
@@ -115,7 +137,7 @@ $vitrines = [
                     <h2>Estilo que abraça,<br>conforto que acompanha.</h2>
                     <p>Peças escolhidas com carinho para cada descoberta do seu pequeno. <strong>Frete grátis
                             incluso!</strong></p>
-                    <a href="#" class="btn-banner">Ver Coleção Completa</a>
+                    <a href="vitrine.php" class="btn-banner">Ver Coleção Completa</a>
                 </div>
             </div>
         </section>
@@ -175,7 +197,7 @@ $vitrines = [
 
 
                     <div class="ver-mais-container">
-        <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
+        <a href="vitrine.php#meninas" class="btn-ver-mais">Ver mais peças</a>
     </div>
 
                 </section>
@@ -190,7 +212,7 @@ $vitrines = [
         <h2>Hora de Sonhar Brincando!</h2>
         <p>Pijamas lúdicos e ultra confortáveis para noites cheias de imaginação e um sono tranquilo.</p>
         
-        <a href="#" class="btn-banner">Ver pijamas</a>
+        <a href="vitrine.php#pijamas" class="btn-banner">Ver pijamas</a>
 
         <div class="banner-benefits">
             <span>Até 6x sem juros</span>
@@ -239,7 +261,7 @@ $vitrines = [
                     </div>
 
                     <div class="ver-mais-container">
-        <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
+        <a href="vitrine.php#meninos" class="btn-ver-mais">Ver mais peças</a>
 
                 </section>
             <?php endif; ?>
@@ -253,7 +275,7 @@ $vitrines = [
         <h2>Dê Asas à Imaginação!</h2>
         <p>Fantasias leves e confortáveis para transformar qualquer dia em uma grande aventura.</p>
         
-        <a href="#" class="btn-banner">Ver fantasias</a>
+        <a href="vitrine.php#fantasias" class="btn-banner">Ver fantasias</a>
 
         <div class="banner-benefits">
             <span>Até 6x sem juros</span>
@@ -300,7 +322,7 @@ $vitrines = [
                     </div>
 
                     <div class="ver-mais-container">
-        <a href="link-da-sua-categoria.php" class="btn-ver-mais">Ver mais peças</a>
+        <a href="vitrine.php#bebes" class="btn-ver-mais">Ver mais peças</a>
 
                 </section>
             <?php endif; ?>
@@ -597,10 +619,10 @@ $vitrines = [
     </div>
 </div>
 
-    <script src="carrinho.js"></script>
-    <script src="loja.js"></script>
-    <script src="favoritos.js"></script>
     <script src="login.js"></script>
+<script src="carrinho.js"></script>
+<script src="favoritos.js"></script>
+<script src="loja.js"></script>
 
     <script>
     window.addEventListener('load', () => {

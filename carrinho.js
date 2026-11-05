@@ -40,8 +40,19 @@ window.alert = function(mensagem, callback) {
 let totalCarrinho = 0;
 let quantidadeItens = 0;
 
-// CARREGA OS ITENS DO BANCO DE DADOS SEMPRE QUE A PÁGINA É RECARREGADA
-document.addEventListener('DOMContentLoaded', carregarCarrinhoDoBanco);
+// CARREGA OS ITENS DO BANCO DE DADOS E CONFIGURA EVENTOS QUANDO A PÁGINA RECARREGA
+document.addEventListener('DOMContentLoaded', function() {
+    carregarCarrinhoDoBanco();
+
+    // Vincula o evento de clique ao botão do carrinho no header (se houver no HTML)
+    const btnCarrinho = document.querySelector('.fa-cart-shopping')?.parentElement || document.getElementById('btn-carrinho');
+    if (btnCarrinho) {
+        btnCarrinho.onclick = function(e) {
+            e.preventDefault();
+            interacaoCart();
+        };
+    }
+});
 
 async function carregarCarrinhoDoBanco() {
     const lista = document.getElementById('cart-items-list');
@@ -109,7 +120,7 @@ function desenharItemNaTela(idProduto, nome, preco, imagem) {
         <i class="fa-solid fa-trash-can" onclick="removerItem(this, ${precoNum}, ${idProduto})" style="cursor: pointer; color: #ff6b81; font-size: 1.1rem; margin-left: 10px;"></i>
     `;
 
-    lista.appendChild(itemDiv);
+    if (lista) lista.appendChild(itemDiv);
     
     totalCarrinho += precoNum;
     quantidadeItens++;
@@ -151,11 +162,15 @@ async function adicionarAoCarrinho(idProduto, nome, preco, imagem = '', exibeAle
         return false; 
     }
 
-    // 2. DESENHAR NA TELA
+    // 2. DESENHAR NA TELA E ABRIR O CARRINHO
     desenharItemNaTela(idProduto, nome, preco, imagem);
 
     if (exibeAlerta) {
-        alert(`O produto "${nome}" foi adicionado com sucesso!`);
+        alert(`O produto "${nome}" foi adicionado com sucesso!`, function() {
+            abrirCarrinhoEfetivo();
+        });
+    } else {
+        abrirCarrinhoEfetivo();
     }
 
     return true;
@@ -248,52 +263,79 @@ function atualizarInterface() {
     }
 }
 
+// =========================================================================
+// 3. CONTROLE DA GAVETA LATERAL DO CARRINHO
+// =========================================================================
+// Função de abertura/interação com o carrinho
 function interacaoCart() {
-    const carrinho = document.getElementById('x'); 
-    const favoritos = document.getElementById('favoritos-container');
-    const overlay = document.getElementById('overlay');
-    
-    if (!carrinho) return;
+    const carrinho = document.getElementById('x') || document.querySelector('.cart-container');
+    const overlay = document.getElementById('overlay') || document.querySelector('.carrinho-overlay');
 
-    if (carrinho.style.right === '0px' || carrinho.classList.contains('open')) {
-        fecharAll();
-    } else {
-        if (favoritos) {
-            favoritos.style.right = '-450px';
-            favoritos.classList.remove('open');
-        }
+    // 1. Tenta verificar no PHP se o usuário está logado
+    fetch('acoesfav.php?acao=listar_carrinho')
+        .then(response => {
+            if (response.status === 401) {
+                // Usuário NÃO está logado: exibe aviso e abre o modal de login em seguida
+                if (typeof mostrarFeedback === 'function') {
+                    mostrarFeedback('erro', 'Atenção!', 'Você precisa fazer login para acessar seu carrinho.', null);
+                    setTimeout(() => { 
+                        if (typeof openModal === 'function') openModal('login'); 
+                    }, 1500);
+                } else {
+                    alert('Você precisa fazer login para acessar seu carrinho!');
+                    if (typeof openModal === 'function') openModal('login');
+                }
+                return null;
+            }
+            return response.json();
+        })
+        .then(dados => {
+            if (!dados) return;
 
-        carrinho.style.right = '0px'; 
-        carrinho.classList.add('open');
-        if (overlay) overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+            // 2. Se o usuário estiver logado, alterna a visibilidade da gaveta
+            if (carrinho) {
+                // Fecha o modal de login se estiver aberto
+                const modalLogin = document.getElementById('authModal');
+                if (modalLogin) {
+                    modalLogin.style.display = 'none';
+                    modalLogin.classList.remove('aberto');
+                }
+
+                const estaAberto = carrinho.classList.contains('open') || carrinho.style.right === '0px';
+
+                if (estaAberto) {
+                    carrinho.classList.remove('open', 'active');
+                    carrinho.style.right = '-450px';
+                    if (overlay) overlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                } else {
+                    carrinho.classList.add('open', 'active');
+                    carrinho.style.right = '0px';
+                    if (overlay) overlay.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        })
+        .catch(err => {
+            console.error("Erro ao verificar carrinho:", err);
+        });
 }
 
-function fecharAll(event) {
-    if (event && event.preventDefault) event.preventDefault();
-
+function fecharAll() {
     const carrinho = document.getElementById('x');
     const favoritos = document.getElementById('favoritos-container');
     const overlay = document.getElementById('overlay');
 
     if (carrinho) {
+        carrinho.classList.remove('open', 'active');
         carrinho.style.right = '-450px';
-        carrinho.classList.remove('open');
     }
     if (favoritos) {
+        favoritos.classList.remove('open', 'active');
         favoritos.style.right = '-450px';
-        favoritos.classList.remove('open');
     }
-
-    document.body.style.overflow = '';
-
     if (overlay) {
-        setTimeout(() => {
-            const cartAberto = carrinho && (carrinho.style.right === '0px' || carrinho.classList.contains('open'));
-            const favAberto = favoritos && (favoritos.style.right === '0px' || favoritos.classList.contains('open'));
-            
-            if (!cartAberto && !favAberto) overlay.classList.remove('active');
-        }, 300);
+        overlay.style.display = 'none';
     }
+    document.body.style.overflow = 'auto';
 }

@@ -11,7 +11,7 @@ let pendingRedirect = null;
 //  ABRIR / FECHAR MODAL DE AUTH (LOGIN/CADASTRO)
 // ============================================================
 function openModal(mode = 'login') {
-    // Fecha outros elementos abertos (carrinho, favoritos)
+    // 1. Fecha outros elementos abertos (carrinho, favoritos, etc.)
     fecharTudo();
     
     const modal = document.getElementById('authModal');
@@ -69,6 +69,8 @@ function switchAuthMode(mode) {
     
     if (formLogin) formLogin.style.display = isLogin ? 'block' : 'none';
     if (formCad) formCad.style.display = isLogin ? 'none' : 'block';
+
+    limparErrosCampos();
 }
 
 // Configura se é Cliente ou Vendedor
@@ -141,7 +143,6 @@ function mostrarFeedback(tipo, titulo, mensagem, redirectUrl = null) {
     mensagemEl.innerText = mensagem;
     pendingRedirect = redirectUrl;
 
-    // Configura ícone circular e cores conforme o tipo (Sucesso / Erro)
     if (tipo === 'erro') {
         if (containerIcone) containerIcone.className = 'icone-circulo-sucesso icone-circulo-erro';
         if (icone) icone.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -152,7 +153,6 @@ function mostrarFeedback(tipo, titulo, mensagem, redirectUrl = null) {
         if (btnOk) btnOk.className = 'btn-feedback-ok';
     }
 
-    // Exibe o modal centralizado via Flexbox
     modal.style.display = 'flex';
     modal.classList.add('aberto');
     document.body.style.overflow = 'hidden';
@@ -173,10 +173,33 @@ function fecharFeedback() {
 }
 
 // ============================================================
-//  LÓGICA DE ENVIO (AJAX)
+//  LÓGICA DE ENVIO (AJAX COM VALIDAÇÃO FRONTEND)
 // ============================================================
 async function enviarLogin(event) {
-    event.preventDefault(); 
+    event.preventDefault();
+
+    limparErrosCampos();
+
+    const grpEmail = document.getElementById('grp-login-email');
+    const grpSenha = document.getElementById('grp-login-senha');
+    const inputEmail = document.getElementById('login-email');
+    const inputSenha = document.getElementById('login-senha');
+
+    let temErro = false;
+
+    // Valida E-mail
+    if (!inputEmail || !inputEmail.value.trim() || !inputEmail.value.includes('@')) {
+        if (grpEmail) grpEmail.classList.add('com-erro');
+        temErro = true;
+    }
+
+    // Valida Senha
+    if (!inputSenha || !inputSenha.value.trim()) {
+        if (grpSenha) grpSenha.classList.add('com-erro');
+        temErro = true;
+    }
+
+    if (temErro) return;
 
     const form = document.getElementById('form-login');
     const formData = new FormData(form);
@@ -214,6 +237,44 @@ async function enviarLogin(event) {
 async function enviarCadastro(event) {
     event.preventDefault();
 
+    limparErrosCampos();
+
+    const grpNome = document.getElementById('grp-cad-nome');
+    const grpEmail = document.getElementById('grp-cad-email');
+    const grpSenha = document.getElementById('grp-cad-senha');
+    const grpChave = document.getElementById('grp-cad-chave');
+
+    const inputNome = document.getElementById('cad-nome');
+    const inputEmail = document.getElementById('cad-email');
+    const inputSenha = document.getElementById('cad-senha');
+    const inputChave = document.getElementById('cad-chave');
+
+    let temErro = false;
+
+    if (!inputNome || !inputNome.value.trim()) {
+        if (grpNome) grpNome.classList.add('com-erro');
+        temErro = true;
+    }
+
+    if (!inputEmail || !inputEmail.value.trim() || !inputEmail.value.includes('@')) {
+        if (grpEmail) grpEmail.classList.add('com-erro');
+        temErro = true;
+    }
+
+    if (!inputSenha || inputSenha.value.length < 6) {
+        if (grpSenha) grpSenha.classList.add('com-erro');
+        temErro = true;
+    }
+
+    if (currentType === 'vendedor') {
+        if (!inputChave || !inputChave.value.trim()) {
+            if (grpChave) grpChave.classList.add('com-erro');
+            temErro = true;
+        }
+    }
+
+    if (temErro) return;
+
     const form = document.getElementById('form-cadastro');
     const formData = new FormData(form);
     const btn = document.getElementById('btn-submit-cadastro');
@@ -248,24 +309,42 @@ async function enviarCadastro(event) {
 }
 
 // ============================================================
-//  AUXILIARES
+//  FUNÇÕES AUXILIARES
 // ============================================================
 function limparErrosCampos() {
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => input.style.borderColor = '');
+    document.querySelectorAll('.input-group').forEach(grp => grp.classList.remove('com-erro'));
 }
 
 function fecharTudo() {
-    // Fecha menus laterais, carrinhos, etc.
-    document.getElementById('x')?.classList.remove('open', 'active');
-    document.getElementById('favoritos-container')?.classList.remove('open');
-    document.getElementById('overlay')?.classList.remove('active');
+    // 1. Oculta o Carrinho
+    const elementosCarrinho = [
+        document.getElementById('carrinho-modal'),
+        document.getElementById('x'),
+        document.querySelector('.carrinho-sidebar'),
+        document.querySelector('.carrinho-container')
+    ];
     
-    const overlay = document.getElementById('overlay');
-    if(overlay) overlay.style.display = 'none';
+    elementosCarrinho.forEach(el => {
+        if (el) el.classList.remove('open', 'active', 'aberto', 'ativo');
+    });
+
+    // 2. Oculta os Favoritos
+    const favoritos = document.getElementById('favoritos-container');
+    if (favoritos) favoritos.classList.remove('open', 'active', 'aberto');
+
+    // 3. Oculta as Overlays de fundo
+    const overlays = document.querySelectorAll('#overlay, .carrinho-overlay, .modal-overlay');
+    overlays.forEach(overlay => {
+        if (overlay) {
+            overlay.classList.remove('active', 'open', 'aberto');
+            overlay.style.display = 'none';
+        }
+    });
 }
 
-// ---- GERENCIAMENTO DE COOKIES LGPD ----
+// ============================================================
+//  GERENCIAMENTO DE COOKIES LGPD
+// ============================================================
 function setCookie(nome, valor, dias) {
     let expires = "";
     if (dias) {
@@ -292,14 +371,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusCookie = getCookie('lgpd_aceite');
     const banner = document.getElementById('cookie-banner');
 
-    // Se a pessoa ainda não escolheu, exibe o aviso flutuante
     if (!statusCookie && banner) {
-        banner.style.display = 'block';
+        banner.style.display = 'flex';
     }
 });
 
 function aceitarCookies(escolha) {
-    // Guarda a resposta durante 365 dias
     setCookie('lgpd_aceite', escolha, 365);
     
     const banner = document.getElementById('cookie-banner');
@@ -308,17 +385,16 @@ function aceitarCookies(escolha) {
     }
 }
 
-// ---- MUDAR VISIBILIDADE DA SENHA (OLHINHO) ----
+// ============================================================
+//  MUDAR VISIBILIDADE DA SENHA (OLHINHO)
+// ============================================================
 function toggleMostrarSenha(inputId, btn) {
     const inputSenha = document.getElementById(inputId);
     if (!inputSenha) return;
 
     const estaOculto = inputSenha.type === 'password';
     
-    // Alterna o tipo do campo
     inputSenha.type = estaOculto ? 'text' : 'password';
-    
-    // Altera o estilo do ícone
     btn.classList.toggle('active', estaOculto);
     btn.setAttribute('aria-label', estaOculto ? 'Ocultar senha' : 'Mostrar senha');
 }

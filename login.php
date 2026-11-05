@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultado->num_rows === 0) {
         // Usuário não existe
-        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail não cadastrado.']);
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail ou senha incorretos.']);
         exit;
     }
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verifica a senha
     if (!password_verify($senha, $usuario['senha'])) {
-        echo json_encode(['status' => 'erro', 'mensagem' => 'Senha incorreta.']);
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail ou senha incorretos.']);
         exit;
     }
 
