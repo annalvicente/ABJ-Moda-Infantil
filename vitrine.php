@@ -1,0 +1,525 @@
+<?php
+// ============================================================
+// CONEXÃO COM A BASE DE DADOS
+// (Ajuste o caminho/nome do arquivo de conexão se necessário)
+// ============================================================
+require_once 'conexão.php';
+
+// Mapeamento de cores/classes para cada categoria do banco
+$categorias_config = [
+    1 => ['nome' => 'meninas',   'classe' => 'vitrine-meninas'],
+    2 => ['nome' => 'meninos',   'classe' => 'vitrine-meninos'],
+    3 => ['nome' => 'bebês',     'classe' => 'vitrine-bebes'],
+    4 => ['nome' => 'fantasias', 'classe' => 'vitrine-fantasias'],
+    5 => ['nome' => 'pijamas',   'classe' => 'vitrine-pijamas']
+];
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine de Produtos - Loja Infantil</title>
+    
+    <!-- Fontes e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Seu CSS externo -->
+    <link rel="stylesheet" href="vitrine.css">
+</head>
+<body>
+    <!-- Botão Voltar ao Topo -->
+    <button id="topoBtn" title="Voltar ao Topo">↑</button>
+
+    <header>
+        <div class="nav-container">
+            <nav class="menu-links">
+                <a href="#meninas" class="menu-links-meninas">meninas</a>
+                <a href="#meninos" class="menu-links-meninos">meninos</a>
+                <a href="#bebes" class="menu-links-bebes">bebês</a>
+            </nav>
+
+            <a href="index.php" class="logo">
+                <img src="img/logoabj.webp" alt="Balão Logo" class="logo-normal">
+                <img src="img/logo-deitada.webp" alt="Logo deitada" class="logo-deitada"> 
+            </a>
+
+            <div class="user-actions">
+                <?php if (isset($_SESSION['usuario_nome'])): 
+        // Pega a primeira letra do nome e coloca em maiúscula
+        $inicial = strtoupper(substr($_SESSION['usuario_nome'], 0, 1)); 
+        ?>
+
+        <script>
+            function toggleDropdown() {
+                const dropdown = document.querySelector('.dropdown-menu');
+                if (dropdown) {
+                    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+                }
+            }
+        </script>
+        
+        <div class="user-dropdown">
+            <div class="user-avatar" title="Minha Conta" onclick="toggleDropdown()">
+                <?php echo $inicial; ?>
+            </div>
+            <div class="dropdown-menu">
+    <span class="welcome-text">Olá, <?php echo explode(' ', $_SESSION['usuario_nome'])[0]; ?>!</span>
+    
+    <span class="user-type-badge <?php echo $_SESSION['tipo']; ?>">
+        <?php echo ($_SESSION['tipo'] === 'vendedor') ? 'Vendedor' : 'Cliente'; ?>
+    </span>
+
+    <!-- Nova opção visível APENAS para vendedores/funcionários -->
+    <?php if ($_SESSION['tipo'] === 'vendedor'): ?>
+        <a href="tfuncionarios.php" class="dropdown-item btn-estoque">
+            <i class="fa-solid fa-boxes-stacked"></i> Voltar ao Estoque
+        </a>
+    <?php endif; ?>
+
+    <hr class="dropdown-divider">
+    
+
+    <a href="javascript:void(0)" onclick="confirmarSair('logout.php')" class="dropdown-item btn-sair">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair
+    </a>
+</div>
+        </div>
+
+        <?php else: ?>
+        <a href="javascript:void(0)" onclick="openModal('login')" title="Entrar ou Cadastrar">
+            <i class="fa-regular fa-user"></i>
+        </a>
+    <?php endif; ?>
+
+            <a href="javascript:void(0);" onclick="interacaoCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+
+                <div onclick="toggleFavoritos()" title="Meus Favoritos">
+                    <i class="fa-regular fa-heart"></i>
+                </div>
+
+                <a href="#contato" title="Chat">
+                    <i class="fa-regular fa-comment"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <script>        //BOTÃO DE VOLTAR AO INICIO
+             // Mostra o botão quando rolar 200px
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        topoBtn.style.display = "block";
+    } else {
+        topoBtn.style.display = "none";
+     }
+  };
+
+// Quando clicar, faz rolar para o topo
+    topoBtn.addEventListener("click", () => {
+      window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+        </script>
+
+    <!-- ============================================================ -->
+    <!-- VITRINE GERAL DE PRODUTOS                                    -->
+    <!-- ============================================================ -->
+    <main class="vitrine-container">
+
+        <?php 
+        // 1. Busca todas as categorias no Banco de Dados
+        $sql_cat = "SELECT * FROM categoria ORDER BY id ASC";
+        $res_cat = $conn->query($sql_cat);
+
+        if ($res_cat && $res_cat->num_rows > 0):
+            while ($cat = $res_cat->fetch_assoc()):
+                $id_cat = $cat['id'];
+                
+                // Configura nome e classe da categoria
+                $nome_categoria = isset($categorias_config[$id_cat]) ? $categorias_config[$id_cat]['nome'] : strtolower($cat['nome']);
+                $classe_css    = isset($categorias_config[$id_cat]) ? $categorias_config[$id_cat]['classe'] : 'vitrine-secao';
+
+                // 2. Busca TODOS os produtos em estoque desta categoria
+                $sql_prod = "SELECT id, nome, preco, imagem, imagem_corpo FROM produtos 
+                             WHERE id_categoria = $id_cat AND quantidade_estoque > 0 
+                             ORDER BY id DESC";
+                $res_prod = $conn->query($sql_prod);
+
+                // Só exibe a seção se houver produtos
+                if ($res_prod && $res_prod->num_rows > 0):
+        ?>
+
+            <section id="<?php echo strtolower($nome_categoria); ?>" class="vitrine-secao <?php echo $classe_css; ?>">
+    <h2 class="vitrine-titulo"><?php echo strtolower($nome_categoria); ?></h2>
+    
+    <div class="produtos-grid">
+        <?php while ($produto = $res_prod->fetch_assoc()): ?>
+            <div class="produto-card">
+                
+                <!-- Imagens com a troca no hover -->
+                <div class="produto-imagem-box">
+                    <img src="img/<?php echo $produto['imagem_corpo']; ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>" class="img-corpo">
+                    <img src="img/<?php echo $produto['imagem']; ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>" class="img-peca">
+                </div>
+                
+                <!-- Informações do produto -->
+                <div class="produto-info produto-detalhes">
+                    <h3 class="produto-nome nome"><?php echo htmlspecialchars($produto['nome']); ?></h3>
+                    <p class="produto-preco preco">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+                    
+                    <div class="produto-botoes">
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho(<?php echo $produto['id']; ?>, '<?php echo addslashes($produto['nome']); ?>', <?php echo $produto['preco']; ?>, '<?php echo $produto['imagem']; ?>')">
+                            <i class="fa-solid fa-cart-shopping"></i> Adicionar
+                        </button>
+                        
+                        <button class="btn-favorito" onclick="adicionarAoFavorito(<?php echo $produto['id']; ?>)">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        <?php endwhile; ?>
+    </div>
+</section>
+
+        <?php 
+                endif;
+            endwhile;
+        else:
+        ?>
+            <p class="vitrine-aviso">Nenhum produto cadastrado no momento.</p>
+        <?php endif; ?>
+
+    </main>
+
+    <footer id="contato" class="footer-container">
+        
+        <div class="footer-ecommerce-body">
+            <div class="ecommerce-wrapper">
+                
+                <div class="ecom-col">
+                    <h4>Pague com</h4>
+                    <hr class="title-line">
+                    <div class="payment-brands">
+                        <i class="fa-brands fa-cc-visa" title="Visa"></i>
+                        <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                        <i class="fa-brands fa-cc-diners-club" title="Diners"></i>
+                        <i class="fa-brands fa-cc-amex" title="Amex"></i>
+                        <i class="fa-solid fa-pix" title="Pix"></i>
+                    </div>
+                    <div class="boleto-box-clean">
+                        <i class="fa-solid fa-barcode"></i>
+                        <span>Boleto Bancário</span>
+                    </div>
+                </div>
+
+                <div class="ecom-col">
+                    <h4>Selos</h4>
+                    <hr class="title-line">
+                    <div class="security-flex-row">
+                        <div class="badge-item ssl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <strong>Site Protegido</strong>
+                                <span>Certificado SSL</span>
+                            </div>
+                        </div>
+                        <div class="badge-item google">
+                            <i class="fa-brands fa-google"></i>
+                            <div>
+                                <strong>Safe Browsing</strong>
+                                <span>Google</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ecom-col">
+                    <h4>Atendimento</h4>
+                    <hr class="title-line">
+                    <ul class="info-list">
+                        <li><i class="fa-regular fa-clock"></i> Segunda a Sexta das 9h as 18h</li>
+                        <li><i class="fa-solid fa-phone"></i> (12) 98171-14147</li>
+                        <li><i class="fa-regular fa-envelope"></i> ABJmodainfantil@gmail.com</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Av. Ficticia, 123</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-dark-bar">
+            <div class="dark-bar-wrapper">
+                <p>&copy; <?php echo date('Y'); ?> <a>ABJ MODA INFANTIL</a>. Todos os Direitos Reservados.</p>
+                <p class="dev-by">Desenvolvido por <strong>Anna Lívia Rodrigues | Bryan Oliveira | J. Pedro Dario | J. Pedro Felix</strong></p>
+            </div>
+        </div>
+
+    </footer>
+
+    <!-- ========================================================
+         MODAL DE AUTH (Login / Cadastro)
+    ========================================================= -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+
+            <div class="auth-tabs">
+                <button id="tab-login" class="tab-btn active" onclick="switchAuthMode('login')">Acessar Conta</button>
+                <button id="tab-cadastro" class="tab-btn" onclick="switchAuthMode('cadastro')">Criar Conta</button>
+            </div>
+
+            <div class="user-type-toggle">
+                <button type="button" class="type-btn active" id="btn-tipo-cliente" onclick="setUserType('cliente')">Sou
+                    Cliente</button>
+                <button type="button" class="type-btn" id="btn-tipo-vendedor" onclick="setUserType('vendedor')">Sou
+                    Vendedor</button>
+            </div>
+<!-- FORM DE LOGIN -->
+<form id="form-login" class="auth-form" onsubmit="enviarLogin(event)">
+    <input type="hidden" name="tipo_usuario" class="input-tipo-usuario" value="cliente">
+
+    <div class="input-group" id="grp-login-email">
+        <label>E-mail</label>
+        <input type="email" name="email" id="login-email" placeholder="seu@email.com" required>
+        <span class="erro-campo">Informe um e-mail válido.</span>
+    </div>
+
+    <div class="input-group" id="grp-login-senha">
+        <label>Senha</label>
+        <div class="password-wrapper">
+            <input type="password" name="senha" id="login-senha" placeholder="******" required>
+            <button type="button" class="btn-toggle-senha" onclick="toggleMostrarSenha('login-senha', this)" aria-label="Mostrar senha">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        <span class="erro-campo">A senha é obrigatória.</span>
+    </div>
+
+    <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-login">ENTRAR COMO CLIENTE</button>
+</form>
+
+<!-- FORM DE CADASTRO -->
+<form id="form-cadastro" class="auth-form" style="display: none;" onsubmit="enviarCadastro(event)">
+    <input type="hidden" name="tipo_form" class="input-tipo-usuario" value="cliente">
+
+    <div class="input-group" id="grp-cad-nome">
+        <label>Nome Completo</label>
+        <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" required>
+        <span class="erro-campo">Nome é obrigatório.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-email">
+        <label>E-mail</label>
+        <input type="email" name="email" id="cad-email" placeholder="seu@email.com" required>
+        <span class="erro-campo">Informe um e-mail válido.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-cpf">
+        <label>CPF</label>
+        <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+        <span class="erro-campo">CPF inválido (formato: 000.000.000-00).</span>
+    </div>
+
+    <div class="input-group">
+        <label>Data de Nascimento</label>
+        <input type="date" name="data_nascimento" id="cad-nasc">
+    </div>
+
+    <div class="input-group" id="grp-cad-tel">
+        <label>Telefone</label>
+        <input type="text" name="telefone" id="cad-tel" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric">
+        <span class="erro-campo">Telefone inválido.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-senha">
+        <label>Senha</label>
+        <div class="password-wrapper">
+            <input type="password" name="senha" id="cad-senha" placeholder="Mínimo 6 caracteres" required minlength="6">
+            <button type="button" class="btn-toggle-senha" onclick="toggleMostrarSenha('cad-senha', this)" aria-label="Mostrar senha">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        <span class="erro-campo">A senha deve ter ao menos 6 caracteres.</span>
+    </div>
+
+    <div class="input-group" id="grp-cad-chave" style="display: none;">
+        <label>Código de Autorização da Loja</label>
+        <div class="password-wrapper">
+            <input type="password" name="chave_loja" id="cad-chave" placeholder="Digite a chave da loja">
+            <button type="button" class="btn-toggle-senha" onclick="toggleMostrarSenha('cad-chave', this)" aria-label="Mostrar senha">
+                <svg class="icon-eye" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        <span class="erro-campo">Código de acesso obrigatório para vendedores.</span>
+    </div>
+
+    <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR CLIENTE</button>
+</form>
+
+<!-- ========================================================
+     MODAL DE FEEDBACK GENERALIZADO (ESTÁGIO PADRONIZADO)
+========================================================= -->
+<div id="authModal" class="modal-overlay">
+    <div class="modal-box">
+    </div>
+</div>
+
+<div id="feedbackModal" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-sucesso" id="feedback-icone-container">
+            <span id="feedback-icone"><i class="fa-solid fa-check"></i></span>
+        </div>
+        <h2 id="feedback-titulo">Sucesso!</h2>
+        <p id="feedback-msg">Operação realizada com sucesso.</p>
+        <button type="button" class="btn-ok-sucesso" id="btn-feedback-ok" onclick="fecharFeedback()">OK</button>
+    </div>
+</div>
+
+    <!-- Carrinho Lateral -->
+    <div id="x" class="cart-container">
+        <div class="cart-header">
+            <h3>Carrinho</h3>
+            <button onclick="fecharAll()" class="close-btn">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items-list"></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cart-total-value">R$ 0,00</span></div>
+            <button class="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <!-- Favoritos Lateral -->
+    <div id="favoritos-container" class="fav-container">
+        <div class="fav-header">
+            <div class="fav-header-title">
+                <h3>Favoritos</h3>
+            </div>
+           <button class="close-btn" onclick="fecharFavoritosEFundo()">&times;</button>
+        </div>
+        <div class="fav-content">
+            <div id="lista-favoritos" class="fav-items">
+                <p>Sua lista está vazia.</p>
+            </div>
+        </div>
+        <div class="fav-footer">
+            <button class="btn-fav-carrinho" onclick="adicionarFavoritosAoCarrinho()">
+                Adicionar ao carrinho
+            </button>
+        </div>
+    </div>
+
+    <div id="overlay" ></div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE SAIR (INDEX.PHP) -->
+<div id="modalSair" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-sair">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+        <h2>Encerrar Sessão</h2>
+        <p>Tem certeza que deseja sair da sua conta?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalSair()">Cancelar</button>
+            <a id="btnConfirmarSair" href="logout.php" class="btn-confirmar-sair">Sim, sair</a>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE REMOÇÃO DO CARRINHO -->
+<div id="modalRemoverCarrinho" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-excluir">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h2>Remover Produto</h2>
+        <p>Você deseja mesmo tirar este produto do carrinho?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalRemoverCarrinho()">Cancelar</button>
+            <button type="button" id="btnConfirmarRemoverCarrinho" class="btn-confirmar-excluir">Sim, remover</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE REMOÇÃO DOS FAVORITOS -->
+<div id="modalRemoverFavorito" class="modal-aviso">
+    <div class="modal-aviso-card">
+        <div class="icone-circulo-excluir">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h2>Remover Favorito</h2>
+        <p>Você deseja mesmo tirar este produto da sua lista de favoritos?</p>
+        
+        <div class="modal-botoes-row">
+            <button type="button" class="btn-cancelar-confirma" onclick="fecharModalRemoverFavorito()">Cancelar</button>
+            <button type="button" class="btn-confirmar-excluir" onclick="confirmarRemocaoFavorito()">Sim, remover</button>
+        </div>
+    </div>
+</div>
+
+<!-- BANNER DE COOKIES -->
+<div id="cookie-banner" class="cookie-banner" style="display: none;">
+    <strong class="cookie-titulo">Aviso sobre cookies!</strong>
+    <p class="cookie-texto">Usamos cookies para que o nosso site funcione melhor para você e para personalizar sua jornada por aqui. Tudo bem para você?</p>
+    <div class="cookie-buttons">
+        <button type="button" class="btn-cookie-aceitar" onclick="aceitarCookies('aceito')">Aceitar Todos</button>
+        <button type="button" class="btn-cookie-recusar" onclick="aceitarCookies('rejeitado')">Rejeitar Todos</button>
+    </div>
+</div>
+
+    <script src="carrinho.js"></script>
+    <script src="loja.js"></script>
+    <script src="favoritos.js"></script>
+    <script src="login.js"></script>
+
+    <script>
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('login') || urlParams.has('cadastro')) {
+            const modo = urlParams.has('cadastro') ? 'cadastro' : 'login';
+            if (typeof openModal === 'function') {
+                openModal(modo);
+            } else {
+                const modal = document.getElementById('authModal');
+                if(modal) modal.style.display = 'flex';
+            }
+        }
+    });
+    </script>
+
+    <script>
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    
+    // Se rolar mais de 20px da tela, fica reto
+    if (window.scrollY > 20) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+</script>
+
+</body>
+
+</html>
