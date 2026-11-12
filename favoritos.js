@@ -14,6 +14,14 @@ function toggleFavoritos() {
     const favoritos = document.getElementById("favoritos-container");
     const overlay = document.getElementById("overlay") || document.querySelector('.carrinho-overlay');
 
+    if (!favoritos) return;
+
+    const estaAberto = favoritos.style.right === "0px" || favoritos.classList.contains("open");
+    if (estaAberto) {
+        fecharFavoritosEFundo();
+        return;
+    }
+
     // 1. Verifica no PHP se o utilizador está logado antes de abrir
     fetch('acoesfav.php?acao=listar')
         .then(async response => {
@@ -21,40 +29,34 @@ function toggleFavoritos() {
                 dispararAvisoLoginFavoritos();
                 return null;
             }
+            const texto = await response.text();
             try {
-                return await response.json();
+                return JSON.parse(texto);
             } catch (e) {
-                return null;
+                console.warn("Resposta não-JSON de acoesfav.php:", texto);
+                return { sucesso: true };
             }
         })
         .then(dados => {
             if (!dados) return;
 
-            // Se o JSON indicar falta de sessão/login
             if (dados.sucesso === false || dados.status === 'deslogado' || dados.erro === 'nao_logado') {
                 dispararAvisoLoginFavoritos();
                 return;
             }
 
-            // 2. Se estiver logado, alterna a visibilidade da gaveta
-            if (favoritos) {
-                // Fecha o carrinho se estiver aberto
-                if (typeof fecharAll === 'function') fecharAll();
+            // 2. Fecha o carrinho se estiver aberto e abre os favoritos
+            if (typeof fecharAll === 'function') fecharAll();
 
-                const estaAberto = favoritos.style.right === "0px" || favoritos.classList.contains("open");
-
-                if (estaAberto) {
-                    fecharFavoritosEFundo();
-                } else {
-                    favoritos.style.right = "0px";
-                    favoritos.classList.add("open", "active");
-                    if (overlay) overlay.style.display = 'block';
-                    document.body.style.overflow = "hidden";
-                    
-                    // Carrega a lista atualizada
-                    carregarFavoritos();
-                }
+            favoritos.style.right = "0px";
+            favoritos.classList.add("open", "active");
+            if (overlay) {
+                overlay.classList.add("active");
+                overlay.style.display = 'block';
             }
+            document.body.style.overflow = "hidden";
+
+            carregarFavoritos();
         })
         .catch(err => {
             console.error("Erro ao verificar favoritos:", err);
@@ -62,20 +64,13 @@ function toggleFavoritos() {
         });
 }
 
-// Redireciona a chamada antiga de abrirFavoritos para a função de verificação
 function abrirFavoritos() {
     toggleFavoritos();
 }
 
-// Função auxiliar para exibir o feedback e abrir a modal de login
 function dispararAvisoLoginFavoritos() {
     if (typeof mostrarFeedback === 'function') {
         mostrarFeedback('erro', 'Atenção!', 'Você precisa fazer login para acessar seus favoritos.', null);
-        setTimeout(() => { 
-            if (typeof openModal === 'function') openModal('login'); 
-        }, 1200);
-    } else if (typeof exibirFeedback === 'function') {
-        exibirFeedback('Atenção!', 'Você precisa fazer login para acessar seus favoritos!', 'erro');
         setTimeout(() => { 
             if (typeof openModal === 'function') openModal('login'); 
         }, 1200);
@@ -102,7 +97,7 @@ function fecharFavoritosEFundo() {
         conteudo.classList.remove("blur-active");
     }
     
-    document.body.style.overflow = '';
+    document.body.style.overflow = 'auto';
 }
 
 // ============================================================
@@ -118,7 +113,6 @@ async function adicionarAoFavorito(idProduto) {
             body: formData
         });
         
-        // Se o utilizador não estiver logado
         if (resposta.status === 401) {
             dispararAvisoLoginFavoritos();
             return;
@@ -134,10 +128,11 @@ async function adicionarAoFavorito(idProduto) {
         }
 
         if (typeof mostrarFeedback === 'function') {
-            mostrarFeedback('sucesso', 'Favoritado! ❤️', resultado.mensagem || 'Produto adicionado aos favoritos!');
+            mostrarFeedback('sucesso', 'Favoritado!', resultado.mensagem || 'Produto adicionado aos favoritos!');
         }
 
         carregarFavoritos();
+        abrirFavoritosEfetivo(); // <-- Abre a gaveta de favoritos em vez do carrinho
 
     } catch (erro) {
         console.error("Erro ao favoritar:", erro);
@@ -297,4 +292,21 @@ async function adicionarFavoritosAoCarrinho() {
             mostrarFeedback('sucesso', 'Sucesso!', 'Item(ns) adicionado(s) ao carrinho com sucesso!');
         }
     }
+}
+
+function abrirFavoritosEfetivo() {
+    const favoritos = document.getElementById("favoritos-container");
+    const overlay = document.getElementById("overlay") || document.querySelector('.carrinho-overlay');
+
+    if (typeof fecharAll === 'function') fecharAll();
+
+    if (favoritos) {
+        favoritos.style.right = "0px";
+        favoritos.classList.add("open", "active");
+    }
+    if (overlay) {
+        overlay.classList.add("active");
+        overlay.style.display = 'block';
+    }
+    document.body.style.overflow = "hidden";
 }

@@ -105,27 +105,36 @@ function fecharTudo() {
 
 window.onload = renderizarLoja;
 
-    function confirmarSair(urlLogout = 'logout.php') {
-        const modal = document.getElementById('modalSair');
-        const btnConfirmar = document.getElementById('btnConfirmarSair');
-        const dropdown = document.querySelector('.dropdown-menu');
-        
-        // Fecha o menu dropdown ao abrir o modal
-        if (dropdown) dropdown.style.display = 'none';
-        
-        if (btnConfirmar) btnConfirmar.href = urlLogout;
-        if (modal) modal.style.display = 'flex';
+   function confirmarSair(urlLogout = 'logout.php') {
+    const modal = document.getElementById('modalSair');
+    const btnConfirmar = document.getElementById('btnConfirmarSair');
+    const dropdown = document.querySelector('.dropdown-menu');
+    
+    // Fecha o menu dropdown ao abrir o modal
+    if (dropdown) dropdown.style.display = 'none';
+    
+    if (btnConfirmar) btnConfirmar.href = urlLogout;
+    
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.add('aberto');
+        document.body.style.overflow = 'hidden';
     }
+}
 
-    function fecharModalSair() {
-        const modal = document.getElementById('modalSair');
-        if (modal) modal.style.display = 'none';
+function fecharModalSair() {
+    const modal = document.getElementById('modalSair');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('aberto');
+        document.body.style.overflow = 'auto';
     }
+}
 
-    // Fecha o modal se clicar fora da caixa branca
-    window.addEventListener('click', function(event) {
-        const modalSair = document.getElementById('modalSair');
-        if (event.target === modalSair) {
-            fecharModalSair();
-        }
-    });
+// Fecha o modal se clicar fora da caixa branca
+window.addEventListener('click', function(event) {
+    const modalSair = document.getElementById('modalSair');
+    if (event.target === modalSair) {
+        fecharModalSair();
+    }
+});

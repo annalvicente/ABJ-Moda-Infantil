@@ -96,9 +96,7 @@ header.scrolled {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Alinha tudo horizontalmente no centro */
     gap: 20px;
-    /* Espaço entre os blocos */
 }
 
 /* LOGO */
@@ -108,7 +106,6 @@ header.scrolled {
     align-items: center;
     text-decoration: none;
     flex-shrink: 0;
-    /* Garante que a logo não amasse */
     transition: 0.2s;
 }
 
@@ -181,6 +178,7 @@ header.scrolled .logo .logo-deitada {
     gap: 20px;
     font-weight: bold;
     font-size: 18px;
+    flex: 1;
 }
 
 .menu-links-meninas {
@@ -195,6 +193,16 @@ header.scrolled .logo .logo-deitada {
 
 .menu-links-bebes {
     color: #1ab44d;
+    transition: 0.3s;
+}
+
+.menu-links-pijamas {
+    color: #9a4fdf;
+    transition: 0.3s;
+}
+
+.menu-links-fantasias {
+    color: #e07f39;
     transition: 0.3s;
 }
 
@@ -350,6 +358,8 @@ header.scrolled .logo .logo-deitada {
     gap: 20px;
     align-items: center;
     font-size: 1.3rem;
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .user-actions a {

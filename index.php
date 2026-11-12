@@ -81,9 +81,10 @@ $vitrines = [
     <hr class="dropdown-divider">
     
 
-    <a href="javascript:void(0)" onclick="confirmarSair('logout.php')" class="dropdown-item btn-sair">
-        <i class="fa-solid fa-right-from-bracket"></i> Sair
-    </a>
+<a href="javascript:void(0)" onclick="confirmarSair('logout.php')" class="dropdown-item btn-sair">
+    <i class="fa-solid fa-right-from-bracket"></i> Sair
+</a>
+
 </div>
         </div>
 
@@ -322,7 +323,7 @@ $vitrines = [
                     </div>
 
                     <div class="ver-mais-container">
-        <a href="vitrine.php#bebes" class="btn-ver-mais">Ver mais peças</a>
+        <a href="vitrine.php#bebês" class="btn-ver-mais">Ver mais peças</a>
 
                 </section>
             <?php endif; ?>
@@ -504,16 +505,14 @@ $vitrines = [
         <span class="erro-campo">Código de acesso obrigatório para vendedores.</span>
     </div>
 
-    <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR CLIENTE</button>
+   <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR CLIENTE</button>
 </form>
+        </div> <!-- Fecha .modal-box do authModal -->
+    </div> <!-- Fecha #authModal -->
 
 <!-- ========================================================
      MODAL DE FEEDBACK GENERALIZADO (ESTÁGIO PADRONIZADO)
 ========================================================= -->
-<div id="authModal" class="modal-overlay">
-    <div class="modal-box">
-    </div>
-</div>
 
 <div id="feedbackModal" class="modal-aviso">
     <div class="modal-aviso-card">
@@ -530,12 +529,12 @@ $vitrines = [
     <div id="x" class="cart-container">
         <div class="cart-header">
             <h3>Carrinho</h3>
-            <button onclick="fecharAll()" class="close-btn">&times;</button>
+            <button type="button" onclick="fecharAll()" class="close-btn">&times;</button>
         </div>
         <div class="cart-items" id="cart-items-list"></div>
         <div class="cart-footer">
             <div class="cart-total"><span>Total:</span><span id="cart-total-value">R$ 0,00</span></div>
-            <button class="checkout-btn">Finalizar Compra</button>
+            <button type="button" class="checkout-btn">Finalizar Compra</button>
         </div>
     </div>
 
@@ -545,7 +544,7 @@ $vitrines = [
             <div class="fav-header-title">
                 <h3>Favoritos</h3>
             </div>
-           <button class="close-btn" onclick="fecharFavoritosEFundo()">&times;</button>
+            <button type="button" class="close-btn" onclick="fecharFavoritosEFundo()">&times;</button>
         </div>
         <div class="fav-content">
             <div id="lista-favoritos" class="fav-items">
@@ -553,7 +552,7 @@ $vitrines = [
             </div>
         </div>
         <div class="fav-footer">
-            <button class="btn-fav-carrinho" onclick="adicionarFavoritosAoCarrinho()">
+            <button type="button" class="btn-fav-carrinho" onclick="adicionarFavoritosAoCarrinho()">
                 Adicionar ao carrinho
             </button>
         </div>

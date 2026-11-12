@@ -1,9 +1,7 @@
 <?php
-// ============================================================
-// CONEXÃO COM A BASE DE DADOS
-// (Ajuste o caminho/nome do arquivo de conexão se necessário)
-// ============================================================
+
 require_once 'conexão.php';
+session_start();
 
 // Mapeamento de cores/classes para cada categoria do banco
 $categorias_config = [
@@ -24,6 +22,7 @@ $categorias_config = [
     <!-- Fontes e Ícones -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="img/logoabj.webp">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -39,7 +38,9 @@ $categorias_config = [
             <nav class="menu-links">
                 <a href="#meninas" class="menu-links-meninas">meninas</a>
                 <a href="#meninos" class="menu-links-meninos">meninos</a>
-                <a href="#bebes" class="menu-links-bebes">bebês</a>
+                <a href="#bebês" class="menu-links-bebes">bebês</a>
+                <a href="#pijamas" class="menu-links-pijamas">pijamas</a>
+                <a href="#fantasias" class="menu-links-fantasias">fantasias</a>
             </nav>
 
             <a href="index.php" class="logo">
@@ -84,8 +85,8 @@ $categorias_config = [
     
 
     <a href="javascript:void(0)" onclick="confirmarSair('logout.php')" class="dropdown-item btn-sair">
-        <i class="fa-solid fa-right-from-bracket"></i> Sair
-    </a>
+    <i class="fa-solid fa-right-from-bracket"></i> Sair
+</a>
 </div>
         </div>
 
@@ -374,15 +375,12 @@ $categorias_config = [
 
     <button type="submit" class="btn-submit btn-cliente-color" id="btn-submit-cadastro">CADASTRAR CLIENTE</button>
 </form>
+        </div> <!-- Fecha .modal-box do authModal -->
+    </div> <!-- Fecha #authModal -->
 
 <!-- ========================================================
      MODAL DE FEEDBACK GENERALIZADO (ESTÁGIO PADRONIZADO)
 ========================================================= -->
-<div id="authModal" class="modal-overlay">
-    <div class="modal-box">
-    </div>
-</div>
-
 <div id="feedbackModal" class="modal-aviso">
     <div class="modal-aviso-card">
         <div class="icone-circulo-sucesso" id="feedback-icone-container">

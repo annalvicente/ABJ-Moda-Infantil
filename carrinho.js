@@ -266,20 +266,60 @@ function atualizarInterface() {
 // =========================================================================
 // 3. CONTROLE DA GAVETA LATERAL DO CARRINHO
 // =========================================================================
-// Função de abertura/interação com o carrinho
+function abrirCarrinhoEfetivo() {
+    const carrinho = document.getElementById('x') || document.querySelector('.cart-container');
+    const overlay = document.getElementById('overlay') || document.querySelector('.carrinho-overlay');
+    const favoritos = document.getElementById('favoritos-container');
+
+    // Fecha favoritos se estiver aberto
+    if (favoritos) {
+        favoritos.classList.remove('open', 'active');
+        favoritos.style.right = '-450px';
+    }
+
+    // Fecha o modal de login se estiver aberto
+    const modalLogin = document.getElementById('authModal');
+    if (modalLogin) {
+        modalLogin.style.display = 'none';
+        modalLogin.classList.remove('aberto');
+    }
+
+    if (carrinho) {
+        carrinho.classList.add('open', 'active');
+        carrinho.style.right = '0px';
+        if (overlay) {
+            overlay.classList.add('active');
+            overlay.style.display = 'block';
+        }
+        document.body.style.overflow = 'hidden';
+    }
+}
+
 function interacaoCart() {
     const carrinho = document.getElementById('x') || document.querySelector('.cart-container');
     const overlay = document.getElementById('overlay') || document.querySelector('.carrinho-overlay');
 
-    // 1. Tenta verificar no PHP se o usuário está logado
+    if (!carrinho) {
+        console.error("Elemento do carrinho (#x ou .cart-container) não encontrado no HTML!");
+        return;
+    }
+
+    const estaAberto = carrinho.classList.contains('open') || carrinho.style.right === '0px';
+
+    // Se já estiver aberto, apenas fecha
+    if (estaAberto) {
+        fecharAll();
+        return;
+    }
+
+    // Verifica no PHP se o usuário está logado
     fetch('acoesfav.php?acao=listar_carrinho')
         .then(response => {
             if (response.status === 401) {
-                // Usuário NÃO está logado: exibe aviso e abre o modal de login em seguida
                 if (typeof mostrarFeedback === 'function') {
                     mostrarFeedback('erro', 'Atenção!', 'Você precisa fazer login para acessar seu carrinho.', null);
-                    setTimeout(() => { 
-                        if (typeof openModal === 'function') openModal('login'); 
+                    setTimeout(() => {
+                        if (typeof openModal === 'function') openModal('login');
                     }, 1500);
                 } else {
                     alert('Você precisa fazer login para acessar seu carrinho!');
@@ -287,42 +327,48 @@ function interacaoCart() {
                 }
                 return null;
             }
-            return response.json();
+            return response.text(); // Lê como texto primeiro para evitar quebra se houver warning do PHP
         })
-        .then(dados => {
-            if (!dados) return;
+        .then(texto => {
+            if (texto === null) return;
 
-            // 2. Se o usuário estiver logado, alterna a visibilidade da gaveta
-            if (carrinho) {
-                // Fecha o modal de login se estiver aberto
-                const modalLogin = document.getElementById('authModal');
-                if (modalLogin) {
-                    modalLogin.style.display = 'none';
-                    modalLogin.classList.remove('aberto');
+            try {
+                const dados = JSON.parse(texto);
+                // Atualiza os itens do carrinho antes de abrir
+                if (dados.status === 'sucesso' && Array.isArray(dados.itens)) {
+                    const lista = document.getElementById('cart-items-list');
+                    if (lista) {
+                        lista.innerHTML = '';
+                        totalCarrinho = 0;
+                        quantidadeItens = 0;
+
+                        if (dados.itens.length === 0) {
+                            lista.innerHTML = '<p id="empty-msg" style="text-align:center; margin-top:50px; color:#888;">Seu carrinho está vazio.</p>';
+                            atualizarInterface();
+                        } else {
+                            dados.itens.forEach(item => {
+                                const qtd = item.quantidade ? parseInt(item.quantidade) : 1;
+                                for (let i = 0; i < qtd; i++) {
+                                    desenharItemNaTela(item.id_produto, item.nome, item.preco, item.imagem);
+                                }
+                            });
+                        }
+                    }
                 }
-
-                const estaAberto = carrinho.classList.contains('open') || carrinho.style.right === '0px';
-
-                if (estaAberto) {
-                    carrinho.classList.remove('open', 'active');
-                    carrinho.style.right = '-450px';
-                    if (overlay) overlay.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                } else {
-                    carrinho.classList.add('open', 'active');
-                    carrinho.style.right = '0px';
-                    if (overlay) overlay.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                }
+            } catch (e) {
+                console.warn("Resposta não-JSON de acoesfav.php, abrindo gaveta mesmo assim:", texto);
             }
+
+            abrirCarrinhoEfetivo();
         })
         .catch(err => {
             console.error("Erro ao verificar carrinho:", err);
+            abrirCarrinhoEfetivo();
         });
 }
 
 function fecharAll() {
-    const carrinho = document.getElementById('x');
+    const carrinho = document.getElementById('x') || document.querySelector('.cart-container');
     const favoritos = document.getElementById('favoritos-container');
     const overlay = document.getElementById('overlay');
 
@@ -335,7 +381,16 @@ function fecharAll() {
         favoritos.style.right = '-450px';
     }
     if (overlay) {
+        overlay.classList.remove('active');
         overlay.style.display = 'none';
     }
     document.body.style.overflow = 'auto';
 }
+
+// Fecha o carrinho ao clicar no fundo escuro (overlay)
+document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.getElementById('overlay');
+    if (overlay) {
+        overlay.addEventListener('click', fecharAll);
+    }
+});
