@@ -1,7 +1,7 @@
 <?php
 session_start();
 // 1. Conexão com o banco de dados (Exemplo básico)
-include 'conexão.php';
+include 'conexao.php';
 
 // 2. Definição das categorias que você quer exibir (ID da categoria => Nome para o título)
 $vitrines = [
@@ -467,19 +467,20 @@ $vitrines = [
 
     <div class="input-group" id="grp-cad-cpf">
         <label>CPF</label>
-        <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
-        <span class="erro-campo">CPF inválido (formato: 000.000.000-00).</span>
+        <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" required>
+        <span class="erro-campo">Informe um CPF válido (000.000.000-00).</span>
     </div>
 
-    <div class="input-group">
+    <div class="input-group" id="grp-cad-nascimento">
         <label>Data de Nascimento</label>
-        <input type="date" name="data_nascimento" id="cad-nasc">
+        <input type="date" name="data_nascimento" id="cad-nascimento" required>
+        <span class="erro-campo">Informe sua data de nascimento.</span>
     </div>
 
-    <div class="input-group" id="grp-cad-tel">
+    <div class="input-group" id="grp-cad-telefone">
         <label>Telefone</label>
-        <input type="text" name="telefone" id="cad-tel" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric">
-        <span class="erro-campo">Telefone inválido.</span>
+        <input type="text" name="telefone" id="cad-telefone" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric" required>
+        <span class="erro-campo">Informe um telefone válido.</span>
     </div>
 
     <div class="input-group" id="grp-cad-senha">

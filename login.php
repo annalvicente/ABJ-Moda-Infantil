@@ -2,10 +2,10 @@
 session_start();
 
 // Inclui a conexão com o banco (com acento, igual ao arquivo real)
-if (!file_exists('conexão.php')) {
-    die("<script>alert('Erro crítico: conexão.php não encontrado!'); window.location='index.html';</script>");
+if (!file_exists('conexao.php')) {
+    die("<script>alert('Erro crítico: conexao.php não encontrado!'); window.location='index.php';</script>");
 }
-require_once 'conexão.php';
+require_once 'conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email        = trim($_POST['email'] ?? '');
@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Login OK — salva na sessão
+    $_SESSION['id_cliente']   = $usuario['id'];
     $_SESSION['cliente_id']   = $usuario['id'];
     $_SESSION['usuario_nome'] = $usuario['nome'];
     $_SESSION['tipo']         = $tipo_usuario;

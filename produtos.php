@@ -1,5 +1,11 @@
 <?php
-include 'conexão.php';
+session_start();
+include 'conexao.php';
+
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'vendedor') {
+    header("Location: index.php?login=1");
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: tfuncionarios.php");
@@ -15,7 +21,7 @@ $preco         = trim($_POST['preco'] ?? '');
 $tamanho       = trim($_POST['tamanho'] ?? '');
 $cor           = trim($_POST['cor'] ?? '');
 $quantidade    = trim($_POST['quantidade_estoque'] ?? '');
-$id_vendedor   = intval($_POST['id_vendedor'] ?? 1);
+$id_vendedor = intval($_SESSION['cliente_id']);
 
 // 2. Validação obrigatória no Back-end (todos exceto as 2 imagens)
 if (
@@ -69,8 +75,9 @@ if (empty($id)) {
 
 // 6. Execução e Redirecionamento
 if ($stmt->execute()) {
-    $acao = empty($id) ? 'cadastrado' : 'editado';
-    header("Location: tfuncionarios.php?sucesso=" . $acao);
+    // 1 = cadastrado com sucesso | 2 = alterado com sucesso
+    $codigo_sucesso = empty($id) ? '1' : '2';
+    header("Location: tfuncionarios.php?sucesso=" . $codigo_sucesso);
     exit();
 } else {
     echo "Erro ao salvar no banco de dados: " . $stmt->error;

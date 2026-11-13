@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 header('Content-Type: application/json; charset=utf-8');
 
 // 3. Conexão com o Banco de Dados
-include 'conexão.php';
+include 'conexao.php';
 
 if (!isset($conn) && isset($conexao)) {
     $conn = $conexao;

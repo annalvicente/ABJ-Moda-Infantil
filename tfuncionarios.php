@@ -1,9 +1,15 @@
 <?php
-include 'conexão.php';
+session_start();
+include 'conexao.php';
 
-// 1. Criamos uma simulação de vendedor logado (ID 1). 
-// No futuro, você vai pegar isso da $_SESSION['id_vendedor'] após o login do funcionário.
-$id_vendedor_logado = 1;    
+// 1. Verifica se está logado E se é vendedor. Se não for, expulsa para o login!
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'vendedor') {
+    header("Location: index.php?login=1");
+    exit();
+}
+
+// 2. Pega o ID real do vendedor que está logado na sessão (no lugar do "= 1" fixo)
+$id_vendedor_logado = $_SESSION['cliente_id'];  
 
 // Pega o termo digitado na busca (se houver)
 $busca = isset($_GET['busca']) ? $conn->real_escape_string($_GET['busca']) : '';

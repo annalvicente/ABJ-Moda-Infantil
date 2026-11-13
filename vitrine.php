@@ -1,6 +1,6 @@
 <?php
 
-require_once 'conexão.php';
+require_once 'conexao.php';
 session_start();
 
 // Mapeamento de cores/classes para cada categoria do banco
@@ -335,18 +335,19 @@ $categorias_config = [
 
     <div class="input-group" id="grp-cad-cpf">
         <label>CPF</label>
-        <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+        <input type="text" name="cpf" id="cad-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" required>
         <span class="erro-campo">CPF inválido (formato: 000.000.000-00).</span>
     </div>
 
-    <div class="input-group">
-        <label>Data de Nascimento</label>
-        <input type="date" name="data_nascimento" id="cad-nasc">
+    <div class="input-group" id="grp-cad-nascimento">
+        <label for="cad-nascimento">Data de Nascimento:</label>
+        <input type="date" id="cad-nascimento" name="data_nascimento" required>
+        <span class="erro-campo">Informe sua data de nascimento.</span>
     </div>
 
-    <div class="input-group" id="grp-cad-tel">
+    <div class="input-group" id="grp-cad-telefone">
         <label>Telefone</label>
-        <input type="text" name="telefone" id="cad-tel" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric">
+        <input type="text" name="telefone" id="cad-telefone" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric" required>
         <span class="erro-campo">Telefone inválido.</span>
     </div>
 
@@ -522,38 +523,5 @@ $categorias_config = [
     }
   });
 </script>
-
-<!--    RESPONSIVIDADE   -->
-<script>
-function toggleMobileMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const icon = document.querySelector('.mobile-menu-btn i');
-    menu.classList.toggle('active');
-    
-    // Alterna o ícone entre hambúrguer (☰) e X
-    if (menu.classList.contains('active')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-xmark');
-    } else {
-        icon.classList.remove('fa-xmark');
-        icon.classList.add('fa-bars');
-    }
-}
-
-// Fecha o menu mobile ao clicar em qualquer link de categoria
-document.querySelectorAll('.menu-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        const menu = document.getElementById('mobileMenu');
-        const icon = document.querySelector('.mobile-menu-btn i');
-        if (menu && menu.classList.contains('active')) {
-            menu.classList.remove('active');
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-        }
-    });
-});
-</script>
-
 </body>
-
 </html>

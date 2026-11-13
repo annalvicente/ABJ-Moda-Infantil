@@ -1,5 +1,3 @@
-// SENHA PARA VENDEDORES: VENDEDOR-SISTEMA
-
 // ============================================================
 //  ESTADO DO MODAL E VARIÁVEIS GLOBAIS
 // ============================================================
@@ -239,33 +237,62 @@ async function enviarCadastro(event) {
 
     limparErrosCampos();
 
-    const grpNome = document.getElementById('grp-cad-nome');
-    const grpEmail = document.getElementById('grp-cad-email');
-    const grpSenha = document.getElementById('grp-cad-senha');
-    const grpChave = document.getElementById('grp-cad-chave');
+    const grpNome       = document.getElementById('grp-cad-nome');
+    const grpEmail      = document.getElementById('grp-cad-email');
+    const grpCpf        = document.getElementById('grp-cad-cpf');
+    const grpNascimento = document.getElementById('grp-cad-nascimento');
+    const grpTelefone   = document.getElementById('grp-cad-telefone');
+    const grpSenha      = document.getElementById('grp-cad-senha');
+    const grpChave      = document.getElementById('grp-cad-chave');
 
-    const inputNome = document.getElementById('cad-nome');
-    const inputEmail = document.getElementById('cad-email');
-    const inputSenha = document.getElementById('cad-senha');
-    const inputChave = document.getElementById('cad-chave');
+    const inputNome       = document.getElementById('cad-nome');
+    const inputEmail      = document.getElementById('cad-email');
+    const inputCpf        = document.getElementById('cad-cpf');
+    const inputNascimento = document.getElementById('cad-nascimento');
+    const inputTelefone   = document.getElementById('cad-telefone');
+    const inputSenha      = document.getElementById('cad-senha');
+    const inputChave      = document.getElementById('cad-chave');
 
     let temErro = false;
 
+    // Nome obrigatório
     if (!inputNome || !inputNome.value.trim()) {
         if (grpNome) grpNome.classList.add('com-erro');
         temErro = true;
     }
 
+    // E-mail obrigatório
     if (!inputEmail || !inputEmail.value.trim() || !inputEmail.value.includes('@')) {
         if (grpEmail) grpEmail.classList.add('com-erro');
         temErro = true;
     }
 
+    // CPF obrigatório (11 dígitos)
+    if (!inputCpf || inputCpf.value.replace(/\D/g, '').length !== 11) {
+        if (grpCpf) grpCpf.classList.add('com-erro');
+        temErro = true;
+    }
+
+    // Data de nascimento obrigatória
+    if (!inputNascimento || !inputNascimento.value.trim()) {
+        if (grpNascimento) grpNascimento.classList.add('com-erro');
+        temErro = true;
+    }
+
+    // Telefone obrigatório (10 ou 11 dígitos)
+    const telDigitos = inputTelefone ? inputTelefone.value.replace(/\D/g, '') : '';
+    if (telDigitos.length < 10 || telDigitos.length > 11) {
+        if (grpTelefone) grpTelefone.classList.add('com-erro');
+        temErro = true;
+    }
+
+    // Senha obrigatória (mínimo 6 caracteres)
     if (!inputSenha || inputSenha.value.length < 6) {
         if (grpSenha) grpSenha.classList.add('com-erro');
         temErro = true;
     }
 
+    // Chave obrigatória apenas para vendedor
     if (currentType === 'vendedor') {
         if (!inputChave || !inputChave.value.trim()) {
             if (grpChave) grpChave.classList.add('com-erro');
@@ -343,7 +370,7 @@ function fecharTudo() {
 }
 
 // ============================================================
-//  GERENCIAMENTO DE COOKIES LGPD
+//  GERENCIAMENTO DE COOKIES LGPD & MÁSCARAS DE INPUT
 // ============================================================
 function setCookie(nome, valor, dias) {
     let expires = "";
@@ -368,11 +395,40 @@ function getCookie(nome) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Banner LGPD
     const statusCookie = getCookie('lgpd_aceite');
     const banner = document.getElementById('cookie-banner');
 
     if (!statusCookie && banner) {
         banner.style.display = 'flex';
+    }
+
+    // Máscara automática de CPF
+    const cpfEl = document.getElementById('cad-cpf');
+    if (cpfEl) {
+        cpfEl.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = v;
+        });
+    }
+
+    // Máscara automática de Telefone
+    const telEl = document.getElementById('cad-telefone');
+    if (telEl) {
+        telEl.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+            if (v.length > 10) {
+                v = v.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (v.length > 5) {
+                v = v.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            } else if (v.length > 2) {
+                v = v.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+            }
+            e.target.value = v;
+        });
     }
 });
 

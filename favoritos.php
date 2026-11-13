@@ -1,6 +1,6 @@
 <?php 
 // Conecta ao banco logo no início da página
-include 'conexão.php'; 
+include 'conexao.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

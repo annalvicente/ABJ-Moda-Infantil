@@ -35,7 +35,7 @@ function abrirFavoritosEfetivo() {
     const carrinho = document.getElementById('x') || document.querySelector('.cart-container');
     const overlay = document.getElementById("overlay") || document.querySelector('.carrinho-overlay');
 
-    // Fecha o carrinho se estiver aberto, sem apagar o overlay
+    // Fecha o carrinho completamente se estiver aberto
     if (carrinho) {
         carrinho.classList.remove('open', 'active', 'aberto');
         carrinho.style.right = '-100%';
@@ -114,22 +114,24 @@ async function adicionarAoFavorito(idProduto) {
                 return;
             }
             if (typeof mostrarFeedback === 'function') {
-                mostrarFeedback('erro', 'Ops!', resultado.mensagem || 'Não foi possível favoritar o produto.');
+                mostrarFeedback('erro', 'Ops!', resultado.mensagem || 'Não foi possível favoritar o produto.', null);
             }
             return;
         }
 
-        if (typeof mostrarFeedback === 'function') {
-            mostrarFeedback('sucesso', 'Favoritado!', resultado.mensagem || 'Produto adicionado aos favoritos!');
-        }
-
+        // Carrega a lista atualizada e abre a gaveta de FAVORITOS
         await carregarFavoritos();
-        abrirFavoritosEfetivo(); // Garante que abre APENAS favoritos
+        abrirFavoritosEfetivo();
+
+        // Exibe o aviso de sucesso sem redirecionar para lugar nenhum (redirectUrl = null)
+        if (typeof mostrarFeedback === 'function') {
+            mostrarFeedback('sucesso', 'Favoritado!', resultado.mensagem || 'Produto adicionado aos favoritos!', null);
+        }
 
     } catch (erro) {
         console.error("Erro ao favoritar:", erro);
         if (typeof mostrarFeedback === 'function') {
-            mostrarFeedback('erro', 'Ops!', 'Erro de conexão com o servidor.');
+            mostrarFeedback('erro', 'Ops!', 'Erro de conexão com o servidor.', null);
         }
     }
 }

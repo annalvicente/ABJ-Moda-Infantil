@@ -1,5 +1,11 @@
 <?php
-include 'conexão.php';
+session_start();
+include 'conexao.php';
+
+if (!isset($_SESSION['tipo']) || $_SESSION['tipo'] !== 'vendedor') {
+    header("Location: index.php?login=1");
+    exit();
+}
 
 $id = $_GET['id'];
 
