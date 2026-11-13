@@ -77,26 +77,38 @@ function fecharModalSucesso() {
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     
-    // A) Intercepta envio do formulário de produto para pedir confirmação se for EDIÇÃO
-    const formProduto = document.querySelector('#modalProduto form');
-    if (formProduto) {
-        formProduto.addEventListener('submit', function(e) {
-            const id = document.getElementById('prod_id').value;
-
-            // Se for alteração (id preenchido), exige confirmação
-            if (id && id.trim() !== '') {
+    // A) Valida campos obrigatórios e intercepta envio para pedir confirmação se for EDIÇÃO
+const formProduto = document.querySelector('#modalProduto form');
+if (formProduto) {
+    formProduto.addEventListener('submit', function(e) {
+        // Verifica se algum campo obrigatório foi preenchido apenas com espaços em branco
+        const camposObrigatorios = ['prod_nome', 'prod_categoria', 'prod_tamanho', 'prod_cor', 'preco', 'prod_qtd', 'prod_desc'];
+        for (const campoId of camposObrigatorios) {
+            const el = document.getElementById(campoId);
+            if (el && el.value.trim() === '') {
                 e.preventDefault();
-
-                const modalConf = document.getElementById('modalConfirmacao');
-                if (modalConf) modalConf.style.display = 'flex';
-
-                document.getElementById('btnConfirmarAlteracao').onclick = function() {
-                    fecharModalConfirmacao();
-                    formProduto.submit();
-                };
+                el.focus();
+                alert('Por favor, preencha todos os campos obrigatórios antes de salvar.');
+                return;
             }
-        });
-    }
+        }
+
+        const id = document.getElementById('prod_id').value;
+
+        // Se for alteração (id preenchido), exige confirmação
+        if (id && id.trim() !== '') {
+            e.preventDefault();
+
+            const modalConf = document.getElementById('modalConfirmacao');
+            if (modalConf) modalConf.style.display = 'flex';
+
+            document.getElementById('btnConfirmarAlteracao').onclick = function() {
+                fecharModalConfirmacao();
+                formProduto.submit();
+            };
+        }
+    });
+}
 
     // B) Captura parâmetro de SUCESSO na URL (?sucesso=1, 2 ou 3) e exibe o aviso
     const urlParams = new URLSearchParams(window.location.search);

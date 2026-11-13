@@ -34,11 +34,16 @@ $vitrines = [
 
     <header>
         <div class="nav-container">
-            <nav class="menu-links">
-                <a href="#meninas" class="menu-links-meninas">meninas</a>
-                <a href="#meninos" class="menu-links-meninos">meninos</a>
-                <a href="#bebes" class="menu-links-bebes">bebês</a>
-            </nav>
+            <!-- BOTÃO HAMBÚRGUER (Aparece apenas no celular/tablet) -->
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav class="menu-links" id="mobileMenu">
+            <a href="#meninas" class="menu-links-meninas">meninas</a>
+            <a href="#meninos" class="menu-links-meninos">meninos</a>
+            <a href="#bebes" class="menu-links-bebes">bebês</a>
+        </nav>
 
             <a href="index.php" class="logo">
                 <img src="img/logoabj.webp" alt="Balão Logo" class="logo-normal">

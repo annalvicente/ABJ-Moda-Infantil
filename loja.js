@@ -1,5 +1,4 @@
 // --- CONTROLE DO CARROSSEL --- // 
-
 function moverCarrossel(direcao) {
     const track = document.getElementById('track');
     if (!track) return;
@@ -8,116 +7,25 @@ function moverCarrossel(direcao) {
     if (cards.length === 0) return;
 
     if (direcao === 1) {
-        // Avançar: Aplica uma transição rápida e joga o primeiro card para o final
         track.appendChild(cards[0]);
     } else if (direcao === -1) {
-        // Voltar: Pega o último card e joga para o início da fila
         track.insertBefore(cards[cards.length - 1], cards[0]);
     }
 }
 
-// --- CONTROLE DA VITRINE ---
-
-function renderizarLoja() {
-    const vitrine = document.getElementById('vitrine-produtos');
-    if (!vitrine) return;
-    vitrine.innerHTML = '';
-
-    // Usa produtosLoja que vem do Carrinho.js
-    produtosLoja.forEach(p => {
-        vitrine.innerHTML += `
-            <div class="product-card">
-                <img src="${p.img}" alt="${p.nome}" style="width:100%">
-                <h3>${p.nome}</h3>
-                <p>R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}</p>
-                <button onclick="comprar(${p.id})">Adicionar</button>
-            </div>`;
-    });
-}
-
-function comprar(id) {
-    const p = produtosLoja.find(i => i.id === id);
-    if (p && p.estoque > 0) {
-        p.estoque--;
-        adicionarAoCarrinho(p.nome, p.preco);
-        localStorage.setItem('meusProdutos', JSON.stringify(produtosLoja));
-        renderizarLoja();
-    } else {
-        alert("Produto esgotado!");
-    }
-}
-
-// --- CONTROLE DE ABRIR/FECHAR (PAINÉIS) ---
-
-function toggleCart() {
-    const cart = document.getElementById('side-cart');
-    const overlay = document.getElementById('overlay');
-    
-    // Se já estiver aberto, fecha tudo. Se não, abre o carrinho.
-    if (cart && cart.classList.contains('open')) {
-        fecharTudo();
-    } else {
-        fecharTudo(); // Limpa outros painéis abertos primeiro
-        cart?.classList.add('open');
-        overlay?.classList.add('active');
-    }
-}
-
-function toggleFavoritos() {
-    const fav = document.getElementById('favoritos-container');
-    const overlay = document.getElementById('overlay');
-    
-    if (fav && fav.classList.contains('open')) {
-        fecharTudo();
-    } else {
-        fecharTudo();
-        fav?.classList.add('open');
-        overlay?.classList.add('active');
-    }
-}
-
-function toggleLogin() {
-    const login = document.getElementById('side-login');
-    const overlay = document.getElementById('overlay');
-    
-    // Verifica se o painel de login está visível (right: 0)
-    if (login && (login.style.right === '0px' || login.style.right === '0')) {
-        fecharTudo();
-    } else {
-        fecharTudo();
-        if (login) login.style.right = '0';
-        overlay?.classList.add('active');
-    }
-}
-
-function fecharTudo() {
-    // Fecha Carrinho e Favoritos (via classes CSS)
-    document.getElementById('side-cart')?.classList.remove('open');
-    document.getElementById('favoritos-container')?.classList.remove('open');
-    
-    // Fecha Login (via estilo inline conforme suas imagens)
-    const login = document.getElementById('side-login');
-    if (login) login.style.right = '-100%';
-    
-    // Remove o fundo escuro (Overlay)
-    document.getElementById('overlay')?.classList.remove('active');
-}
-
-window.onload = renderizarLoja;
-
-   function confirmarSair(urlLogout = 'logout.php') {
+// --- MODAL DE LOGOUT --- //
+function confirmarSair(urlLogout = 'logout.php') {
     const modal = document.getElementById('modalSair');
     const btnConfirmar = document.getElementById('btnConfirmarSair');
     const dropdown = document.querySelector('.dropdown-menu');
     
-    // Fecha o menu dropdown ao abrir o modal
     if (dropdown) dropdown.style.display = 'none';
-    
     if (btnConfirmar) btnConfirmar.href = urlLogout;
     
     if (modal) {
         modal.style.display = 'flex';
         modal.classList.add('aberto');
+        document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
     }
 }
@@ -127,14 +35,49 @@ function fecharModalSair() {
     if (modal) {
         modal.style.display = 'none';
         modal.classList.remove('aberto');
-        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
     }
 }
 
-// Fecha o modal se clicar fora da caixa branca
 window.addEventListener('click', function(event) {
     const modalSair = document.getElementById('modalSair');
     if (event.target === modalSair) {
         fecharModalSair();
     }
+});
+
+// --- MENU HAMBÚRGUER RESPONSIVO --- //
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu') || document.querySelector('.menu-links');
+    const icon = document.querySelector('.mobile-menu-btn i');
+    if (!menu) return;
+
+    menu.classList.toggle('active');
+    
+    if (icon) {
+        if (menu.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+        } else {
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.menu-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            const menu = document.getElementById('mobileMenu') || document.querySelector('.menu-links');
+            const icon = document.querySelector('.mobile-menu-btn i');
+            if (menu && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                if (icon) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    });
 });

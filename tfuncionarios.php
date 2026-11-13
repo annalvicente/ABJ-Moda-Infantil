@@ -94,7 +94,7 @@ if ($resultado_categorias) {
             <input 
                 type="text" 
                 name="busca" 
-                placeholder="Pesquisar por roupa, cor ou categoria..." 
+                placeholder="Pesquisar por roupa ou categoria." 
                 value="<?php echo isset($_GET['busca']) ? htmlspecialchars($_GET['busca']) : ''; ?>"
             >
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -108,73 +108,76 @@ if ($resultado_categorias) {
         </button>
     </div>
         
-    <table class="tabela-estilizada">   
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Tamanho</th>
-                <th>Cor</th>
-                <th>Qtd.estoque</th>
-                <th>Imagens (Peça / Corpo)</th>
-                <th>Status</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while($dados = $resultado->fetch_assoc()) { ?>
+    <div class="tabela-wrapper">
+        <table class="tabela-estilizada">   
+            <thead>
                 <tr>
-                    <td><?php echo htmlspecialchars($dados['nome']); ?></td>
-                    <td><?php echo htmlspecialchars($dados['nome_categoria'] ?? 'Sem Categoria'); ?></td>
-                    <td><?php echo htmlspecialchars($dados['descricao']); ?></td>
-                    <td>R$ <?php echo number_format($dados['preco'], 2, ',', '.'); ?></td>
-                    <td><?php echo htmlspecialchars($dados['tamanho']); ?></td>
-                    <td><?php echo htmlspecialchars($dados['cor']); ?></td>
-                    <td><?php echo $dados['quantidade_estoque']; ?></td>
-                    
-                    <td>
-                        <div class="fotos-grid">
-                            <img src="img/<?php echo basename($dados['imagem']); ?>" title="Foto da Peça">
-                            <img src="img/<?php echo basename($dados['imagem_corpo']); ?>" title="Foto no Corpo">
-                        </div>
-                    </td>
-
-                    <td>
-                        <?php 
-                            if($dados['quantidade_estoque'] > 10) {
-                                echo "<span> Em estoque</span>";
-                            } else {
-                                echo "<span> Repor!</span>";
-                            }
-                        ?>
-                    </td>
-                    <td>
-                        <a class="alterar" href="javascript:void(0)" 
-                           onclick="abrirModal(
-                               '<?php echo $dados['id']; ?>', 
-                               '<?php echo addslashes($dados['nome']); ?>', 
-                               '<?php echo $dados['id_categoria']; ?>', 
-                               '<?php echo addslashes($dados['descricao']); ?>', 
-                               '<?php echo $dados['preco']; ?>', 
-                               '<?php echo $dados['tamanho']; ?>', 
-                               '<?php echo $dados['cor']; ?>', 
-                               '<?php echo $dados['quantidade_estoque']; ?>',
-                               '<?php echo $dados['imagem']; ?>', 
-                               '<?php echo $dados['imagem_corpo']; ?>'
-                           )">
-                           <i class="fa-solid fa-pen"></i>
-                        </a>
-                        
-                        <a class="excluir" href="javascript:void(0)" onclick="confirmarExclusao('excluir.php?id=<?php echo $dados['id']; ?>')">
-    <i class="fa-solid fa-trash"></i>
-</a>
-                    </td>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Tamanho</th>
+                    <th>Cor</th>
+                    <th>Qtd.estoque</th>
+                    <th>Imagens (Peça / Corpo)</th>
+                    <th>Status</th>
+                    <th>Ações</th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+    <?php while($dados = $resultado->fetch_assoc()) { ?>
+        <tr>
+            <td data-label="Produto"><?php echo htmlspecialchars($dados['nome']); ?></td>
+            <td data-label="Categoria"><?php echo htmlspecialchars($dados['nome_categoria'] ?? 'Sem Categoria'); ?></td>
+            <td data-label="Descrição"><?php echo htmlspecialchars($dados['descricao']); ?></td>
+            <td data-label="Preço">R$ <?php echo number_format($dados['preco'], 2, ',', '.'); ?></td>
+            <td data-label="Tamanho"><?php echo htmlspecialchars($dados['tamanho']); ?></td>
+            <td data-label="Cor"><?php echo htmlspecialchars($dados['cor']); ?></td>
+            <td data-label="Estoque"><?php echo $dados['quantidade_estoque']; ?> un.</td>
+            
+            <td data-label="Fotos">
+                <div class="fotos-grid">
+                    <img src="img/<?php echo basename($dados['imagem']); ?>" title="Foto da Peça">
+                    <img src="img/<?php echo basename($dados['imagem_corpo']); ?>" title="Foto no Corpo">
+                </div>
+            </td>
+
+            <td data-label="Status">
+                <?php 
+                    if($dados['quantidade_estoque'] > 10) {
+                        echo "<span class='badge-ok'>Em estoque</span>";
+                    } else {
+                        echo "<span class='badge-alerta'>Repor!</span>";
+                    }
+                ?>
+            </td>
+            <td data-label="Ações" class="td-acoes">
+    <a class="alterar" href="javascript:void(0)" title="Editar produto"
+       onclick="abrirModal(
+           '<?php echo $dados['id']; ?>', 
+           '<?php echo addslashes($dados['nome']); ?>', 
+           '<?php echo $dados['id_categoria']; ?>', 
+           '<?php echo addslashes($dados['descricao']); ?>', 
+           '<?php echo $dados['preco']; ?>', 
+           '<?php echo $dados['tamanho']; ?>', 
+           '<?php echo $dados['cor']; ?>', 
+           '<?php echo $dados['quantidade_estoque']; ?>',
+           '<?php echo $dados['imagem']; ?>', 
+           '<?php echo $dados['imagem_corpo']; ?>'
+       )">
+       <i class="fa-solid fa-pen"></i>
+    </a>
+    
+    <a class="excluir" href="javascript:void(0)" title="Excluir produto"
+       onclick="confirmarExclusao('excluir.php?id=<?php echo $dados['id']; ?>')">
+        <i class="fa-solid fa-trash"></i>
+    </a>
+</td>   
+        </tr>
+    <?php } ?>
+</tbody>
+        </table>
+    </div>
 </main>
 
 <div id="modalProduto" class="modal">
@@ -184,69 +187,69 @@ if ($resultado_categorias) {
             <span class="close" onclick="fecharModal()">&times;</span>
         </div>
 
-        <form action="produtos.php" method="POST" enctype="multipart/form-data" class="modal-body">
-            <input type="hidden" name="id" id="prod_id">
-            <input type="hidden" name="id_vendedor" value="<?php echo $id_vendedor_logado; ?>">
-            <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
-            <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
+        <form action="produtos.php" method="POST" enctype="multipart/form-data" class="modal-body" id="formProdutoModal">
+    <input type="hidden" name="id" id="prod_id">
+    <input type="hidden" name="id_vendedor" value="<?php echo $id_vendedor_logado; ?>">
+    <input type="hidden" name="imagem_atual" id="prod_imagem_atual">
+    <input type="hidden" name="imagem_corpo_atual" id="prod_imagem_corpo_atual">
 
-            <div class="form-group full-width">
-                <label><i class="fa-solid fa-tag"></i> Nome da Peça:</label>
-                <input type="text" name="nome" id="prod_nome" placeholder="Ex: Conjunto Jardineira Dinossauro" required>
-            </div>
+    <div class="form-group full-width">
+        <label><i class="fa-solid fa-tag"></i> Nome da Peça:</label>
+        <input type="text" name="nome" id="prod_nome" placeholder="Ex: Conjunto Jardineira Dinossauro" required>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label><i class="fa-solid fa-layer-group"></i> Categoria:</label>
-                    <select name="id_categoria" id="prod_categoria">
-                        <option value="">Selecione</option>
-                        <?php foreach($categorias as $cat) { ?>
-                            <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nome']); ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label><i class="fa-solid fa-ruler-combined"></i> Tamanho:</label>
-                    <input type="text" name="tamanho" id="prod_tamanho" placeholder="Ex: M, 2, 4">
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label><i class="fa-solid fa-layer-group"></i> Categoria:</label>
+            <select name="id_categoria" id="prod_categoria" required>
+                <option value="">Selecione</option>
+                <?php foreach($categorias as $cat) { ?>
+                    <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nome']); ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label><i class="fa-solid fa-ruler-combined"></i> Tamanho:</label>
+            <input type="text" name="tamanho" id="prod_tamanho" placeholder="Ex: M, 2, 4" required>
+        </div>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label><i class="fa-solid fa-palette"></i> Cor:</label>
-                    <input type="text" name="cor" id="prod_cor" placeholder="Ex: Verde/Branco">
-                </div>
-                <div class="form-group">
-                    <label><i class="fa-solid fa-dollar-sign"></i> Preço (R$):</label>
-                    <input type="number" step="0.01" name="preco" id="preco" placeholder="0.00" required>
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label><i class="fa-solid fa-palette"></i> Cor:</label>
+            <input type="text" name="cor" id="prod_cor" placeholder="Ex: Verde/Branco" required>
+        </div>
+        <div class="form-group">
+            <label><i class="fa-solid fa-dollar-sign"></i> Preço (R$):</label>
+            <input type="number" step="0.01" min="0.01" name="preco" id="preco" placeholder="0.00" required>
+        </div>
+    </div>
 
-            <div class="form-group full-width">
-                <label><i class="fa-solid fa-boxes-stacked"></i> Quantidade em Estoque:</label>
-                <input type="number" name="quantidade_estoque" id="prod_qtd" placeholder="Ex: 15" required>
-            </div>
+    <div class="form-group full-width">
+        <label><i class="fa-solid fa-boxes-stacked"></i> Quantidade em Estoque:</label>
+        <input type="number" min="0" name="quantidade_estoque" id="prod_qtd" placeholder="Ex: 15" required>
+    </div>
 
-            <div class="form-group full-width">
-                <label><i class="fa-solid fa-align-left"></i> Descrição do Produto:</label>
-                <textarea name="descricao" id="prod_desc" rows="2" placeholder="Detalhes do tecido, estampa, etc..."></textarea>
-            </div>
+    <div class="form-group full-width">
+        <label><i class="fa-solid fa-align-left"></i> Descrição do Produto:</label>
+        <textarea name="descricao" id="prod_desc" rows="2" placeholder="Detalhes do tecido, estampa, etc..." required></textarea>
+    </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label><i class="fa-solid fa-image"></i> Foto Peça (.webp):</label>
-                    <input type="file" name="imagem" accept="image/*" class="file-input">
-                </div>
-                <div class="form-group">
-                    <label><i class="fa-solid fa-camera"></i> Foto Corpo (.webp):</label>
-                    <input type="file" name="imagem_corpo" accept="image/*" class="file-input">
-                </div>
-            </div>
+    <div class="form-row">
+        <div class="form-group">
+            <label><i class="fa-solid fa-image"></i> Foto Peça (.webp):</label>
+            <input type="file" name="imagem" accept="image/*" class="file-input">
+        </div>
+        <div class="form-group">
+            <label><i class="fa-solid fa-camera"></i> Foto Corpo (.webp):</label>
+            <input type="file" name="imagem_corpo" accept="image/*" class="file-input">
+        </div>
+    </div>
 
-            <button type="submit" class="btn-salvar">
-                <i class="fa-solid fa-floppy-disk"></i> Salvar Produto
-            </button>
-        </form>
+    <button type="submit" class="btn-salvar">
+        <i class="fa-solid fa-floppy-disk"></i> Salvar Produto
+    </button>
+</form>
     </div>
 </div>
 
@@ -323,7 +326,7 @@ if ($resultado_categorias) {
             <i class="fa-solid fa-check"></i>
         </div>
         
-        <h2>Sucesso!</h2>
+        <h2 id="tituloSucesso">Sucesso!</h2>
         
         <p id="mensagemSucesso">
             <?php 

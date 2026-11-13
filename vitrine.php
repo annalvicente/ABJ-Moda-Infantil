@@ -35,7 +35,12 @@ $categorias_config = [
 
     <header>
         <div class="nav-container">
-            <nav class="menu-links">
+            <!-- BOTÃO HAMBÚRGUER (Aparece apenas no celular/tablet) -->
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+            <nav class="menu-links" id="mobileMenu">
                 <a href="#meninas" class="menu-links-meninas">meninas</a>
                 <a href="#meninos" class="menu-links-meninos">meninos</a>
                 <a href="#bebês" class="menu-links-bebes">bebês</a>
@@ -516,6 +521,37 @@ $categorias_config = [
       header.classList.remove('scrolled');
     }
   });
+</script>
+
+<!--    RESPONSIVIDADE   -->
+<script>
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const icon = document.querySelector('.mobile-menu-btn i');
+    menu.classList.toggle('active');
+    
+    // Alterna o ícone entre hambúrguer (☰) e X
+    if (menu.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-xmark');
+    } else {
+        icon.classList.remove('fa-xmark');
+        icon.classList.add('fa-bars');
+    }
+}
+
+// Fecha o menu mobile ao clicar em qualquer link de categoria
+document.querySelectorAll('.menu-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.querySelector('.mobile-menu-btn i');
+        if (menu && menu.classList.contains('active')) {
+            menu.classList.remove('active');
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+        }
+    });
+});
 </script>
 
 </body>

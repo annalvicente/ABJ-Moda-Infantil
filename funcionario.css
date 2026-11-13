@@ -11,7 +11,7 @@
 }
 
 html {
-    scroll-behavior: smoosh;
+    scroll-behavior: smooth;
 }
 
 :root {
@@ -24,21 +24,25 @@ html {
 
 body {
     font-family: 'Quicksand', sans-serif;
-    background-color: #f8ffd685; /* Escolhi o amarelado que combina com seu header, mas você pode trocar por #f9f9f9 se preferir o cinza */
+    background-color: #f8ffd685;
     color: var(--texto-marrom);
     overflow-x: hidden;
+    padding-top: 120px;
 }
 
 p {
     text-decoration: none;
 }
 
-main {
-    max-width: 1200px;
-    margin: 35px auto;
-    padding: 0 20px;
+main.container {
+    width: 94%;
+    max-width: 1240px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.05);
 }
-
 
 /* ============================================================
    2. CABEÇALHO FIXO (Header, Logo e Troca no Scroll)
@@ -52,8 +56,6 @@ main {
     border-bottom-left-radius: 50% 30px;
     border-bottom-right-radius: 50% 30px;
     border-bottom: 2px solid #e6d367;
-
-    /* Torna o header FIXO no topo */
     position: fixed;
     top: 0;
     left: 0;
@@ -62,12 +64,6 @@ main {
     transition: all 0.3s ease-in-out;
 }
 
-/* Espaçamento superior no body para o conteúdo não ficar coberto pelo header */
-body {
-    padding-top: 110px;
-}
-
-/* Estado retinho e fino quando rolar a página */
 .header-admin.scrolled {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -75,13 +71,13 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* LOGO E REGRAS DE TROCA DE IMAGEM */
 .logo {
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
     transition: transform 0.3s;
+    flex-shrink: 0;
 }
 
 .logo img {
@@ -99,7 +95,6 @@ body {
     width: 130px;
 }
 
-/* Alterna as logos no scroll */
 .header-admin.scrolled .logo .logo-normal {
     display: none;
 }
@@ -117,21 +112,20 @@ body {
     justify-content: flex-end;
 }
 
-/* ESTILO DO BOTÃO VER LOJA */
 .btn-visualizar {
     text-decoration: none;
     color: #443300;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
+    padding: 8px 18px;
     border: 1px solid #e3cfa5;
     border-radius: 20px;
     background-color: #f8fadd;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .btn-visualizar:hover {
@@ -141,13 +135,12 @@ body {
     transform: translateY(-1px);
 }
 
-
 /* ============================================================
-   3. PAINEL DE ESTOQUE (Tabelas, Ações, Formulários e Modais)
+   3. PAINEL DE ESTOQUE (Header, Busca e Tabela Desktop)
    ============================================================ */
 .estoque-container {
     background-color: white;
-    max-width: 15px;
+    max-width: 1240px;
     margin: 30px auto;
     padding: 30px;
     border-radius: 25px;
@@ -156,13 +149,62 @@ body {
 
 .header-tabela {
     display: flex; 
-    justify-content: space-between; /* Empurra o título para esquerda e o botão para direita */
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 22px;
 }
 
 .h1-tabela {
     color: #443300;
+    font-size: 1.65rem;
+}
+
+/* CAMPO DE PESQUISA / BUSCA */
+.form-busca {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f8fadd;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 5px 14px;
+    flex: 1;
+    max-width: 380px;
+    min-width: 240px;
+}
+
+.form-busca input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 7px 5px;
+    font-size: 14px;
+    width: 100%;
+    color: var(--texto-marrom);
+}
+
+.form-busca button {
+    background: none;
+    border: none;
+    color: #443300;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    transition: transform 0.2s;
+}
+
+.form-busca button:hover {
+    transform: scale(1.15);
+    color: #ee81b4;
+}
+
+.btn-limpar-busca {
+    color: #b90e0e;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 0 4px;
 }
 
 /* BOTÃO NOVO PRODUTO */
@@ -170,64 +212,74 @@ body {
     background-color: #8dc7d6;
     color: #2b4c54;
     border: none;
-    padding: 10px 20px;
-    border-radius: 25px; /* Formato pílula/arredondado */
+    padding: 11px 22px;
+    border-radius: 25px;
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     box-shadow: 0 4px 10px rgba(141, 199, 214, 0.35);
     transition: all 0.25s ease;
+    white-space: nowrap;
 }
 
 .btn-adicionar:hover {
     background-color: #7ab8c7;
     color: #1a3339;
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(141, 199, 214, 0.45);
 }
 
-.btn-adicionar:active {
-    transform: translateY(0);
+/* TABELA DESKTOP */
+.tabela-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 16px;
+    border: 1px solid #f0ece1;
 }
 
-table {
-    width: auto;
+table,
+.tabela-estilizada {
+    width: 100%;
+    min-width: 920px;
     border-collapse: collapse;
-    margin-top: 15px;     
 }
 
 th {
     background-color: #83cbfe89;
-    color: #555;
-    padding: 15px;
+    color: #443300;
+    font-weight: 700;
+    padding: 14px 12px;
     text-align: left;
-    /* Linha horizontal mais forte no cabeçalho */
     border-bottom: 2px solid #fff; 
-    /* Linha vertical para separar as colunas */
-    border-right: 1px solid #fff; 
+    border-right: 1px solid #fff;
+    white-space: nowrap;
 }
 
-/* Remove a linha vertical da última coluna para ficar mais limpo */
 th:last-child, td:last-child {
     border-right: none;
 }
 
 td {
-    padding: 12px 8px; /* Aumentei um pouco o respiro vertical */
-    border-bottom: 1px solid #fff; /* Linha horizontal entre produtos */
-    border-right: 1px solid #fff;  /* Linha vertical entre colunas */
+    padding: 12px;
+    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
     color: #333;
-    vertical-align: middle; /* Garante que o texto fique alinhado ao centro da altura */
+    vertical-align: middle;
+    font-size: 14px;
 }
 
 tbody {
     background-color: rgba(247, 220, 224, 0.454);
 }
 
-/* Container que segura as duas fotos na tabela */
+tbody tr:hover {
+    background-color: rgba(247, 220, 224, 0.7);
+}
+
 .fotos-grid {
     display: flex;         
     gap: 8px;              
@@ -236,9 +288,9 @@ tbody {
 }
 
 .fotos-grid img {
-    width: 50px;           
-    height: 50px;           
-    object-fit: cover;      /* Corta as bordas sem esticar a imagem */
+    width: 48px;           
+    height: 48px;           
+    object-fit: cover;
     border-radius: 8px;     
     border: 1px solid #ddd; 
     transition: transform 0.3s ease;
@@ -246,37 +298,51 @@ tbody {
 }
 
 .fotos-grid img:hover {
-    transform: scale(2.5);  /* Aumenta a foto em 2.5 vezes */
-    z-index: 10;            /* Garante que ela fique por cima de tudo */
+    transform: scale(2.2);
+    z-index: 10;
     position: relative;
 }
 
-.product-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: contain;
-    margin-bottom: 15px;
-    border-radius: 15px;
+/* AÇÕES NA TABELA (ÍCONES LADO A LADO NO DESKTOP) */
+.td-acoes {
+    white-space: nowrap;
+    text-align: center;
 }
 
-.alterar {
+.td-acoes a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.td-acoes a.alterar {
     color: #2a61b3;
-    cursor: pointer;
-    margin-right: 15px;
+    margin-right: 6px;
 }
 
-.excluir {
+.td-acoes a.alterar:hover {
+    background-color: #e3f0ff;
+    transform: translateY(-2px);
+}
+
+.td-acoes a.excluir {
     color: #b90e0e;
-    cursor: pointer;
 }
 
-.excluir:hover {
+.td-acoes a.excluir:hover {
+    background-color: #fde8e8;
     color: #5f0707;
     transform: translateY(-2px);
 }
 
 /* ============================================================
-   MODAL DE CADASTRO/EDIÇÃO (Design Moderno & Compacto)
+   4. MODAL DE CADASTRO/EDIÇÃO & MODAIS DE AVISO
    ============================================================ */
 .modal {
     display: none; 
@@ -287,14 +353,14 @@ tbody {
     width: 100%;
     height: 100%;
     background-color: rgba(45, 45, 45, 0.55);
-    backdrop-filter: blur(4px); /* Suaviza o fundo quando o modal abre */
+    backdrop-filter: blur(4px);
     overflow-y: auto;
-    padding: 20px 10px;
+    padding: 20px 12px;
 }
 
 .modal-content {
     background-color: #ffffff;
-    margin: 3% auto; 
+    margin: 2% auto; 
     padding: 0;
     border-radius: 20px;
     width: 100%;
@@ -311,7 +377,7 @@ tbody {
 
 .modal-header {
     background-color: var(--amarelo-header);
-    padding: 18px 24px;
+    padding: 18px 22px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -320,7 +386,7 @@ tbody {
 
 .h2-modal {
     margin: 0;
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
     color: #4a3b32;
     display: flex;
@@ -345,11 +411,10 @@ tbody {
 .close:hover {
     color: #b90e0e; 
     background: #ffffff;
-    transform: scale(1.08); 
 }
 
 .modal-body {
-    padding: 22px 25px;
+    padding: 22px;
 }
 
 .form-row {
@@ -363,7 +428,7 @@ tbody {
 }
 
 .form-group.full-width {
-    grid-column: span 2;
+    grid-column: 1 / -1;
 }
 
 .form-group label {
@@ -379,7 +444,7 @@ tbody {
 }
 
 .form-group label i {
-    color: #ee81b4; /* Corzinha pastel de destaque para os ícones */
+    color: #ee81b4;
     font-size: 14px;
 }
 
@@ -391,7 +456,6 @@ tbody {
     border: 1.5px solid #e8e2d8;
     background-color: #faf8f5;
     border-radius: 10px;
-    box-sizing: border-box;
     font-size: 14px;
     color: #333;
     outline: none;
@@ -408,7 +472,7 @@ tbody {
 
 .file-input {
     font-size: 12px !important;
-    padding: 6px 8px !important;
+    padding: 7px 8px !important;
     background: #ffffff !important;
 }
 
@@ -435,260 +499,9 @@ tbody {
     background-color: #7ab8c7;
     color: #1a3339;
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(141, 199, 214, 0.5);
 }
 
-
-/* ============================================================
-   4. RODAPÉ (Footer Customizado e E-Commerce)
-   ============================================================ */
-/* FOOTER PERSONALIZADO */
-.footer-custom {
-    background-color: var(--amarelo-header);
-    margin: 50px 20px 20px 20px;
-    border-radius: 50px;
-    padding: 30px 60px;
-    font-family: 'Quicksand', sans-serif;
-    scroll-margin-top: 30px;
-}
-
-.footer-container-custom {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.chat-icon {
-    font-size: 2.5rem;
-    color: #f28d8d;
-}
-
-.brand-info h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.brand-info p {
-    font-size: 0.95rem;
-    margin: 2px 0;
-    font-weight: 600;
-}
-
-.footer-links-social {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.social-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.social-item i {
-    font-size: 1.2rem;
-}
-
-.faq-link {
-    text-decoration: underline;
-    color: inherit;
-    font-weight: 700;
-    margin-top: 5px;
-    display: inline-block;
-}
-
-/* FOOTER COMPLETO E-COMMERCE (ABJ MODA INFANTIL / JACTECH) */
-.footer-container-jactech {
-    width: 100%;
-    margin-top: 60px;
-    font-family: 'Quicksand', sans-serif;
-    background-color: var(--amarelo-header); /* Creme suave como o topo do site */
-}
-
-/* --- PARTE 1: ÁREA DE E-COMMERCE --- */
-.footer-ecommerce-body {
-    background-color: #FFFBEA; 
-    padding: 60px 20px;
-    width: 100%;
-    /* Substituindo a borda reta por uma curva suave no topo (opcional) */
-    border-top: 2px solid #FDF2B3; 
-}
-
-.ecommerce-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1.2fr; 
-    gap: 50px;
-}
-
-/* Títulos coloridos seguindo a logo */
-.ecom-col h4 {
-    font-size: 1.2rem;
-    color: #4DBBB4; /* Verde menta do menu */
-    font-weight: 700;
-    margin-bottom: 5px;
-    text-transform: lowercase; /* Estilo lúdico do site */
-}
-
-/* Linha decorativa em rosa (cor do botão principal) */
-.title-line {
-    border: 0;
-    height: 3px;
-    width: 40px;
-    background-color: #EE81B4; 
-    margin-bottom: 25px;
-    border-radius: 10px;
-}
-
-/* Ícones das Bandeiras */
-.payment-brands {
-    display: flex;
-    gap: 15px;
-    font-size: 1.6rem;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-/* Caixa do Boleto mais arredondada */
-.boleto-box-clean {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #ffffff;
-    padding: 10px 22px;
-    border-radius: 25px; /* Super arredondado */
-    font-size: 0.9rem;
-    color: #555;
-    border: 1px solid #eee;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-/* Selos de Segurança com estilo "cloud" */
-.security-flex-row {
-    display: flex;
-    gap: 15px;
-}
-
-.badge-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    padding: 10px 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-}
-
-.badge-item strong { color: #EE81B4; } /* Título do selo em rosa */
-
-/* Atendimento */
-.info-list li {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 12px;
-}
-
-.info-list i {
-    color: #EE81B4; /* Ícones em rosa para destacar */
-}
-
-/* --- PARTE 2: BARRA INFERIOR (DARK BAR) --- */
-.footer-dark-bar {
-    background-color: #2D2D2D; /* Cinza grafite, menos agressivo que o preto total */
-    color: #ffffff;
-    padding: 25px 0;
-    font-size: 0.85rem;
-    width: 100%;
-}
-
-.dark-bar-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.dark-bar-wrapper a {
-    color: #EE81B4; /* Links em rosa para destaque */
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.dark-bar-wrapper a:hover {
-    color: #4DBBB4; /* Muda para verde menta no hover */
-}
-
-/* ============================================================
-   CAMPO DE PESQUISA / BUSCA
-   ============================================================ */
-.form-busca {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f8fadd;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 5px 12px;
-    margin-left: 20px;
-    margin-right: auto;
-}
-
-.form-busca input {
-    border: none;
-    background: transparent;
-    outline: none;
-    padding: 8px 5px;
-    font-size: 14px;
-    width: 250px;
-    color: var(--texto-marrom);
-}
-
-.form-busca button {
-    background: none;
-    border: none;
-    color: #443300;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 4px;
-    transition: transform 0.2s;
-}
-
-.form-busca button:hover {
-    transform: scale(1.15);
-    color: #ee81b4;
-}
-
-.btn-limpar-busca {
-    color: #b90e0e;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 0 4px;
-}
-
-.btn-limpar-busca:hover {
-    color: #5f0707;
-}
-
-/* ============================================================
-   MODAL DE CONFIRMAÇÃO/SUCESSO DE ADIÇÃO DE PRODUTO
-   ============================================================ */
+/* Modais de Confirmação / Sucesso / Exclusão */
 .modal-aviso {
     display: none;
     position: fixed;
@@ -697,35 +510,24 @@ tbody {
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(45, 45, 45, 0.4);
+    background-color: rgba(45, 45, 45, 0.45);
     backdrop-filter: blur(3px);
-    
-    /* Ativa Flexbox para centralizar exatamente no meio da tela */
     align-items: center;
     justify-content: center;
+    padding: 15px;
 }
 
-.modal-aviso-card {
+.modal-aviso-card,
+.modal-aviso-content {
     background-color: #ffffff;
-    padding: 35px 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 420px;
+    padding: 32px 25px;
+    border-radius: 22px;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    animation: avisoPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin: auto; /* Garante alinhamento automático */
-}
-
-.modal-aviso-content {
-    background: #ffffff;
-    padding: 35px 30px 25px 30px;
-    border-radius: 24px;
-    width: 90%;
-    max-width: 380px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     animation: popIn 0.25s ease-out;
+    margin: auto;
 }
 
 @keyframes popIn {
@@ -733,10 +535,9 @@ tbody {
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Círculo do ícone Verde Pastel */
 .icon-circle-success {
-    width: 80px;
-    height: 80px;
+    width: 75px;
+    height: 75px;
     background-color: #e8f8f0;
     border: 2px solid #b2f0cf;
     color: #2ecc71;
@@ -744,25 +545,26 @@ tbody {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 38px;
-    margin: 0 auto 20px auto;
+    font-size: 34px;
+    margin: 0 auto 18px auto;
 }
 
-.modal-aviso-content h2 {
+.modal-aviso-content h2,
+.modal-aviso-card h2 {
     color: #333333;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     margin-bottom: 8px;
 }
 
-.modal-aviso-content p {
+.modal-aviso-content p,
+.modal-aviso-card p {
     color: #666666;
     font-size: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
     font-weight: 600;
 }
 
-/* Botão OK Verde Pastel */
 .btn-modal-ok {
     background-color: #2ecc71;
     color: #ffffff;
@@ -772,18 +574,8 @@ tbody {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
-    transition: all 0.2s ease;
 }
 
-.btn-modal-ok:hover {
-    background-color: #27ae60;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
-}
-
-/*  MODAL DE CONFIRMAÇÃO DE EDIÇÃO */
-/* Ícone e Botões do Modal de Confirmação */
 .icone-circulo-pergunta {
     width: 70px;
     height: 70px;
@@ -795,51 +587,9 @@ tbody {
     align-items: center;
     justify-content: center;
     font-size: 28px;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 18px auto;
 }
 
-.modal-botoes-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.btn-cancelar-confirma {
-    background-color: #f1f3f5;
-    color: #495057;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-cancelar-confirma:hover {
-    background-color: #e9ecef;
-}
-
-.btn-confirmar-confirma {
-    background-color: #8dc7d6;
-    color: #1a3339;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(141, 199, 214, 0.4);
-}
-
-.btn-confirmar-confirma:hover {
-    background-color: #7ab8c7;
-    transform: translateY(-1px);
-}
-
-/* Estilos do Modal de Exclusão */
 .icone-circulo-excluir {
     width: 70px;
     height: 70px;
@@ -851,7 +601,36 @@ tbody {
     align-items: center;
     justify-content: center;
     font-size: 28px;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 18px auto;
+}
+
+.modal-botoes-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-cancelar-confirma {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-confirmar-confirma {
+    background-color: #8dc7d6;
+    color: #1a3339;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .btn-confirmar-excluir {
@@ -865,36 +644,325 @@ tbody {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(229, 62, 62, 0.3);
-}
-
-.btn-confirmar-excluir:hover {
-    background-color: #c53030;
-    transform: translateY(-1px);
 }
 
 /* ============================================================
-   BOTÃO DE VOLTAR AO INICIO
+   5. RODAPÉ & BOTÃO TOPO
    ============================================================ */
-       #topoBtn {    /*botao*/
-  display: none; /* Inicialmente escondido */
-  position: fixed;
-  bottom: 30px;
-  right: 5px;
-  z-index: 1000;
-  font-size: 24px;
-  background-color: #e8c883;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  padding: 12px 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: background-color 0.3s, transform 0.3s;
+.footer-container-jactech {
+    width: 100%;
+    margin-top: 60px;
+    background-color: var(--amarelo-header);
 }
 
-#topoBtn:hover {
-  background-color: #c7a761; 
-  transform: scale(1.1);
+.footer-ecommerce-body {
+    background-color: #FFFBEA; 
+    padding: 50px 20px;
+    width: 100%;
+    border-top: 2px solid #FDF2B3; 
+}
+
+.ecommerce-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.2fr; 
+    gap: 40px;
+}
+
+.ecom-col h4 {
+    font-size: 1.2rem;
+    color: #4DBBB4;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: lowercase;
+}
+
+.title-line {
+    border: 0;
+    height: 3px;
+    width: 40px;
+    background-color: #EE81B4; 
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.payment-brands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 1.6rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.boleto-box-clean {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    color: #555;
+    border: 1px solid #eee;
+}
+
+.security-flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.badge-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 10px 15px;
+    border-radius: 15px;
+}
+
+.badge-item strong { color: #EE81B4; }
+.info-list { list-style: none; }
+.info-list li { font-size: 0.95rem; color: #666; margin-bottom: 12px; }
+.info-list i { color: #EE81B4; margin-right: 6px; }
+
+.footer-dark-bar {
+    background-color: #2D2D2D;
+    color: #ffffff;
+    padding: 25px 0;
+    font-size: 0.85rem;
+    width: 100%;
+}
+
+.dark-bar-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.dark-bar-wrapper a {
+    color: #EE81B4;
+    text-decoration: none;
+}
+
+#topoBtn {
+    display: none;
+    position: fixed;
+    bottom: 25px;
+    right: 15px;
+    z-index: 1000;
+    font-size: 20px;
+    background-color: #e8c883;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* ============================================================
+   6. MEDIA QUERIES - TABLET & MOBILE (CARDS EMPILHADOS)
+   ============================================================ */
+@media (max-width: 992px) {
+    .ecommerce-wrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 100px;
+    }
+
+    .header-admin {
+        padding: 12px 20px;
+        border-bottom-left-radius: 25px 15px;
+        border-bottom-right-radius: 25px 15px;
+    }
+
+    .header-admin.scrolled {
+        padding: 10px 20px;
+    }
+
+    .header-left {
+        display: none;
+    }
+
+    .logo .logo-normal {
+        width: 72px;
+    }
+
+    .logo .logo-deitada {
+        width: 115px;
+    }
+
+    .btn-visualizar {
+        padding: 7px 14px;
+        font-size: 13px;
+    }
+
+    main.container {
+        width: 94%;
+        padding: 18px 15px;
+        margin: 20px auto;
+        border-radius: 20px;
+    }
+
+    .header-tabela {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .h1-tabela {
+        font-size: 1.4rem;
+    }
+
+    .form-busca {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .btn-adicionar {
+        width: 100%;
+    }
+
+    /* Formulário do modal em 1 coluna no celular */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    /* Transformação da tabela em cards empilhados no mobile */
+    .tabela-wrapper {
+        border: none;
+        overflow-x: visible;
+    }
+
+    table,
+    .tabela-estilizada {
+        min-width: 100%;
+        display: block;
+    }
+
+    .tabela-estilizada thead {
+        display: none;
+    }
+
+    .tabela-estilizada tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background-color: transparent;
+    }
+
+    .tabela-estilizada tbody tr {
+        display: block;
+        background-color: #fff6f8;
+        border: 1px solid #f3dce2;
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .tabela-estilizada tbody tr:hover {
+        background-color: #fff6f8;
+    }
+
+    .tabela-estilizada td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+        border-right: none;
+        border-bottom: 1px dashed #ebd5db;
+        text-align: right;
+        font-size: 14px;
+    }
+
+    .tabela-estilizada td:first-child {
+        display: block;
+        text-align: left;
+        font-size: 16px;
+        font-weight: 700;
+        color: #443300;
+        border-bottom: 2px solid #83cbfe89;
+        padding-bottom: 10px;
+        margin-bottom: 6px;
+    }
+
+    .tabela-estilizada td:first-child::before {
+        display: none;
+    }
+
+    .tabela-estilizada td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #5d483b;
+        font-size: 13px;
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .tabela-estilizada td[data-label="Descrição"] {
+        align-items: flex-start;
+    }
+
+    .fotos-grid {
+        justify-content: flex-end;
+    }
+
+    /* Botões de ação largos no mobile (apenas ícones) */
+    .tabela-estilizada td.td-acoes {
+        border-bottom: none;
+        padding-top: 12px;
+        margin-top: 4px;
+        display: flex;
+        justify-content: stretch;
+        gap: 10px;
+    }
+
+    .tabela-estilizada td.td-acoes::before {
+        display: none;
+    }
+
+    .td-acoes a {
+        flex: 1;
+        height: 40px;
+        border-radius: 12px;
+        font-size: 16px;
+        margin-right: 0;
+    }
+
+    .td-acoes a.alterar {
+        background-color: #e3f0ff;
+        color: #2a61b3;
+        margin-right: 0;
+    }
+
+    .td-acoes a.excluir {
+        background-color: #fde8e8;
+        color: #b90e0e;
+    }
+
+    /* Rodapé no mobile */
+    .ecommerce-wrapper {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .dark-bar-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
 }
