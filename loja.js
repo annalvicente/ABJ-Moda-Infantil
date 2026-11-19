@@ -67,6 +67,7 @@ function toggleMobileMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Fecha menu mobile ao clicar em um link
     document.querySelectorAll('.menu-links a').forEach(link => {
         link.addEventListener('click', () => {
             const menu = document.getElementById('mobileMenu') || document.querySelector('.menu-links');
@@ -80,4 +81,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Controle global seguro do botão Voltar ao Topo
+    const topoBtn = document.getElementById('topoBtn');
+    if (topoBtn) {
+        const atualizarBotaoTopo = () => {
+            const scrollAtual = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+            topoBtn.style.display = scrollAtual > 180 ? 'flex' : 'none';
+        };
+
+        window.addEventListener('scroll', atualizarBotaoTopo, { passive: true });
+        atualizarBotaoTopo();
+
+        topoBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 });
