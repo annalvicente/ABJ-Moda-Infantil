@@ -9,18 +9,13 @@ let pendingRedirect = null;
 //  ABRIR / FECHAR MODAL DE AUTH (LOGIN/CADASTRO)
 // ============================================================
 function openModal(mode = 'login') {
-    // 1. Fecha outros elementos abertos (carrinho, favoritos, etc.)
     fecharTudo();
     
     const modal = document.getElementById('authModal');
     if (modal) {
         modal.style.display = 'flex';
         modal.classList.add('aberto'); 
-        
-        // Trava o scroll do site
         document.body.style.overflow = 'hidden';
-        
-        // Define se abre em Login ou Cadastro
         switchAuthMode(mode);
     }
 }
@@ -30,14 +25,11 @@ function closeModal() {
     if (modal) {
         modal.style.display = 'none';
         modal.classList.remove('aberto');
-        
-        // Devolve o scroll ao site
         document.body.style.overflow = 'auto';
         limparErrosCampos();
     }
 }
 
-// Fechar modal ao clicar na área escura (overlay)
 window.addEventListener('click', function (event) {
     const authModal = document.getElementById('authModal');
     const feedbackModal = document.getElementById('feedbackModal');
@@ -71,7 +63,6 @@ function switchAuthMode(mode) {
     limparErrosCampos();
 }
 
-// Configura se é Cliente ou Vendedor
 function setUserType(type) {
     currentType = type;
     const isCliente = type === 'cliente';
@@ -83,19 +74,18 @@ function setUserType(type) {
         input.value = type;
     });
 
-    // EXIBIÇÃO DINÂMICA DA CHAVE DE ACESSO DA LOJA
     const grpChave = document.getElementById('grp-cad-chave');
     const inputChave = document.getElementById('cad-chave');
 
     if (grpChave) {
         if (!isCliente) {
-            grpChave.style.display = 'block'; // Mostra o campo se for vendedor
+            grpChave.style.display = 'block';
             if (inputChave) inputChave.required = true;
         } else {
-            grpChave.style.display = 'none';  // Oculta se for cliente
+            grpChave.style.display = 'none';
             if (inputChave) {
                 inputChave.required = false;
-                inputChave.value = '';        // Limpa o valor digitado
+                inputChave.value = '';
             }
         }
     }
@@ -185,8 +175,9 @@ async function enviarLogin(event) {
 
     let temErro = false;
 
-    // Valida E-mail
-    if (!inputEmail || !inputEmail.value.trim() || !inputEmail.value.includes('@')) {
+    // Valida E-mail (obrigatório, formato básico e máximo de 100 caracteres)
+    const emailVal = inputEmail ? inputEmail.value.trim() : '';
+    if (!emailVal || !emailVal.includes('@') || emailVal.length > 100) {
         if (grpEmail) grpEmail.classList.add('com-erro');
         temErro = true;
     }
@@ -255,14 +246,16 @@ async function enviarCadastro(event) {
 
     let temErro = false;
 
-    // Nome obrigatório
-    if (!inputNome || !inputNome.value.trim()) {
+    // Nome obrigatório, entre 3 e 80 caracteres, apenas letras e espaços
+    const nomeVal = inputNome ? inputNome.value.trim() : '';
+    if (nomeVal.length < 3 || nomeVal.length > 80 || !/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(nomeVal)) {
         if (grpNome) grpNome.classList.add('com-erro');
         temErro = true;
     }
 
-    // E-mail obrigatório
-    if (!inputEmail || !inputEmail.value.trim() || !inputEmail.value.includes('@')) {
+    // E-mail obrigatório e máx 100 caracteres
+    const emailVal = inputEmail ? inputEmail.value.trim() : '';
+    if (!emailVal || !emailVal.includes('@') || emailVal.length > 100) {
         if (grpEmail) grpEmail.classList.add('com-erro');
         temErro = true;
     }
@@ -273,10 +266,23 @@ async function enviarCadastro(event) {
         temErro = true;
     }
 
-    // Data de nascimento obrigatória
+    // Data de nascimento obrigatória (mínimo 18 anos e máximo 120 anos)
     if (!inputNascimento || !inputNascimento.value.trim()) {
         if (grpNascimento) grpNascimento.classList.add('com-erro');
         temErro = true;
+    } else {
+        const dataNasc = new Date(inputNascimento.value + 'T00:00:00');
+        const hoje = new Date();
+        let idade = hoje.getFullYear() - dataNasc.getFullYear();
+        const mes = hoje.getMonth() - dataNasc.getMonth();
+        if (mes < 0 || (mes === 0 && hoje.getDate() < dataNasc.getDate())) {
+            idade--;
+        }
+
+        if (isNaN(dataNasc.getTime()) || dataNasc > hoje || idade < 18 || idade > 120) {
+            if (grpNascimento) grpNascimento.classList.add('com-erro');
+            temErro = true;
+        }
     }
 
     // Telefone obrigatório (10 ou 11 dígitos)
@@ -286,8 +292,8 @@ async function enviarCadastro(event) {
         temErro = true;
     }
 
-    // Senha obrigatória (mínimo 6 caracteres)
-    if (!inputSenha || inputSenha.value.length < 6) {
+    // Senha obrigatória (mínimo 6 caracteres reais, sem contar apenas espaços)
+    if (!inputSenha || inputSenha.value.trim().length < 6) {
         if (grpSenha) grpSenha.classList.add('com-erro');
         temErro = true;
     }
@@ -343,7 +349,6 @@ function limparErrosCampos() {
 }
 
 function fecharTudo() {
-    // 1. Oculta o Carrinho
     const elementosCarrinho = [
         document.getElementById('carrinho-modal'),
         document.getElementById('x'),
@@ -355,11 +360,9 @@ function fecharTudo() {
         if (el) el.classList.remove('open', 'active', 'aberto', 'ativo');
     });
 
-    // 2. Oculta os Favoritos
     const favoritos = document.getElementById('favoritos-container');
     if (favoritos) favoritos.classList.remove('open', 'active', 'aberto');
 
-    // 3. Oculta as Overlays de fundo
     const overlays = document.querySelectorAll('#overlay, .carrinho-overlay, .modal-overlay');
     overlays.forEach(overlay => {
         if (overlay) {
@@ -395,12 +398,29 @@ function getCookie(nome) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Banner LGPD
     const statusCookie = getCookie('lgpd_aceite');
     const banner = document.getElementById('cookie-banner');
 
     if (!statusCookie && banner) {
         banner.style.display = 'flex';
+    }
+
+    // Limita o calendário de nascimento automaticamente (mínimo 18 anos e máximo 120 anos)
+    const nascInput = document.getElementById('cad-nascimento');
+    if (nascInput) {
+        const hoje = new Date();
+        const maxData = new Date(hoje.getFullYear() - 18, hoje.getMonth(), hoje.getDate()).toISOString().split('T')[0];
+        const minData = new Date(hoje.getFullYear() - 120, hoje.getMonth(), hoje.getDate()).toISOString().split('T')[0];
+        nascInput.setAttribute('max', maxData);
+        nascInput.setAttribute('min', minData);
+    }
+
+    // Bloqueio de números, símbolos e limite de caracteres no Nome
+    const nomeInput = document.getElementById('cad-nome');
+    if (nomeInput) {
+        nomeInput.addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, '').slice(0, 80);
+        });
     }
 
     // Máscara automática de CPF

@@ -34,9 +34,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // 2. Validação de formato de e-mail
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail inválido.']);
+    // 1.1 Validação de tamanho e caracteres do Nome (mín 3 e máx 80 caracteres, apenas letras e espaços)
+    if (mb_strlen($nome, 'UTF-8') < 3 || mb_strlen($nome, 'UTF-8') > 80) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'O nome deve ter entre 3 e 80 caracteres.']);
+        exit;
+    }
+    if (!preg_match('/^[\p{L}\s]+$/u', $nome)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'O nome não pode conter números ou caracteres especiais.']);
+        exit;
+    }
+
+    // 2. Validação de tamanho e formato de e-mail (máx 100 caracteres)
+    if (mb_strlen($email, 'UTF-8') > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail inválido ou muito longo (máx. 100 caracteres).']);
         exit;
     }
 
@@ -47,6 +57,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    // 3.1 Validação de Data de Nascimento (mínimo 18 anos e máximo 120 anos)
+    $data_nasc_obj = DateTime::createFromFormat('Y-m-d', $data_nascimento);
+    if (!$data_nasc_obj || $data_nasc_obj->format('Y-m-d') !== $data_nascimento) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Data de nascimento inválida.']);
+        exit;
+    }
+
+    $hoje = new DateTime();
+    $idade = $hoje->diff($data_nasc_obj)->y;
+
+    if ($data_nasc_obj > $hoje || $idade < 18 || $idade > 120) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Você precisa ter pelo menos 18 anos para se cadastrar.']);
+        exit;
+    }
+
     // 4. Validação de Telefone (10 ou 11 dígitos numéricos)
     $tel_numeros = preg_replace('/\D/', '', $telefone);
     if (strlen($tel_numeros) < 10 || strlen($tel_numeros) > 11) {
@@ -54,8 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // 5. Validação de tamanho mínimo da senha
-    if (strlen($senha) < 6) {
+    // 5. Validação de tamanho mínimo da senha (sem espaços vazios)
+    if (strlen(trim($senha)) < 6) {
         echo json_encode(['status' => 'erro', 'mensagem' => 'A senha deve ter no mínimo 6 caracteres.']);
         exit;
     }

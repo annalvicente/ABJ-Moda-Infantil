@@ -75,6 +75,13 @@ if (empty($id)) {
 
 // 6. Execução e Redirecionamento
 if ($stmt->execute()) {
+    // Se o estoque foi zerado na edição, remove o item esgotado dos carrinhos ativos
+    if (!empty($id) && $quantidade_int <= 0) {
+        $stmt_del = $conn->prepare("DELETE FROM carrinho WHERE id_produto = ?");
+        $stmt_del->bind_param("i", $id_int);
+        $stmt_del->execute();
+    }
+
     // 1 = cadastrado com sucesso | 2 = alterado com sucesso
     $codigo_sucesso = empty($id) ? '1' : '2';
     header("Location: tfuncionarios.php?sucesso=" . $codigo_sucesso);

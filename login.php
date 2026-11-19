@@ -17,6 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    if (mb_strlen($email, 'UTF-8') > 100) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'O e-mail não pode ultrapassar 100 caracteres.']);
+        exit;
+    }
+
     // Escolhe a tabela certa
     $tabela = ($tipo_usuario === 'vendedor') ? 'vendedores' : 'clientes';
 

@@ -323,8 +323,8 @@ $categorias_config = [
 
     <div class="input-group" id="grp-cad-nome">
         <label>Nome Completo</label>
-        <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" required>
-        <span class="erro-campo">Nome é obrigatório.</span>
+        <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" minlength="3" maxlength="80" required>
+        <span class="erro-campo">Informe um nome válido (mínimo 3 letras).</span>
     </div>
 
     <div class="input-group" id="grp-cad-email">
@@ -340,9 +340,9 @@ $categorias_config = [
     </div>
 
     <div class="input-group" id="grp-cad-nascimento">
-        <label for="cad-nascimento">Data de Nascimento:</label>
-        <input type="date" id="cad-nascimento" name="data_nascimento" required>
-        <span class="erro-campo">Informe sua data de nascimento.</span>
+        <label>Data de Nascimento</label>
+        <input type="date" name="data_nascimento" id="cad-nascimento" min="1900-01-01" max="2008-11-19" required>
+        <span class="erro-campo">É necessário ter pelo menos 18 anos para se cadastrar.</span>
     </div>
 
     <div class="input-group" id="grp-cad-telefone">

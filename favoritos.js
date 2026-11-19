@@ -123,9 +123,17 @@ async function adicionarAoFavorito(idProduto) {
         await carregarFavoritos();
         abrirFavoritosEfetivo();
 
-        // Exibe o aviso de sucesso sem redirecionar para lugar nenhum (redirectUrl = null)
+        // Exibe o aviso de sucesso e garante que o botão OK mantenha os FAVORITOS abertos
         if (typeof mostrarFeedback === 'function') {
             mostrarFeedback('sucesso', 'Favoritado!', resultado.mensagem || 'Produto adicionado aos favoritos!', null);
+            const btnOk = document.getElementById('btn-feedback-ok');
+            if (btnOk) {
+                btnOk.onclick = function() {
+                    btnOk.onclick = fecharFeedback;
+                    fecharFeedback();
+                    abrirFavoritosEfetivo();
+                };
+            }
         }
 
     } catch (erro) {

@@ -19,12 +19,16 @@ window.alert = function(mensagem, callback) {
     if (typeof mostrarFeedback === 'function') {
         mostrarFeedback(tipo, titulo, mensagem);
         const btnOk = document.getElementById('btn-feedback-ok');
-        if (btnOk && typeof callback === 'function') {
-            const originalOnClick = btnOk.onclick;
-            btnOk.onclick = function() {
-                if (typeof originalOnClick === 'function') originalOnClick();
-                callback();
-            };
+        if (btnOk) {
+            if (typeof callback === 'function') {
+                btnOk.onclick = function() {
+                    btnOk.onclick = fecharFeedback; // Restaura o clique padrão para não vazar para próximos modais
+                    fecharFeedback();
+                    callback();
+                };
+            } else {
+                btnOk.onclick = fecharFeedback;
+            }
         }
     } else if (typeof exibirFeedback === 'function') {
         exibirFeedback(titulo, mensagem, tipo, callback);
@@ -152,11 +156,13 @@ async function adicionarAoCarrinho(idProduto, nome, preco, imagem = '', exibeAle
         
         const dados = await response.json();
 
-        if (dados.status !== 'sucesso') {
-            const msgErro = dados.mensagem || "Você precisa estar logado para adicionar itens ao carrinho.";
-            alert(msgErro, function() {
+       if (dados.status !== 'sucesso') {
+            const msgErro = dados.mensagem || "Não foi possível adicionar o item ao carrinho.";
+            const precisaLogin = msgErro.toLowerCase().includes('logado') || msgErro.toLowerCase().includes('login');
+            
+            alert(msgErro, precisaLogin ? function() {
                 if (typeof openModal === 'function') openModal('login');
-            });
+            } : null);
             return false;
         }
 

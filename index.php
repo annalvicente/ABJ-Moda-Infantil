@@ -428,7 +428,7 @@ $vitrines = [
 
     <div class="input-group" id="grp-login-email">
         <label>E-mail</label>
-        <input type="email" name="email" id="login-email" placeholder="seu@email.com" required>
+        <input type="email" name="email" id="login-email" placeholder="seu@email.com" maxlength="100" required>
         <span class="erro-campo">Informe um e-mail válido.</span>
     </div>
 
@@ -455,13 +455,13 @@ $vitrines = [
 
     <div class="input-group" id="grp-cad-nome">
         <label>Nome Completo</label>
-        <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" required>
-        <span class="erro-campo">Nome é obrigatório.</span>
+        <input type="text" name="nome" id="cad-nome" placeholder="Seu nome completo" minlength="3" maxlength="80" required>
+        <span class="erro-campo">Informe um nome válido (mínimo 3 letras).</span>
     </div>
 
     <div class="input-group" id="grp-cad-email">
         <label>E-mail</label>
-        <input type="email" name="email" id="cad-email" placeholder="seu@email.com" required>
+        <input type="email" name="email" id="cad-email" placeholder="seu@email.com" maxlength="100" required>
         <span class="erro-campo">Informe um e-mail válido.</span>
     </div>
 
@@ -473,8 +473,8 @@ $vitrines = [
 
     <div class="input-group" id="grp-cad-nascimento">
         <label>Data de Nascimento</label>
-        <input type="date" name="data_nascimento" id="cad-nascimento" required>
-        <span class="erro-campo">Informe sua data de nascimento.</span>
+        <input type="date" name="data_nascimento" id="cad-nascimento" min="1900-01-01" max="2008-11-19" required>
+        <span class="erro-campo">É necessário ter pelo menos 18 anos para se cadastrar.</span>
     </div>
 
     <div class="input-group" id="grp-cad-telefone">

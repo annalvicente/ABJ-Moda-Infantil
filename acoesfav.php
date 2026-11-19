@@ -36,6 +36,15 @@ switch ($acao) {
         $id_prod = intval($_POST['id_produto'] ?? $_POST['produto_id'] ?? 0);
 
         if ($id_prod > 0) {
+            // Verifica se o produto existe e tem estoque
+            $res_estoque = $conn->query("SELECT quantidade_estoque FROM produtos WHERE id = $id_prod");
+            $prod = $res_estoque ? $res_estoque->fetch_assoc() : null;
+
+            if (!$prod || intval($prod['quantidade_estoque']) <= 0) {
+                echo json_encode(["sucesso" => false, "mensagem" => "Este produto está esgotado no momento."]);
+                break;
+            }
+
             $check = $conn->query("SELECT id FROM favoritos WHERE id_cliente = $id_cliente AND id_produto = $id_prod");
             
             if ($check && $check->num_rows === 0) {
@@ -53,12 +62,12 @@ switch ($acao) {
         }
         break;
 
-    // --- 2. LISTAR FAVORITOS ---
+    // --- 2. LISTAR FAVORITOS (APENAS EM ESTOQUE) ---
     case 'listar':
         $sql = "SELECT f.id as id_favorito, p.id as id_produto, p.nome, p.preco, p.imagem 
                 FROM favoritos f 
                 INNER JOIN produtos p ON f.id_produto = p.id 
-                WHERE f.id_cliente = $id_cliente";
+                WHERE f.id_cliente = $id_cliente AND p.quantidade_estoque > 0";
         
         $resultado = $conn->query($sql);
         $favoritos = [];
@@ -89,7 +98,7 @@ switch ($acao) {
         }
         break;
 
-    // --- 4. ADICIONAR AO CARRINHO ---
+    // --- 4. ADICIONAR AO CARRINHO (COM TRAVA DE ESTOQUE) ---
     case 'adicionar_carrinho':
         $id_prod = intval($_POST['produto_id'] ?? $_POST['id_produto'] ?? 0);
 
@@ -98,9 +107,24 @@ switch ($acao) {
             break;
         }
 
+        // Busca o estoque atual do produto
+        $res_estoque = $conn->query("SELECT quantidade_estoque FROM produtos WHERE id = $id_prod");
+        $prod = $res_estoque ? $res_estoque->fetch_assoc() : null;
+        $estoque_disponivel = $prod ? intval($prod['quantidade_estoque']) : 0;
+
+        if ($estoque_disponivel <= 0) {
+            echo json_encode(["status" => "erro", "mensagem" => "Ops! Este produto está esgotado no momento."]);
+            break;
+        }
+
         $check = $conn->query("SELECT id, quantidade FROM carrinho WHERE id_cliente = $id_cliente AND id_produto = $id_prod");
 
         if ($check && $check->num_rows > 0) {
+            $row_cart = $check->fetch_assoc();
+            if (intval($row_cart['quantidade']) + 1 > $estoque_disponivel) {
+                echo json_encode(["status" => "erro", "mensagem" => "Ops! Você já atingiu o limite disponível em estoque ($estoque_disponivel un.)."]);
+                break;
+            }
             $sql = "UPDATE carrinho SET quantidade = quantidade + 1 WHERE id_cliente = $id_cliente AND id_produto = $id_prod";
         } else {
             $sql = "INSERT INTO carrinho (id_cliente, id_produto, quantidade) VALUES ($id_cliente, $id_prod, 1)";
@@ -113,12 +137,12 @@ switch ($acao) {
         }
         break;
 
-    // --- 5. LISTAR ITENS DO CARRINHO (NOVO - ESSENCIAL PARA CTRL+F5) ---
+    // --- 5. LISTAR ITENS DO CARRINHO (APENAS EM ESTOQUE) ---
     case 'listar_carrinho':
-        $sql = "SELECT c.id_produto, p.nome, p.preco, p.imagem, c.quantidade 
+        $sql = "SELECT c.id_produto, p.nome, p.preco, p.imagem, LEAST(c.quantidade, p.quantidade_estoque) AS quantidade 
                 FROM carrinho c 
                 INNER JOIN produtos p ON c.id_produto = p.id 
-                WHERE c.id_cliente = $id_cliente";
+                WHERE c.id_cliente = $id_cliente AND p.quantidade_estoque > 0";
         
         $resultado = $conn->query($sql);
         $itens = [];
@@ -135,7 +159,7 @@ switch ($acao) {
         ]);
         break;
 
-    // --- 6. REMOVER DO CARRINHO (NOVO) ---
+    // --- 6. REMOVER DO CARRINHO ---
     case 'remover_carrinho':
         $id_prod = intval($_POST['produto_id'] ?? $_POST['id_produto'] ?? 0);
 
