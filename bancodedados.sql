@@ -66,6 +66,14 @@ CREATE TABLE IF NOT EXISTS carrinho (
 
 -- POPULACIONANDO AS TABELAS -- 
 
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE carrinho;
+TRUNCATE TABLE favoritos;
+TRUNCATE TABLE produtos;
+TRUNCATE TABLE vendedores;
+TRUNCATE TABLE categoria;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- tabela categorias
 INSERT INTO categoria (nome) VALUES 
 ('Meninas'),
@@ -74,6 +82,16 @@ INSERT INTO categoria (nome) VALUES
 ('Fantasias'),
 ('Pijamas');
 
+-- tabela vendedores
+INSERT INTO vendedores (nome, email, cpf, data_nascimento, telefone, senha) VALUES 
+(
+    'Vendedor Padrão', 
+    'vendedor@lojakids.com.br', 
+    '123.456.789-00', 
+    '1995-05-15', 
+    '(11) 99999-9999', 
+    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' -- Hash padrão para a senha: "password"
+);
 
 -- tabela produtos
 
@@ -626,3 +644,14 @@ INSERT INTO produtos (
     1, 
     1
 );
+
+
+SELECT 'clientes' AS tabela, COUNT(*) AS total FROM clientes
+UNION ALL
+SELECT 'vendedores', COUNT(*) FROM vendedores
+UNION ALL
+SELECT 'produtos', COUNT(*) FROM produtos
+UNION ALL
+SELECT 'carrinho', COUNT(*) FROM carrinho
+UNION ALL
+SELECT 'favoritos', COUNT(*) FROM favoritos;
