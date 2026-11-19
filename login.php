@@ -1,45 +1,62 @@
 <?php
 session_start();
-include 'conexão.php'; // Usa a conexão padrão que já criamos ($conn)
+
+// Inclui a conexão com o banco (com acento, igual ao arquivo real)
+if (!file_exists('conexao.php')) {
+    die("<script>alert('Erro crítico: conexao.php não encontrado!'); window.location='index.php';</script>");
+}
+require_once 'conexao.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-    $tipo = $_POST['tipo_usuario']; // Deve vir do <select> ou <input> do login.html
+    $email        = trim($_POST['email'] ?? '');
+    $senha        = $_POST['senha'] ?? '';
+    $tipo_usuario = $_POST['tipo_usuario'] ?? 'cliente'; // campo enviado pelo index.html
 
-    // Define a tabela baseada no tipo
-    $tabela = ($tipo == 'vendedor') ? 'vendedores' : 'clientes';
-    
-    // Procura o usuário
-    $sql = "SELECT * FROM $tabela WHERE email = '$email'";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        
-        // Verifica a senha
-        if (password_verify($senha, $row['senha'])) {
-            // Salva na Sessão PHP (Segurança no Servidor)
-            $_SESSION['usuario_nome'] = $row['nome'];
-            $_SESSION['tipo'] = $tipo;
-
-            echo "<script>
-                const usuario = {
-                    nome: '" . $row['nome'] . "',
-                    tipo: '" . $tipo . "'
-                };
-                localStorage.setItem('usuario_logado_atual', JSON.stringify(usuario));
-                alert('Bem-vindo, " . $row['nome'] . "!');
-                window.location='index.html';
-            </script>";
-        } else {
-            echo "<script>alert('Senha incorreta!'); window.history.back();</script>";
-        }
-    } else {
-        echo "<script>alert('Usuário não encontrado!'); window.history.back();</script>";
+    if (empty($email) || empty($senha)) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'Preencha e-mail e senha.']);
+        exit;
     }
-}
 
-$conn->close();
-?>
+    if (mb_strlen($email, 'UTF-8') > 100) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'O e-mail não pode ultrapassar 100 caracteres.']);
+        exit;
+    }
+
+    // Escolhe a tabela certa
+    $tabela = ($tipo_usuario === 'vendedor') ? 'vendedores' : 'clientes';
+
+    // Busca o usuário pelo e-mail (prepared statement — seguro)
+    $stmt = $conn->prepare("SELECT id, nome, senha FROM $tabela WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows === 0) {
+        // Usuário não existe
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail ou senha incorretos.']);
+        exit;
+    }
+
+    $usuario = $resultado->fetch_assoc();
+
+    // Verifica a senha
+    if (!password_verify($senha, $usuario['senha'])) {
+        echo json_encode(['status' => 'erro', 'mensagem' => 'E-mail ou senha incorretos.']);
+        exit;
+    }
+
+    // Login OK — salva na sessão
+    $_SESSION['id_cliente']   = $usuario['id'];
+    $_SESSION['cliente_id']   = $usuario['id'];
+    $_SESSION['usuario_nome'] = $usuario['nome'];
+    $_SESSION['tipo']         = $tipo_usuario;
+
+    $redirect = ($tipo_usuario === 'vendedor') ? 'tfuncionarios.php' : 'index.php';
+
+    echo json_encode([
+        'status'   => 'sucesso',
+        'mensagem' => 'Bem-vindo(a), ' . $usuario['nome'] . '!',
+        'redirect' => $redirect
+    ]);
+    exit;
+}
